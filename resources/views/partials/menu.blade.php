@@ -1,6 +1,7 @@
 
   {{-- <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main"> --}}
-  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-info" id="sidenav-main">
+  <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-dark" id="sidenav-main">
+  {{-- <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-info" style="background: #00064f" id="sidenav-main"> --}}
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard-pro/pages/dashboards/analytics.html " target="_blank">
@@ -82,16 +83,16 @@
           </div>
         </li>
         <li class="nav-item mt-3">
-          <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder text-white">PAGES</h6>
+          <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder text-white">CAMPAÑA</h6>
         </li>
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#pagesExamples" class="nav-link text-white " aria-controls="pagesExamples" role="button" aria-expanded="false">
             <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">image</i>
-            <span class="nav-link-text ms-2 ps-1">Pages</span>
+            <span class="nav-link-text ms-2 ps-1">Campaña</span>
           </a>
           <div class="collapse " id="pagesExamples">
             <ul class="nav ">
-              <li class="nav-item ">
+              {{-- <li class="nav-item ">
                 <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false" href="#profileExample">
                   <span class="sidenav-mini-icon"> P </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Profile <b class="caret"></b></span>
@@ -224,32 +225,32 @@
                     </li>
                   </ul>
                 </div>
-              </li>
+              </li> --}}
               <li class="nav-item ">
                 <a class="nav-link text-white " href="../../pages/pages/pricing-page.html">
                   <span class="sidenav-mini-icon"> P </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> Pricing Page </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Listado de Campañas</span>
                 </a>
               </li>
               <li class="nav-item ">
                 <a class="nav-link text-white " href="../../pages/pages/rtl-page.html">
                   <span class="sidenav-mini-icon"> R </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> RTL </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Listado de Clientes </span>
                 </a>
               </li>
               <li class="nav-item ">
                 <a class="nav-link text-white " href="../../pages/pages/widgets.html">
                   <span class="sidenav-mini-icon"> W </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> Widgets </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Listado de Formularios </span>
                 </a>
               </li>
               <li class="nav-item ">
                 <a class="nav-link text-white " href="../../pages/pages/charts.html">
                   <span class="sidenav-mini-icon"> C </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> Charts </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Tipo Campañas </span>
                 </a>
               </li>
-              <li class="nav-item ">
+              {{-- <li class="nav-item ">
                 <a class="nav-link text-white " href="../../pages/pages/sweet-alerts.html">
                   <span class="sidenav-mini-icon"> S </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Sweet Alerts </span>
@@ -260,24 +261,24 @@
                   <span class="sidenav-mini-icon"> N </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Notifications </span>
                 </a>
-              </li>
+              </li> --}}
             </ul>
           </div>
         </li>
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#applicationsExamples" class="nav-link text-white " aria-controls="applicationsExamples" role="button" aria-expanded="false">
             <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">apps</i>
-            <span class="nav-link-text ms-2 ps-1">Applications</span>
+            <span class="nav-link-text ms-2 ps-1">Vendedores</span>
           </a>
           <div class="collapse " id="applicationsExamples">
             <ul class="nav ">
               <li class="nav-item ">
                 <a class="nav-link text-white " href="../../pages/applications/crm.html">
                   <span class="sidenav-mini-icon"> C </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> CRM </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Listado de vendedores </span>
                 </a>
               </li>
-              <li class="nav-item ">
+              {{-- <li class="nav-item ">
                 <a class="nav-link text-white " href="../../pages/applications/kanban.html">
                   <span class="sidenav-mini-icon"> K </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Kanban </span>
@@ -306,93 +307,79 @@
                   <span class="sidenav-mini-icon"> S </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Stats </span>
                 </a>
-              </li>
+              </li> --}}
             </ul>
           </div>
         </li>
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#ecommerceExamples" class="nav-link text-white " aria-controls="ecommerceExamples" role="button" aria-expanded="false">
             <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">shopping_basket</i>
-            <span class="nav-link-text ms-2 ps-1">Ecommerce</span>
+            <span class="nav-link-text ms-2 ps-1">Configuraciones</span>
           </a>
           <div class="collapse " id="ecommerceExamples">
             <ul class="nav ">
               <li class="nav-item ">
-                <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false" href="#productsExample">
-                  <span class="sidenav-mini-icon"> P </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> Products <b class="caret"></b></span>
+                <a class="nav-link text-white " href="../../pages/ecommerce/referral.html">
+                  <span class="sidenav-mini-icon"> R </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Medio de Seguimientos </span>
                 </a>
-                <div class="collapse " id="productsExample">
-                  <ul class="nav nav-sm flex-column">
-                    <li class="nav-item">
-                      <a class="nav-link text-white " href="../../pages/ecommerce/products/new-product.html">
-                        <span class="sidenav-mini-icon"> N </span>
-                        <span class="sidenav-normal  ms-2  ps-1"> New Product </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-white " href="../../pages/ecommerce/products/edit-product.html">
-                        <span class="sidenav-mini-icon"> E </span>
-                        <span class="sidenav-normal  ms-2  ps-1"> Edit Product </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-white " href="../../pages/ecommerce/products/product-page.html">
-                        <span class="sidenav-mini-icon"> P </span>
-                        <span class="sidenav-normal  ms-2  ps-1"> Product Page </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-white " href="../../pages/ecommerce/products/products-list.html">
-                        <span class="sidenav-mini-icon"> P </span>
-                        <span class="sidenav-normal  ms-2  ps-1"> Products List </span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+              </li>
+              <li class="nav-item ">
+                <a class="nav-link text-white " href="../../pages/ecommerce/referral.html">
+                  <span class="sidenav-mini-icon"> R </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Medio Publicitario </span>
+                </a>
               </li>
               <li class="nav-item ">
                 <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false" href="#ordersExample">
                   <span class="sidenav-mini-icon"> O </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> Orders <b class="caret"></b></span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Estado <b class="caret"></b></span>
                 </a>
                 <div class="collapse " id="ordersExample">
                   <ul class="nav nav-sm flex-column">
                     <li class="nav-item">
                       <a class="nav-link text-white " href="../../pages/ecommerce/orders/list.html">
                         <span class="sidenav-mini-icon"> O </span>
-                        <span class="sidenav-normal  ms-2  ps-1"> Order List </span>
+                        <span class="sidenav-normal  ms-2  ps-1"> Estado seguimiento </span>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link text-white " href="../../pages/ecommerce/orders/details.html">
                         <span class="sidenav-mini-icon"> O </span>
-                        <span class="sidenav-normal  ms-2  ps-1"> Order Details </span>
+                        <span class="sidenav-normal  ms-2  ps-1"> Estado Final </span>
                       </a>
                     </li>
                   </ul>
                 </div>
               </li>
-              <li class="nav-item ">
+              {{-- <li class="nav-item ">
                 <a class="nav-link text-white " href="../../pages/ecommerce/referral.html">
                   <span class="sidenav-mini-icon"> R </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Referral </span>
                 </a>
-              </li>
+              </li> --}}
             </ul>
           </div>
         </li>
         <li class="nav-item">
           <a data-bs-toggle="collapse" href="#authExamples" class="nav-link text-white " aria-controls="authExamples" role="button" aria-expanded="false">
             <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">content_paste</i>
-            <span class="nav-link-text ms-2 ps-1">Authentication</span>
+            <span class="nav-link-text ms-2 ps-1">Asignaciones</span>
           </a>
           <div class="collapse " id="authExamples">
             <ul class="nav ">
               <li class="nav-item ">
+                <a class="nav-link text-white " href="../../pages/ecommerce/referral.html">
+                  <span class="sidenav-mini-icon"> R </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Mis Asignaciones </span>
+                </a>
+              </li>
+            </ul>
+            {{-- <ul class="nav ">
+              <li class="nav-item ">
                 <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false" href="#signinExample">
                   <span class="sidenav-mini-icon"> S </span>
-                  <span class="sidenav-normal  ms-2  ps-1"> Sign In <b class="caret"></b></span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Mis Asignaciones <b class="caret"></b></span>
                 </a>
                 <div class="collapse " id="signinExample">
                   <ul class="nav nav-sm flex-column">
@@ -551,10 +538,10 @@
                   </ul>
                 </div>
               </li>
-            </ul>
+            </ul> --}}
           </div>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <hr class="horizontal light" />
           <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder text-white">DOCS</h6>
         </li>
@@ -753,7 +740,7 @@
             <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">receipt_long</i>
             <span class="nav-link-text ms-2 ps-1">Changelog</span>
           </a>
-        </li>
+        </li> --}}
       </ul>
     </div>
   </aside>
