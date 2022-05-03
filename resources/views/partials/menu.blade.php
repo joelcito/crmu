@@ -42,8 +42,8 @@
           </div>
         </li>
         <hr class="horizontal light mt-0">
-        <li class="nav-item">
-          <a data-bs-toggle="collapse" href="#dashboardsExamples" class="nav-link text-white active" aria-controls="dashboardsExamples" role="button" aria-expanded="false">
+        {{-- <li class="nav-item">
+          <a data-bs-toggle="collapse" href="#dashboardsExamples" class="nav-link text-white" aria-controls="dashboardsExamples" role="button" aria-expanded="false">
             <i class="material-icons-round opacity-10">dashboard</i>
             <span class="nav-link-text ms-2 ps-1">Dashboards</span>
           </a>
@@ -61,8 +61,8 @@
                   <span class="sidenav-normal  ms-2  ps-1"> Discover </span>
                 </a>
               </li>
-              <li class="nav-item active">
-                <a class="nav-link text-white active" href="../../pages/dashboards/sales.html">
+              <li class="nav-item">
+                <a class="nav-link text-white" href="../../pages/dashboards/sales.html">
                   <span class="sidenav-mini-icon"> S </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Sales </span>
                 </a>
@@ -81,7 +81,7 @@
               </li>
             </ul>
           </div>
-        </li>
+        </li> --}}
         <li class="nav-item mt-3">
           <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder text-white">CAMPAÑA</h6>
         </li>
@@ -91,7 +91,7 @@
             <span class="nav-link-text ms-2 ps-1">Campaña</span>
           </a>
           <div class="collapse " id="pagesExamples">
-            <ul class="nav ">
+            <ul class="nav">
               {{-- <li class="nav-item ">
                 <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false" href="#profileExample">
                   <span class="sidenav-mini-icon"> P </span>
@@ -227,7 +227,7 @@
                 </div>
               </li> --}}
               <li class="nav-item ">
-                <a class="nav-link text-white " href="../../pages/pages/pricing-page.html">
+                <a class="nav-link text-white" href="{{ url('Campania/Listado') }}">
                   <span class="sidenav-mini-icon"> P </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Listado de Campañas</span>
                 </a>

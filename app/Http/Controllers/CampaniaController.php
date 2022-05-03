@@ -7,14 +7,41 @@ use Illuminate\Http\Request;
 
 class CampaniaController extends Controller
 {
+
+
+    public function listado(Request $request){
+
+        return view('campania.listado');
+
+     }
+
+
+    public function ajaxListado(Request $request){
+
+        if($request->ajax()){
+
+            $campanias = Campania::all();
+
+            return view('campania.ajaxListado')->with(compact('campanias'));
+
+        }else{
+
+        }
+
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function home(Request $request)
     {
-        //
+        
+        // $formularios = FormularioCampania::where('campania_id',1)->get();
+
+        // return view('campania.home')->with(compact('formularios'));
+        return view('campania.home');
     }
 
     /**

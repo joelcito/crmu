@@ -17,3 +17,44 @@ Route::get('/', function () {
     // return view('welcome');
     return view('home');
 });
+
+
+// CAMPANIA
+Route::get('Campania/Listado', 'CampaniaController@listado');
+Route::post('Campania/guarda', 'CampaniaController@guarda');
+Route::post('Campania/ajaxListado', 'CampaniaController@ajaxListado');
+Route::get('Campania/home', 'CampaniaController@home');
+
+// FORMULARIO
+Route::post('Formulario/guardaFormulario', 'FormularioController@guardaFormulario');
+Route::get('Formulario/listado', 'FormularioController@listado');
+Route::get('Formulario/formulario/{campania_id}', 'FormularioController@formulario');
+Route::get('Formulario/respuestaFormulario/{campania_id}/{formulario_id}', 'FormularioController@respuestaFormulario');
+Route::post('Formulario/guardarRespuestaFormulario', 'FormularioController@guardarRespuestaFormulario');
+
+
+// VENDEDORES
+Route::get('Vendedor/vendedores', 'VendedorController@vendedores');
+
+// PERSONA
+Route::get('Persona/listado', 'PersonaController@listado');
+
+// MEDIO SEGUIMIENTO
+Route::get('MedioSeguimietno/listado', 'MedioSeguimientoController@listado');
+
+
+// MEDIO PUBLICITARIOS
+Route::get('MedioPublicitario/listado', 'MedioPublicitarioController@listado');
+
+
+// TIPOS DE CAMPANIA
+Route::get('TipoCampania/listado', 'TipoCampaniaController@listado');
+
+// ESTADO DE SEGUIMIENTO
+Route::get('EstadoSeguimiento/listado', 'EstadoSeguimientoController@listado');
+
+// ESTADO FINAL
+Route::get('EstadoFinal/listado', 'EstadoFinalController@listado');
+
+// ASIGNACIONES
+Route::get('Asignacion/listado', 'AsignacionController@listado');
