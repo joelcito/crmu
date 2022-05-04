@@ -222,12 +222,12 @@
                         <div class="col-md-4" style="border-right: 1px solid #ccc; border-radius:5px">
                             <div class="row">
                                 <div class="col-md-10">
-                                    <input type="text" height="100%" disabled name="apellido_paterno" id="apellido_paterno" class="boredes-cajas" placeholder="APELLIDO PATERNO"/>
+                                    <input type="text" height="100%" disabled name="apellido_paterno_in" id="apellido_paterno_in" class="boredes-cajas" placeholder="APELLIDO PATERNO"/>
                                 </div>
                                 <div class="col-md-2" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
                                     <p style="margin-bottom:10px;"></p>
                                     <div class="form-check form-switch ps-0">
-                                        <input class="form-check-input ms-auto" type="checkbox" name="check['paterno']" id="flexSwitchCheckDefault" checked>
+                                        <input class="form-check-input ms-auto" type="checkbox" name="apellido_paterno" id="flexSwitchCheckDefault" checked>
                                     </div>
                                 </div>
                             </div>
@@ -235,12 +235,12 @@
                         <div class="col-md-4" style="border-right: 1px solid #ccc; border-radius:5px">
                             <div class="row">
                                 <div class="col-md-10">
-                                    <input type="text" height="100%" disabled name="apellido_materno" id="apellido_materno" class="boredes-cajas" placeholder="APELLIDO MATERNO"/>
+                                    <input type="text" height="100%" disabled name="apellido_materno_in" id="apellido_materno_in" class="boredes-cajas" placeholder="APELLIDO MATERNO"/>
                                 </div>
                                 <div class="col-md-2" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
                                     <p style="margin-bottom:10px;"></p>
                                     <div class="form-check form-switch ps-0">
-                                        <input class="form-check-input ms-auto" type="checkbox" name="check['materno']" id="flexSwitchCheckDefault" checked>
+                                        <input class="form-check-input ms-auto" type="checkbox" name="apellido_materno" id="flexSwitchCheckDefault" checked>
                                     </div>
                                 </div>
                             </div>
@@ -248,12 +248,12 @@
                         <div class="col-md-4" style="border-right: 1px solid #ccc; border-radius:5px">
                             <div class="row">
                                 <div class="col-md-10">
-                                    <input type="text" height="100%" disabled name="nombre_completo" id="nombre_completo" class="boredes-cajas" placeholder="NOMBRES  COMPLETOS"/>
+                                    <input type="text" height="100%" disabled name="nombres_in" id="nombres_in" class="boredes-cajas" placeholder="NOMBRES  COMPLETOS"/>
                                 </div>
                                 <div class="col-md-2" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
                                     <p style="margin-bottom:10px;"></p>
                                     <div class="form-check form-switch ps-0">
-                                        <input class="form-check-input ms-auto" type="checkbox" name="check['nombre']" id="flexSwitchCheckDefault" checked>
+                                        <input class="form-check-input ms-auto" type="checkbox" name="nombres" id="flexSwitchCheckDefault" checked>
                                     </div>
                                 </div>
                             </div>
@@ -264,12 +264,12 @@
                         <div class="col-md-3" style="border-right: 1px solid #ccc; border-radius:5px">
                             <div class="row">
                                 <div class="col-md-9">
-                                    <input type="text" disabled name="email_postulante" id="email_postulante" class="boredes-cajas" placeholder="EMAIL"/>
+                                    <input type="text" disabled name="email_in" id="email_in" class="boredes-cajas" placeholder="EMAIL"/>
                                 </div>
                                 <div class="col-md-3" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
                                     <p style="margin-bottom:10px;"></p>
                                     <div class="form-check form-switch ps-0">
-                                        <input class="form-check-input ms-auto" type="checkbox" name="check['email']" id="flexSwitchCheckDefault" checked>
+                                        <input class="form-check-input ms-auto" type="checkbox" name="email" id="flexSwitchCheckDefault" checked>
                                     </div>
                                 </div>
                             </div>
@@ -277,14 +277,14 @@
                         <div class="col-md-3" style="border-right: 1px solid #ccc; border-radius:5px">
                             <div class="row">
                                 <div class="col-md-9">
-                                    <input type="number" disabled name="ceulalar" id="ceulalar" class="boredes-cajas" placeholder="CELULAR"/>
+                                    <input type="number" disabled name="celular_in" id="celular_in" class="boredes-cajas" placeholder="CELULAR"/>
                                 </div>
                                 <div class="col-md-3" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
                                     <p style="margin-bottom:10px;"></p>
                                     <div class="form-check form-switch ps-0">
                                         <p style="margin-bottom:10px;"></p>
                                         <div class="form-check form-switch ps-0">
-                                            <input class="form-check-input ms-auto" type="checkbox" name="check['celular']" id="flexSwitchCheckDefault" checked>
+                                            <input class="form-check-input ms-auto" type="checkbox" name="celular" id="flexSwitchCheckDefault" checked>
                                         </div>
                                     </div>
                                 </div>
@@ -293,12 +293,12 @@
                         <div class="col-md-3" style="border-right: 1px solid #ccc; border-radius:5px">
                             <div class="row">
                                 <div class="col-md-9">
-                                    <input type="number" disabled name="cedula" id="cedula" class="boredes-cajas" placeholder="CEDULA"/>
+                                    <input type="number" disabled name="cedula_in" id="cedula_in" class="boredes-cajas" placeholder="CEDULA"/>
                                 </div>
                                 <div class="col-md-3" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
                                     <p style="margin-bottom:10px;"></p>
                                     <div class="form-check form-switch ps-0">
-                                        <input class="form-check-input ms-auto" type="checkbox" name="check['cedula']" id="flexSwitchCheckDefault" checked>
+                                        <input class="form-check-input ms-auto" type="checkbox" name="cedula" id="flexSwitchCheckDefault" checked>
                                     </div>
                                 </div>
                             </div>
@@ -306,44 +306,17 @@
                         <div class="col-md-3" style="border-right: 1px solid #ccc; border-radius:5px">
                             <div class="row">
                                 <div class="col-md-9">
-                                    <input type="text" disabled name="expedido" id="expedido" class="boredes-cajas" placeholder="EXPEDIDO"/>
+                                    <input type="text" disabled name="expedido_in" id="expedido_in" class="boredes-cajas" placeholder="EXPEDIDO"/>
                                 </div>
                                 <div class="col-md-3" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
                                     <p style="margin-bottom:10px;"></p>
                                     <div class="form-check form-switch ps-0">
-                                        <input class="form-check-input ms-auto" type="checkbox" name="check['expedido']" id="flexSwitchCheckDefault" checked>
+                                        <input class="form-check-input ms-auto" type="checkbox" name="expedido" id="flexSwitchCheckDefault" checked>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="row">
-                        <div class="col-md-6">
-                            <div class="title">
-                                <h1>
-                                  <div>
-                                      <input type="text" name="nombre_formulario" id="nombre_formulario" class="boredes-cajas" placeholder="NOMBRES COMPLETO"/>
-                                  </div>
-                                </h1>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="title">
-                                <h1>
-                                  <div>
-                                      <input type="text" name="nombre_formulario" id="nombre_formulario" class="boredes-cajas" placeholder="APELLIDO MATERNO"/>
-                                  </div>
-                                </h1>
-                            </div>
-                        </div>
-                    </div> --}}
-                    <br>
-                    {{-- <div class="row">
-                        <div class="col-md-3"></div>
-                        <div class="col-md-3"></div>
-                        <div class="col-md-3"></div>
-                        <div class="col-md-3"></div>
-                    </div> --}}
                     <br>
                     <div class="row">
                       <div class="col-md-12">

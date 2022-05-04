@@ -218,14 +218,60 @@
                         </div>
                       </div>
                     </div>
-                    {{-- campania_id --}}
-                    <input type="hidden" value="{{ $campania_id }}" name="campania_id">
 
+                    <input type="text" value="{{ $campania_id }}" name="campania_id">
+                    <input type="text" value="{{ $formulario->id }}" name="formulario_id">
+                    <br>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="title">
+                                <h6 style="padding:10px">Apellido Paterno <b class="text-danger">{{ ($ap_paterno->requerido == 1)? '*' : ''}}</b></h6>
+                                <input style="padding:10px" name="apellido_paterno" {{ ($ap_paterno->requerido == 1)? 'required' : ''}} type="text" class="boredes-cajas" placeholder="Tu respuesta..">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="title">
+                                <h6 style="padding:10px">Apellido Materno <b class="text-danger">{{ ($ap_materno->requerido == 1)? '*' : ''}}</b></h6>
+                                <input style="padding:10px" name="apellido_materno" type="text"  {{ ($ap_materno->requerido == 1)? 'required' : ''}} class="boredes-cajas" placeholder="Tu respuesta..">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="title">
+                                <h6 style="padding:10px">Nombre Completo <b class="text-danger">{{ ($nombre->requerido == 1)? '*' : ''}}</b></h6>
+                                <input style="padding:10px" name="nombre" type="text" {{ ($nombre->requerido == 1)? 'required' : ''}}  class="boredes-cajas" placeholder="Tu respuesta..">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="title">
+                                <h6 style="padding:10px">Email <b class="text-danger">{{ ($email->requerido == 1)? '*' : ''}}</b></h6>
+                                <input style="padding:10px" name="email" {{ ($email->requerido == 1)? 'required' : ''}}  type="text" class="boredes-cajas" placeholder="Tu respuesta..">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="title">
+                                <h6 style="padding:10px">Celular <b class="text-danger">{{ ($celular->requerido == 1)? '*' : ''}}</b></h6>
+                                <input style="padding:10px" name="celular" {{ ($celular->requerido == 1)? 'required' : ''}} type="text" class="boredes-cajas" placeholder="Tu respuesta..">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="title">
+                                <h6 style="padding:10px">Cedula <b class="text-danger">{{ ($cedula->requerido == 1)? '*' : ''}}</b></h6>
+                                <input style="padding:10px" name="cedula" {{ ($cedula->requerido == 1)? 'required' : ''}} type="text" class="boredes-cajas" placeholder="Tu respuesta..">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="title">
+                                <h6 style="padding:10px">Expedido <b class="text-danger">{{ ($expedido->requerido == 1)? '*' : ''}}</b></h6>
+                                <input style="padding:10px" name="expedido" {{ ($expedido->requerido == 1)? 'required' : ''}}  type="text" class="boredes-cajas" placeholder="Tu respuesta..">
+                            </div>
+                        </div>
+                    </div>
+                    
                     @foreach ( $preguntas_form as $p)
                     <br>
-                    {{-- componente --}}
-                    {{-- <input type="text" name="componetes[]" value="{{ $p->componente->nombre }}"> --}}
-                        
                       <div class="row">
                           <div class="col-md-12">
                               <div class="title">

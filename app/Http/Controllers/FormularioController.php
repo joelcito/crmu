@@ -1,12 +1,14 @@
-    <?php
+<?php
 
 namespace App\Http\Controllers;
 
+use App\Models\Persona;
 use App\Models\Pregunta;
 use App\Models\Respuesta;
 use App\Models\Componente;
 use App\Models\Formulario;
 use App\Models\ValorCombo;
+use App\Models\Oportunidad;
 use Illuminate\Http\Request;
 use App\Models\RespuestaCombo;
 use App\Models\FormularioCampania;
@@ -23,18 +25,8 @@ class FormularioController extends Controller
     }
 
     public function guardaFormulario(Request $request){
-
-        dd($request->all());
-
-        // if(filled($request->input('check_ap'))){
-
-        //     dd("si");
-
-        // }else{
-
-        //     dd("no");
-            
-        // }
+      
+        // dd($request->all());
 
         $formulario = new Formulario();
 
@@ -57,6 +49,7 @@ class FormularioController extends Controller
             $pregunta->nombre           = $preguntas[$key];
             $pregunta->formulario_id    = $formulario->id;
             $pregunta->componente_id    = $componente->id;
+            $pregunta->estado           = 0;
 
             // echo $co." ".$preguntas[$key]."<br>";
 
@@ -86,8 +79,127 @@ class FormularioController extends Controller
             }else{
 
             }
+
         }
 
+        // Creamos una pregunta para ver si es requerido elap paterno
+        $pregunta  = new Pregunta();
+        
+        $pregunta->componente_id    = 1;
+        $pregunta->formulario_id    = $formulario->id;
+        $pregunta->nombre           = 'ap_paterno';
+        $pregunta->estado           = 1;
+
+        if($request->filled('apellido_paterno')){
+
+            $pregunta->requerido        = 1;
+
+        }
+
+        $pregunta->save();
+
+
+        // Creamos una pregunta para ver si es requerido al ap materno
+        $pregunta  = new Pregunta();
+
+        $pregunta->componente_id    = 1;
+        $pregunta->formulario_id    = $formulario->id;
+        $pregunta->nombre           = 'ap_materno';
+        $pregunta->estado           = 1;
+
+        if($request->filled('apellido_materno')){
+
+            $pregunta->requerido        = 1;
+
+        }
+
+        $pregunta->save();
+
+
+        // Creamos una pregunta para ver si es requerido el nombre
+        $pregunta  = new Pregunta();
+
+        $pregunta->componente_id    = 1;
+        $pregunta->formulario_id    = $formulario->id;
+        $pregunta->nombre           = 'nombre';
+        $pregunta->estado           = 1;
+
+        if($request->filled('nombres')){
+
+            $pregunta->requerido        = 1;
+
+        }
+
+        $pregunta->save();
+
+
+        // Creamos una pregunta para ver si es requerido el email
+        $pregunta  = new Pregunta();
+
+        $pregunta->componente_id    = 1;
+        $pregunta->formulario_id    = $formulario->id;
+        $pregunta->nombre           = 'email';
+        $pregunta->estado           = 1;
+
+        if($request->filled('email')){
+
+            $pregunta->requerido        = 1;
+
+        }
+
+        $pregunta->save();
+
+
+        // Creamos una pregunta para ver si es requerido el celular
+        $pregunta  = new Pregunta();
+
+        $pregunta->componente_id    = 1;
+        $pregunta->formulario_id    = $formulario->id;
+        $pregunta->nombre           = 'celular';
+        $pregunta->estado           = 1;
+
+        if($request->filled('celular')){
+
+            $pregunta->requerido        = 1;
+
+        }
+
+        $pregunta->save();
+
+
+        // Creamos una pregunta para ver si es requerido el cedula
+        $pregunta  = new Pregunta();
+
+        $pregunta->componente_id    = 1;
+        $pregunta->formulario_id    = $formulario->id;
+        $pregunta->nombre           = 'cedula';
+        $pregunta->estado           = 1;
+
+        if($request->filled('cedula')){
+
+            $pregunta->requerido        = 1;
+
+        }
+
+        $pregunta->save();
+
+
+        // Creamos una pregunta para ver si es requerido el expedido
+        $pregunta  = new Pregunta();
+
+        $pregunta->componente_id    = 1;
+        $pregunta->formulario_id    = $formulario->id;
+        $pregunta->nombre           = 'expedido';
+        $pregunta->estado           = 1;
+
+        if($request->filled('expedido')){
+
+            $pregunta->requerido        = 1;
+
+        }
+
+        $pregunta->save();
+        
 
 
         $formularioCampania = new FormularioCampania();
@@ -106,17 +218,77 @@ class FormularioController extends Controller
     }
 
     public function respuestaFormulario(Request $request, $campania_id, $formulario_id){
-        // dd($request->all());
         $formulario = Formulario::find($formulario_id);
 
         $preguntas_form = Pregunta::where('formulario_id', $formulario_id)
+                                    ->where('estado', 0)
                                     ->get();
 
-        return view('formulario.respuesta')->with(compact('campania_id','formulario', 'preguntas_form'));
+                                    
+        $ap_paterno = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','ap_paterno')
+                                ->first();
+
+        $ap_materno = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','ap_materno')
+                                ->first();
+
+        $nombre = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','nombre')
+                                ->first();
+
+        $email = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','email')
+                                ->first();
+
+        $celular = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','celular')
+                                ->first();
+
+        $cedula = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','cedula')
+                                ->first();
+
+        $expedido = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','expedido')
+                                ->first();
+
+        return view('formulario.respuesta')->with(compact('campania_id','formulario', 'preguntas_form', 'ap_paterno',  'ap_materno', 'nombre', 'email', 'celular', 'cedula', 'expedido'));
     }
 
     public function guardarRespuestaFormulario(Request $request){
+
+        // creando la persona
+        $persona = new Persona();
+
+        $persona->apellido_paterno   = $request->input('apellido_paterno');
+        $persona->apellido_materno   = $request->input('apellido_materno');
+        $persona->nombres            = $request->input('nombre');
+        $persona->email              = $request->input('email');
+        $persona->celular            = $request->input('celular');
+        $persona->cedula             = $request->input('cedula');
+        $persona->expedido           = $request->input('expedido');
+
+        $persona->save();
+
+        // creando la oportunidad
+        $oportunidad = new Oportunidad();
+
+        $oportunidad->formulario_id     = $request->input('formulario_id');
+        $oportunidad->campania_id       = $request->input('campania_id');
+        $oportunidad->persona_id        = $persona->id;
         
+        $oportunidad->save();
+
+
+        // guardamos las respustas
         $respuestas  = $request->input('respuestas');
 
         foreach ($respuestas as $key => $r){
@@ -126,6 +298,7 @@ class FormularioController extends Controller
             $respuesta = new Respuesta();
 
             $respuesta->pregunta_id = $key;
+            $respuesta->oportunidad_id = $oportunidad->id;
 
             if(count($r) > 1){
                 
