@@ -6,21 +6,118 @@
 
 @section('css')
 
-    {{-- <link rel="stylesheet" href="{{ asset('assets/js/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/js/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/js/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}"> --}}
 
 @endsection
 
 @section('content')
+
+<!-- Modal nuevo campania -->
+{{-- <div class="modal fade" id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalMessageTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title font-weight-normal" id="">New message to Creative Tim</h6>
+          <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="input-group input-group-outline my-3">
+                <label class="form-label">Recipient</label>
+                <input type="email" class="form-control">
+            </div>
+            <div class="input-group input-group-dynamic">
+                <textarea class="multisteps-form__textarea form-control" rows="5" placeholder="Say a few words." spellcheck="false">
+              </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn bg-gradient-primary">Send message</button>
+        </div>
+      </div>
+    </div>
+</div> --}}
+{{-- end modal nuevo campania --}}
+
+<!-- Modal -->
+<div class="modal fade" id="modaNuevoCampania" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Formulario de campaña</h5>
+          <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="" id="formularioNuevoCampania">
+                @csrf
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group input-group-outline my-3">
+                            <label class="form-label">Nombre de la campaña</label>
+                            <input type="text" name="nombre_campania" id="nombre_campania" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group input-group-static my-3">
+                            <label>Fecha inicio</label>
+                            <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group input-group-static my-3">
+                            <label>Fecha fin</label>
+                            <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="input-group input-group-outline my-3">
+                            <textarea name="descripcion_campania" id="descripcion_campania" cols="5" rows="5" class="form-control" placeholder="Descripcion" required></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn bg-gradient-success" onclick="guarda()">Guardar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Lista de Campañas</h5>
-                <p class="text-sm mb-0">
-                    Listado de todas las campañas recgistrados
-                </p>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="mb-0">Lista de Campañas</h5>
+                        <p class="text-sm mb-0">
+                            Listado de todas las campañas recgistrados
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                {{-- <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#exampleModalMessage">
+                                    Message Modal
+                                </button> --}}
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-success" onclick="abreModal()"><i class="fa fa-plus"></i> Nuevo</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="table-responsive">
                 <div id="tabla-campania">
@@ -67,9 +164,54 @@
 
     }
 
-    function formulario(){
+    function formulario(campania){
         // window.location.href = "{{ url('Campania/formulario') }}";
-        window.location.href = "{{ url('Campania/home') }}";
+        window.location.href = "{{ url('Campania/home') }}/"+campania;
+    }
+
+    function abreModal(){
+
+        $('#modaNuevoCampania').modal('show');
+
+    }
+
+    function guarda(){
+
+        if($('#formularioNuevoCampania')[0].checkValidity()){
+            var datos = $('#formularioNuevoCampania').serialize();
+            $.ajax({
+                url: "{{ url('Campania/guarda') }}",
+                data: datos,
+                type: 'POST',
+                success: function(data) {
+                    let campania = JSON.parse(data);
+                    $('#_fecha_inicio, #_nombre_campania, #_fecha_fin, #_descripcion_campania').text('');
+                    if(campania.success === false){
+                        $.each(campania.errors, function(index, value){
+                            $('#_'+index).text(value);
+                        });    
+                    }else{
+                        Swal.fire({
+                            title: 'Exito!',
+                            text: 'Se guardo los datos con exito',
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        });
+                        setTimeout(function(){
+                            $('#modal-nuevo').modal('hide');
+                        }, 3000);
+                        // window.location.reload("{{ url('Campania/home') }}");
+                        window.location.href = "{{ url('Campania/home')}}"
+                        ajaxListado();
+                    }
+                },
+                error: function(error){
+                }
+            });
+        }else{
+            $('#formularioNuevoCampania')[0].reportValidity()
+        }
+
     }
 
     // document.querySelectorAll(".export").forEach(function(el) {

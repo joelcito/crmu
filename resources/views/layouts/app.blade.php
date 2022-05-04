@@ -299,6 +299,9 @@
 
   {{-- jalasmos a los JQUERY --}}
   <script src="{{ asset('assets/js/plugins/jquery/jquery.min.js') }}"></script>
+
+  {{-- LLAMAMMOS A LOS SWEET ALERTS --}}
+  <script src="{{ asset('assets/js/plugins/sweetalert.min.js') }}"></script>
   
   <script>
     var win = navigator.platform.indexOf('Win') > -1;

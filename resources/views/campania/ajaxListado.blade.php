@@ -13,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
+        {{-- <tr>
             <td>1</td>
             <td>Campaña de medios tradicionales</td>
             <td>15/04/2022</td>
@@ -72,8 +72,8 @@
             <td>
                 <button class="btn btn-info btn-icon" title="Formulario" onclick="formulario()"><i class="fa fa-list"></i></button>
             </td>
-        </tr>
-        {{-- @foreach ($campanias as $ca)
+        </tr> --}}
+        @foreach ($campanias as $ca)
             <tr>
                 <td>{{ $ca->id }}</td>
                 <td>{{ $ca->nombre }}</td>
@@ -89,10 +89,10 @@
                     <span class="badge bg-warning">70%</span>
                 </td>
                 <td>
-                    <button class="btn btn-info btn-icon" title="Formulario" onclick="formulario()"><i class="fa fa-list"></i></button>
+                    <button class="btn btn-info btn-icon" title="Formulario" onclick="formulario('{{ $ca->id }}')"><i class="fa fa-list"></i></button>
                 </td>
             </tr>
-        @endforeach --}}
+        @endforeach
     </tbody>
     <tfoot>
         <tr>

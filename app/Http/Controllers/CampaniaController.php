@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Campania;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CampaniaController extends Controller
 {
@@ -30,18 +31,53 @@ class CampaniaController extends Controller
 
     }
 
+    public function guarda(Request $request){
+
+        if($request->ajax()){
+
+            $validator = Validator::make($request->all(), [
+                'nombre_campania' => 'required',
+                'fecha_inicio' => 'required',
+                'fecha_fin' => 'required',
+                'descripcion_campania' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+
+                return json_encode(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+
+            }else{
+
+                $campania = new Campania();
+
+                $campania->nombre       = $request->input('nombre_campania');
+                $campania->fecha_inicio = $request->input('fecha_inicio');
+                $campania->fecha_fin    = $request->input('fecha_fin');
+                $campania->descripcion  = $request->input('descripcion_campania');
+
+                $campania->save();
+
+                return json_encode(['success' => true]);
+            }
+        }else{
+
+        }
+
+    }
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function home(Request $request)
+    public function home(Request $request, $campania_id)
     {
         
         // $formularios = FormularioCampania::where('campania_id',1)->get();
 
         // return view('campania.home')->with(compact('formularios'));
-        return view('campania.home');
+        return view('campania.home')->with(compact('campania_id'));
     }
 
     /**
