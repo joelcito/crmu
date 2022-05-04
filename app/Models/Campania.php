@@ -25,5 +25,4 @@ class Campania extends Model
         'deleted_at',
     ];
     
-    
 }
