@@ -82,15 +82,15 @@
             </ul>
           </div>
         </li> --}}
-        <li class="nav-item mt-3">
+        <li class="nav-item mt-3">       
           <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder text-white">CAMPAÑA</h6>
         </li>
         <li class="nav-item">
-          <a data-bs-toggle="collapse" href="#pagesExamples" class="nav-link text-white " aria-controls="pagesExamples" role="button" aria-expanded="false">
+          <a data-bs-toggle="collapse" href="#pagesExamples" class="nav-link text-white  {{ (Request::is('Campania/Listado') || Request::is('Persona/listado'))? 'active' : '' }}" aria-controls="pagesExamples" role="button" aria-expanded="false">
             <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">image</i>
             <span class="nav-link-text ms-2 ps-1">Campaña</span>
           </a>
-          <div class="collapse " id="pagesExamples">
+          <div class="collapse  {{ (Request::is('Campania/Listado') || Request::is('Persona/listado'))? 'show' : '' }}" id="pagesExamples">
             <ul class="nav">
               {{-- <li class="nav-item ">
                 <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false" href="#profileExample">
@@ -226,26 +226,26 @@
                   </ul>
                 </div>
               </li> --}}
-              <li class="nav-item ">
-                <a class="nav-link text-white" href="{{ url('Campania/Listado') }}">
+              <li class="nav-item {{ (Request::is('Campania/Listado'))? 'active' : '' }}">
+                <a class="nav-link text-white  {{ (Request::is('Campania/Listado'))? 'active' : '' }}" href="{{ url('Campania/Listado') }}">
                   <span class="sidenav-mini-icon"> P </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Listado de Campañas</span>
                 </a>
               </li>
-              <li class="nav-item ">
-                <a class="nav-link text-white " href="../../pages/pages/rtl-page.html">
+              <li class="nav-item {{ (Request::is('Persona/listado'))? 'active' : '' }}">
+                <a class="nav-link text-white  {{ (Request::is('Persona/listado'))? 'active' : '' }}" href="{{ url('Persona/listado') }}">
                   <span class="sidenav-mini-icon"> R </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Listado de Clientes </span>
                 </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link text-white " href="../../pages/pages/widgets.html">
+                <a class="nav-link text-white " href="#">
                   <span class="sidenav-mini-icon"> W </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Listado de Formularios </span>
                 </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link text-white " href="../../pages/pages/charts.html">
+                <a class="nav-link text-white " href="#">
                   <span class="sidenav-mini-icon"> C </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Tipo Campañas </span>
                 </a>
@@ -266,14 +266,14 @@
           </div>
         </li>
         <li class="nav-item">
-          <a data-bs-toggle="collapse" href="#applicationsExamples" class="nav-link text-white " aria-controls="applicationsExamples" role="button" aria-expanded="false">
+          <a data-bs-toggle="collapse" href="#applicationsExamples" class="nav-link text-white {{ (Request::is('Vendedor/listado'))? 'active' : '' }}" aria-controls="applicationsExamples" role="button" aria-expanded="false">
             <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">apps</i>
             <span class="nav-link-text ms-2 ps-1">Vendedores</span>
           </a>
-          <div class="collapse " id="applicationsExamples">
-            <ul class="nav ">
-              <li class="nav-item ">
-                <a class="nav-link text-white " href="../../pages/applications/crm.html">
+          <div class="collapse {{ (Request::is('Vendedor/listado'))? 'show' : '' }}" id="applicationsExamples">
+            <ul class="nav">
+              <li class="nav-item active">
+                <a class="nav-link text-white active" href="{{ url('Vendedor/listado') }}">
                   <span class="sidenav-mini-icon"> C </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Listado de vendedores </span>
                 </a>
@@ -319,13 +319,13 @@
           <div class="collapse " id="ecommerceExamples">
             <ul class="nav ">
               <li class="nav-item ">
-                <a class="nav-link text-white " href="../../pages/ecommerce/referral.html">
+                <a class="nav-link text-white " href="#">
                   <span class="sidenav-mini-icon"> R </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Medio de Seguimientos </span>
                 </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link text-white " href="../../pages/ecommerce/referral.html">
+                <a class="nav-link text-white " href="#">
                   <span class="sidenav-mini-icon"> R </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Medio Publicitario </span>
                 </a>
@@ -338,13 +338,13 @@
                 <div class="collapse " id="ordersExample">
                   <ul class="nav nav-sm flex-column">
                     <li class="nav-item">
-                      <a class="nav-link text-white " href="../../pages/ecommerce/orders/list.html">
+                      <a class="nav-link text-white " href="#">
                         <span class="sidenav-mini-icon"> O </span>
                         <span class="sidenav-normal  ms-2  ps-1"> Estado seguimiento </span>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link text-white " href="../../pages/ecommerce/orders/details.html">
+                      <a class="nav-link text-white " href="#">
                         <span class="sidenav-mini-icon"> O </span>
                         <span class="sidenav-normal  ms-2  ps-1"> Estado Final </span>
                       </a>
@@ -369,9 +369,16 @@
           <div class="collapse " id="authExamples">
             <ul class="nav ">
               <li class="nav-item ">
-                <a class="nav-link text-white " href="../../pages/ecommerce/referral.html">
+                <a class="nav-link text-white " href="#">
                   <span class="sidenav-mini-icon"> R </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Mis Asignaciones </span>
+                </a>
+              </li>
+
+              <li class="nav-item ">
+                <a class="nav-link text-white " href="{{ url('Asignacion/tareas') }}">
+                  <span class="sidenav-mini-icon"> T </span>
+                  <span class="sidenav-normal  ms-2  ps-1"> Tareas </span>
                 </a>
               </li>
             </ul>

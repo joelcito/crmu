@@ -7,16 +7,16 @@
         <div class="card-body p-3 position-relative">
             <div class="row">
             <div class="col-7 text-start">
-                <p class="text-sm mb-1 text-capitalize font-weight-bold">Sales</p>
+                <p class="text-sm mb-1 text-capitalize font-weight-bold">Presupuesto invertido</p>
                 <h5 class="font-weight-bolder mb-0">
                 $230,220
                 </h5>
-                <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">+55% <span class="font-weight-normal text-secondary">since last month</span></span>
+                <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">+55% <span class="font-weight-normal text-secondary">desde el mes pasado</span></span>
             </div>
             <div class="col-5">
                 <div class="dropdown text-end">
                 <a href="javascript:;" class="cursor-pointer text-secondary" id="dropdownUsers1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="text-xs text-secondary">6 May - 7 May</span>
+                    <span class="text-xs text-secondary">4 Abr - 4 May</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end px-2 py-3" aria-labelledby="dropdownUsers1">
                     <li><a class="dropdown-item border-radius-md" href="javascript:;">Last 7 days</a></li>
@@ -34,16 +34,16 @@
         <div class="card-body p-3 position-relative">
             <div class="row">
             <div class="col-7 text-start">
-                <p class="text-sm mb-1 text-capitalize font-weight-bold">Customers</p>
+                <p class="text-sm mb-1 text-capitalize font-weight-bold">Clientes</p>
                 <h5 class="font-weight-bolder mb-0">
                 3.200
                 </h5>
-                <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">+12% <span class="font-weight-normal text-secondary">since last month</span></span>
+                <span class="text-sm text-end text-success font-weight-bolder mt-auto mb-0">+12% <span class="font-weight-normal text-secondary">desde el mes pasado</span></span>
             </div>
             <div class="col-5">
                 <div class="dropdown text-end">
                 <a href="javascript:;" class="cursor-pointer text-secondary" id="dropdownUsers2" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="text-xs text-secondary">6 May - 7 May</span>
+                    <span class="text-xs text-secondary">4 Abr - 4 May</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end px-2 py-3" aria-labelledby="dropdownUsers2">
                     <li><a class="dropdown-item border-radius-md" href="javascript:;">Last 7 days</a></li>
@@ -61,16 +61,16 @@
         <div class="card-body p-3 position-relative">
             <div class="row">
             <div class="col-7 text-start">
-                <p class="text-sm mb-1 text-capitalize font-weight-bold">Avg. Revenue</p>
+                <p class="text-sm mb-1 text-capitalize font-weight-bold">Promedio Ingresos</p>
                 <h5 class="font-weight-bolder mb-0">
                 $1.200
                 </h5>
-                <span class="font-weight-normal text-secondary text-sm"><span class="font-weight-bolder text-success">+$213</span> since last month</span>
+                <span class="font-weight-normal text-secondary text-sm"><span class="font-weight-bolder text-success">+$213</span>desde el mes pasado</span>
             </div>
             <div class="col-5">
                 <div class="dropdown text-end">
                 <a href="javascript:;" class="cursor-pointer text-secondary" id="dropdownUsers3" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="text-xs text-secondary">6 May - 7 May</span>
+                    <span class="text-xs text-secondary">4 Abr - 4 May</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end px-2 py-3" aria-labelledby="dropdownUsers3">
                     <li><a class="dropdown-item border-radius-md" href="javascript:;">Last 7 days</a></li>
@@ -89,7 +89,7 @@
         <div class="card h-100">
         <div class="card-header pb-0 p-3">
             <div class="d-flex justify-content-between">
-            <h6 class="mb-0">Channels</h6>
+            <h6 class="mb-0">Canales de Publicacion</h6>
             <button type="button" class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-original-title="See traffic channels">
                 <i class="material-icons text-sm">priority_high</i>
             </button>
@@ -109,15 +109,15 @@
                 </span>
                 <span class="badge badge-md badge-dot me-4 d-block text-start">
                 <i class="bg-primary"></i>
-                <span class="text-dark text-xs">Direct</span>
+                <span class="text-dark text-xs">Instragam</span>
                 </span>
                 <span class="badge badge-md badge-dot me-4 d-block text-start">
                 <i class="bg-dark"></i>
-                <span class="text-dark text-xs">Organic</span>
+                <span class="text-dark text-xs">Twiter</span>
                 </span>
                 <span class="badge badge-md badge-dot me-4 d-block text-start">
                 <i class="bg-secondary"></i>
-                <span class="text-dark text-xs">Referral</span>
+                <span class="text-dark text-xs">Linkedln</span>
                 </span>
             </div>
             </div>
@@ -125,11 +125,11 @@
         <div class="card-footer pt-0 pb-0 p-3 d-flex align-items-center">
             <div class="w-60">
             <p class="text-sm">
-                More than <b>1,200,000</b> sales are made using referral marketing, and <b>700,000</b> are from social media.
+                Mas de <b>1,000</b> ventas hasta la fecha <b>800</b>, por las redes sociales.
             </p>
             </div>
             <div class="w-40 text-end">
-            <a class="btn bg-light mb-0 text-end" href="javascript:;">Read more</a>
+            <a class="btn bg-light mb-0 text-end" href="javascript:;">Leer Mas</a>
             </div>
         </div>
         </div>
@@ -138,7 +138,7 @@
         <div class="card">
         <div class="card-header pb-0 p-3">
             <div class="d-flex justify-content-between">
-            <h6 class="mb-0">Revenue</h6>
+            <h6 class="mb-0">Ingresos</h6>
             <button type="button" class="btn btn-icon-only btn-rounded btn-outline-secondary mb-0 ms-2 btn-sm d-flex align-items-center justify-content-center" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="See which ads perform better">
                 <i class="material-icons text-sm">priority_high</i>
             </button>
@@ -167,7 +167,7 @@
         <div class="card h-100">
         <div class="card-header pb-0 p-3">
             <div class="d-flex justify-content-between">
-            <h6 class="mb-0">Sales by Age</h6>
+            <h6 class="mb-0">Ventas por edad</h6>
             </div>
         </div>
         <div class="card-body p-3">
@@ -181,7 +181,7 @@
         <div class="card">
         <div class="card-header pb-0 p-3">
             <div class="d-flex justify-content-between">
-            <h6 class="mb-0">Sales by Country</h6>
+            <h6 class="mb-0">Ventas por Departamento</h6>
             </div>
         </div>
         <div class="card-body p-3">
@@ -190,18 +190,18 @@
                 <div class="row align-items-center">
                 <div class="col-auto">
                     <!-- Country flag -->
-                    <img src="{{ asset('assets/img/icons/flags/US.png') }}" alt="Country flag">
+                    <img src="{{ asset('assets/img/icons/flags/lp.png') }}" width="40" alt="Country flag">
                 </div>
                 <div class="col">
-                    <p class="text-xs font-weight-bold mb-0">Country:</p>
-                    <h6 class="text-sm font-weight-normal mb-0">United States</h6>
+                    <p class="text-xs font-weight-bold mb-0">Departamento:</p>
+                    <h6 class="text-sm font-weight-normal mb-0">La Paz</h6>
                 </div>
                 <div class="col text-center">
-                    <p class="text-xs font-weight-bold mb-0">Sales:</p>
+                    <p class="text-xs font-weight-bold mb-0">Ventas:</p>
                     <h6 class="text-sm font-weight-normal mb-0">2500</h6>
                 </div>
                 <div class="col text-center">
-                    <p class="text-xs font-weight-bold mb-0">Bounce:</p>
+                    <p class="text-xs font-weight-bold mb-0">Espera:</p>
                     <h6 class="text-sm font-weight-normal mb-0">29.9%</h6>
                 </div>
                 </div>
@@ -211,24 +211,24 @@
                 <div class="row align-items-center">
                 <div class="col-auto">
                     <!-- Country flag -->
-                    <img src="{{ asset('assets/img/icons/flags/DE.png') }}" alt="Country flag">
+                    <img src="{{ asset('assets/img/icons/flags/sc.jpg') }}" width="40" alt="Country flag">
                 </div>
                 <div class="col">
-                    <p class="text-xs font-weight-bold mb-0">Country:</p>
-                    <h6 class="text-sm font-weight-normal mb-0">Germany</h6>
+                    <p class="text-xs font-weight-bold mb-0">Departamento:</p>
+                    <h6 class="text-sm font-weight-normal mb-0">Santa Cruz</h6>
                 </div>
                 <div class="col text-center">
-                    <p class="text-xs font-weight-bold mb-0">Sales:</p>
+                    <p class="text-xs font-weight-bold mb-0">Ventas:</p>
                     <h6 class="text-sm font-weight-normal mb-0">3.900</h6>
                 </div>
                 <div class="col text-center">
-                    <p class="text-xs font-weight-bold mb-0">Bounce:</p>
+                    <p class="text-xs font-weight-bold mb-0">Espera:</p>
                     <h6 class="text-sm font-weight-normal mb-0">40.22%</h6>
                 </div>
                 </div>
                 <hr class="horizontal dark mt-3 mb-1">
             </li>
-            <li class="list-group-item px-0 border-0">
+            {{-- <li class="list-group-item px-0 border-0">
                 <div class="row align-items-center">
                 <div class="col-auto">
                     <!-- Country flag -->
@@ -248,8 +248,8 @@
                 </div>
                 </div>
                 <hr class="horizontal dark mt-3 mb-1">
-            </li>
-            <li class="list-group-item px-0 border-0">
+            </li> --}}
+            {{-- <li class="list-group-item px-0 border-0">
                 <div class="row align-items-center">
                 <div class="col-auto">
                     <!-- Country flag -->
@@ -269,8 +269,8 @@
                 </div>
                 </div>
                 <hr class="horizontal dark mt-3 mb-1">
-            </li>
-            <li class="list-group-item px-0 border-0">
+            </li> --}}
+            {{-- <li class="list-group-item px-0 border-0">
                 <div class="row align-items-center">
                 <div class="col-auto">
                     <!-- Country flag -->
@@ -289,7 +289,7 @@
                     <h6 class="text-sm font-weight-normal mb-0">56.83%</h6>
                 </div>
                 </div>
-            </li>
+            </li> --}}
             </ul>
         </div>
         </div>
@@ -299,17 +299,17 @@
     <div class="col-12">
         <div class="card mb-4">
         <div class="card-header pb-0">
-            <h6>Top Selling Products</h6>
+            <h6>Carreras mas solicitados</h6>
         </div>
         <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
                 <thead>
                 <tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Product</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Value</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ads Spent</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Refunds</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Carrera</th>
+                    {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Value</th> --}}
+                    {{-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ads Spent</th> --}}
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Estado</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -317,20 +317,20 @@
                     <td>
                     <div class="d-flex px-3 py-1">
                         <div>
-                        <img src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/blue-shoe.jpg" class="avatar me-3" alt="image">
+                        <img src="{{ url('assets/img/pople/gastronomia-y-hoteleria.jpg') }}" class="avatar me-3" alt="image">
                         </div>
                         <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">Nike v22 Running</h6>
-                        <p class="text-sm font-weight-normal text-secondary mb-0"><span class="text-success">8.232</span> orders</p>
+                        <h6 class="mb-0 text-sm">GASTRONOMÍA Y HOTELERÍA</h6>
+                        <p class="text-sm font-weight-normal text-secondary mb-0"><span class="text-success">8.232</span> Personas</p>
                         </div>
                     </div>
                     </td>
-                    <td>
+                    {{-- <td>
                     <p class="text-sm font-weight-normal mb-0">$130.992</p>
                     </td>
                     <td class="align-middle text-center text-sm">
                     <p class="text-sm font-weight-normal mb-0">$9.500</p>
-                    </td>
+                    </td> --}}
                     <td class="align-middle text-end">
                     <div class="d-flex px-3 py-1 justify-content-center align-items-center">
                         <p class="text-sm font-weight-normal mb-0">13</p>
@@ -342,20 +342,20 @@
                     <td>
                     <div class="d-flex px-3 py-1">
                         <div>
-                        <img src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/black-mug.jpg" class="avatar me-3" alt="image">
+                        <img src="{{ url('assets/img/pople/derecho.jpg') }}" class="avatar me-3" alt="image">
                         </div>
                         <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">Business Kit (Mug + Notebook)</h6>
+                        <h6 class="mb-0 text-sm">DERECHO</h6>
                         <p class="text-sm font-weight-normal text-secondary mb-0"><span class="text-success">12.821</span> orders</p>
                         </div>
                     </div>
                     </td>
-                    <td>
+                    {{-- <td>
                     <p class="text-sm font-weight-normal mb-0">$80.250</p>
                     </td>
                     <td class="align-middle text-center text-sm">
                     <p class="text-sm font-weight-normal mb-0">$4.200</p>
-                    </td>
+                    </td> --}}
                     <td class="align-middle text-end">
                     <div class="d-flex px-3 py-1 justify-content-center align-items-center">
                         <p class="text-sm font-weight-normal mb-0">40</p>
@@ -367,20 +367,20 @@
                     <td>
                     <div class="d-flex px-3 py-1">
                         <div>
-                        <img src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/black-chair.jpg" class="avatar me-3" alt="image">
+                        <img src="{{ url('assets/img/pople/educacion-parvularia.jpg') }}" class="avatar me-3" alt="image">
                         </div>
                         <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">Black Chair</h6>
+                        <h6 class="mb-0 text-sm">EDUCACIÓN PARVULARIA</h6>
                         <p class="text-sm font-weight-normal text-secondary mb-0"><span class="text-success">2.421</span> orders</p>
                         </div>
                     </div>
                     </td>
-                    <td>
+                    {{-- <td>
                     <p class="text-sm font-weight-normal mb-0">$40.600</p>
                     </td>
                     <td class="align-middle text-center text-sm">
                     <p class="text-sm font-weight-normal mb-0">$9.430</p>
-                    </td>
+                    </td> --}}
                     <td class="align-middle text-end">
                     <div class="d-flex px-3 py-1 justify-content-center align-items-center">
                         <p class="text-sm font-weight-normal mb-0">54</p>
@@ -392,20 +392,20 @@
                     <td>
                     <div class="d-flex px-3 py-1">
                         <div>
-                        <img src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/bang-sound.jpg" class="avatar me-3" alt="image">
+                        <img src="{{ url('assets/img/pople/ingenieria-comercial.jpg') }}" class="avatar me-3" alt="image">
                         </div>
                         <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">Wireless Charger</h6>
+                        <h6 class="mb-0 text-sm">INGENIERÍA COMERCIAL</h6>
                         <p class="text-sm font-weight-normal text-secondary mb-0"><span class="text-success">5.921</span> orders</p>
                         </div>
                     </div>
                     </td>
-                    <td>
+                    {{-- <td>
                     <p class="text-sm font-weight-normal mb-0">$91.300</p>
                     </td>
                     <td class="align-middle text-center text-sm">
                     <p class="text-sm font-weight-normal mb-0">$7.364</p>
-                    </td>
+                    </td> --}}
                     <td class="align-middle text-end">
                     <div class="d-flex px-3 py-1 justify-content-center align-items-center">
                         <p class="text-sm font-weight-normal mb-0">5</p>
@@ -417,20 +417,20 @@
                     <td>
                     <div class="d-flex px-3 py-1">
                         <div>
-                        <img src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/ecommerce/photo-tools.jpg" class="avatar me-3" alt="image">
+                        <img src="{{ url('assets/img/pople/marketing.jpg') }}" class="avatar me-3" alt="image">
                         </div>
                         <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">Mountain Trip Kit (Camera + Backpack)</h6>
+                        <h6 class="mb-0 text-sm">MARKETING</h6>
                         <p class="text-sm font-weight-normal text-secondary mb-0"><span class="text-success">921</span> orders</p>
                         </div>
                     </div>
                     </td>
-                    <td>
+                    {{-- <td>
                     <p class="text-sm font-weight-normal mb-0">$140.925</p>
                     </td>
                     <td class="align-middle text-center text-sm">
                     <p class="text-sm font-weight-normal mb-0">$20.531</p>
-                    </td>
+                    </td> --}}
                     <td class="align-middle text-end">
                     <div class="d-flex px-3 py-1 justify-content-center align-items-center">
                         <p class="text-sm font-weight-normal mb-0">121</p>
@@ -456,7 +456,7 @@
     new Chart(ctx1, {
       type: "line",
       data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        labels: ["Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
         datasets: [{
             label: "Facebook Ads",
             tension: 0,
@@ -612,7 +612,7 @@
       data: {
         labels: ['16-20', '21-25', '26-30', '31-36', '36-42', '42-50', '50+'],
         datasets: [{
-          label: "Sales by age",
+          label: "Ventas por edad",
           weight: 5,
           borderWidth: 0,
           borderRadius: 4,

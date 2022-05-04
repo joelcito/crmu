@@ -206,11 +206,8 @@
                             <div class="border"></div>
                             <h1>
                               <div>
-                                  {{-- <input type="text" id="text" name="nombre_formulario" id="nombre_formulario" class="boredes-cajas" placeholder="TITULO DEL FORMULARIO"/> --}}
-                                  {{-- @dd($formulario) --}}
                                   <h1>{{ $formulario->nombre }}</h1>
                                   <p style="padding: 2px"></p>
-                                  {{-- <textarea class="boredes-cajas" name="descripcion_formulario" id="descripcion_formulario" cols="30" rows="2" placeholder="DESCRIPCION DEL FORMULARIO" ></textarea> --}}
                                   <hr>
                                   <h6>{{ $formulario->descripcion }}</h6>
                               </div>
@@ -219,8 +216,8 @@
                       </div>
                     </div>
 
-                    <input type="text" value="{{ $campania_id }}" name="campania_id">
-                    <input type="text" value="{{ $formulario->id }}" name="formulario_id">
+                    <input type="hidden" value="{{ $campania_id }}" name="campania_id">
+                    <input type="hidden" value="{{ $formulario->id }}" name="formulario_id">
                     <br>
                     <div class="row">
                         <div class="col-md-4">

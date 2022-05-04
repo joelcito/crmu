@@ -11,6 +11,7 @@ class Oportunidad extends Model
     use HasFactory;
 
     use SoftDeletes;
+
     protected $table = 'oportunidades';
 
     protected $fillable = [
@@ -24,4 +25,22 @@ class Oportunidad extends Model
         'estado',
         'deleted_at',
     ];
+
+    public function persona(){
+
+        return $this->belongsTo('App\Models\persona', 'persona_id');
+
+    }
+
+    public function formulario(){
+
+        return $this->belongsTo('App\Models\Formulario', 'formulario_id');
+
+    }
+
+    public function campania(){
+
+        return $this->belongsTo('App\Models\Campania', 'campania_id');
+        
+    }
 }

@@ -266,8 +266,12 @@ if (document.querySelector('.fixed-plugin')) {
 
 //Set Sidebar Color
 function sidebarColor(a) {
+
   var parent = a.parentElement.children;
   var color = a.getAttribute("data-color");
+  // var color = "success";
+
+  console.log(color);
 
   for (var i = 0; i < parent.length; i++) {
     parent[i].classList.remove('active');

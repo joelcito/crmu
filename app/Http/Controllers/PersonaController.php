@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Oportunidad;
 use App\Models\Persona;
 use Illuminate\Http\Request;
 
 class PersonaController extends Controller
 {
+
+    public function listado(Request $request){
+
+        // $clientes = Persona::all();
+        $clientes = Oportunidad::all();
+
+        return view('persona.listado')->with(compact('clientes'));
+        
+    }
     /**
      * Display a listing of the resource.
      *

@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class AsignacionController extends Controller
 {
+
+    public function tareas(Request $request){
+
+        return view('asignacion.tarea');
+        
+    }
     /**
      * Display a listing of the resource.
      *

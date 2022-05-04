@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Campania;
 use Illuminate\Http\Request;
+use App\Models\FormularioCampania;
 use Illuminate\Support\Facades\Validator;
 
 class CampaniaController extends Controller
@@ -57,7 +58,7 @@ class CampaniaController extends Controller
 
                 $campania->save();
 
-                return json_encode(['success' => true]);
+                return json_encode(['success' => true, 'id' => $campania->id]);
             }
         }else{
 
@@ -74,10 +75,10 @@ class CampaniaController extends Controller
     public function home(Request $request, $campania_id)
     {
         
-        // $formularios = FormularioCampania::where('campania_id',1)->get();
+        $formularios = FormularioCampania::where('campania_id',$campania_id)->get();
 
         // return view('campania.home')->with(compact('formularios'));
-        return view('campania.home')->with(compact('campania_id'));
+        return view('campania.home')->with(compact('campania_id', 'formularios'));
     }
 
     /**

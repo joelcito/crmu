@@ -34,7 +34,9 @@ Route::post('Formulario/guardarRespuestaFormulario', 'FormularioController@guard
 
 
 // VENDEDORES
-Route::get('Vendedor/vendedores', 'VendedorController@vendedores');
+Route::get('Vendedor/listado', 'VendedorController@listado');
+Route::post('Vendedor/guarda', 'VendedorController@guarda');
+Route::post('Vendedor/ajaxListado', 'VendedorController@ajaxListado');
 
 // PERSONA
 Route::get('Persona/listado', 'PersonaController@listado');
@@ -58,3 +60,4 @@ Route::get('EstadoFinal/listado', 'EstadoFinalController@listado');
 
 // ASIGNACIONES
 Route::get('Asignacion/listado', 'AsignacionController@listado');
+Route::get('Asignacion/tareas', 'AsignacionController@tareas');

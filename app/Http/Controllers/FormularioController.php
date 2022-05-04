@@ -26,8 +26,6 @@ class FormularioController extends Controller
 
     public function guardaFormulario(Request $request){
       
-        // dd($request->all());
-
         $formulario = new Formulario();
 
         // $formulario->Creador_id         = Auth()::user()->id;
@@ -51,7 +49,6 @@ class FormularioController extends Controller
             $pregunta->componente_id    = $componente->id;
             $pregunta->estado           = 0;
 
-            // echo $co." ".$preguntas[$key]."<br>";
 
             $pregunta->save();
 
@@ -59,11 +56,7 @@ class FormularioController extends Controller
 
                 $multiple = $co."_".($key+1);
                 
-                // echo strval($multiple);
-
                 $valoresMultiples = $request->input("$multiple");
-
-                // dd($valoresMultiples);
 
                 foreach($valoresMultiples as $m){
 
@@ -199,8 +192,6 @@ class FormularioController extends Controller
         }
 
         $pregunta->save();
-        
-
 
         $formularioCampania = new FormularioCampania();
 
@@ -209,11 +200,7 @@ class FormularioController extends Controller
 
         $formularioCampania->save();
 
-        // dd($request->all());
-
-        // return view("campania.home");
-
-        redirect('Campania/home');
+        return redirect('Campania/home/'.$formularioCampania->campania_id);
 
     }
 
@@ -331,7 +318,7 @@ class FormularioController extends Controller
 
         }
 
-        dd($request->all());
+        // dd($request->all());
 
     }
     /**
