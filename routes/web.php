@@ -35,8 +35,8 @@ Route::post('Formulario/guardarRespuestaFormulario', 'FormularioController@guard
 
 // VENDEDORES
 Route::get('Vendedor/listado', 'VendedorController@listado');
-Route::post('Vendedor/guarda', 'VendedorController@guarda');
 Route::post('Vendedor/ajaxListado', 'VendedorController@ajaxListado');
+Route::post('Vendedor/guarda', 'VendedorController@guarda');
 
 // PERSONA
 Route::get('Persona/listado', 'PersonaController@listado');
@@ -51,6 +51,8 @@ Route::get('MedioPublicitario/listado', 'MedioPublicitarioController@listado');
 
 // TIPOS DE CAMPANIA
 Route::get('TipoCampania/listado', 'TipoCampaniaController@listado');
+Route::post('TipoCampania/guarda', 'TipoCampaniaController@guarda');
+Route::post('TipoCampania/ajaxListado', 'TipoCampaniaController@ajaxListado');
 
 // ESTADO DE SEGUIMIENTO
 Route::get('EstadoSeguimiento/listado', 'EstadoSeguimientoController@listado');
@@ -60,4 +62,3 @@ Route::get('EstadoFinal/listado', 'EstadoFinalController@listado');
 
 // ASIGNACIONES
 Route::get('Asignacion/listado', 'AsignacionController@listado');
-Route::get('Asignacion/tareas', 'AsignacionController@tareas');

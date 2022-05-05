@@ -4,9 +4,57 @@ namespace App\Http\Controllers;
 
 use App\Models\TipoCampania;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TipoCampaniaController extends Controller
 {
+
+    public function listado(Request $request){
+
+        $tiposCampanias = TipoCampania::all();
+
+        return view('tipo_campania.listado')->with(compact('tiposCampanias'));
+
+    }
+
+    public function guarda(Request $request){
+
+        if($request->ajax()){
+
+            $validator = Validator::make($request->all(), [
+
+                'nombre' => 'required',
+                'descripcion' => 'required'
+
+            ]);
+
+            if ($validator->fails()) {
+
+                return json_encode(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+
+            }else{
+
+                $tipoCampania = new TipoCampania();
+
+                $tipoCampania->nombre        = $request->input('nombre');
+                $tipoCampania->descripcion   = $request->input('descripcion');
+
+                $tipoCampania->save();
+
+                return json_encode(['success' => true]);
+            }
+        }else{
+
+        }
+
+    }
+
+    public function ajaxListado(Request $request){
+
+        $tiposCampanias = TipoCampania::all();
+
+        return view('tipo_campania.ajaxListado')->with(compact('tiposCampanias'));
+    }
     /**
      * Display a listing of the resource.
      *

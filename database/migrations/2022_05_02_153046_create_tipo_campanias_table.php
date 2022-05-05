@@ -23,6 +23,8 @@ class CreateTipoCampaniasTable extends Migration
             $table->foreign('eliminador_id')->references('id')->on('users');
             $table->unsignedBigInteger('campania_id')->nullable();
             $table->foreign('campania_id')->references('id')->on('campanias');
+            $table->string('nombre')->nullable();
+            $table->text('descripcion')->nullable();
             $table->string('estado')->nullable();
             $table->datetime('deleted_at')->nullable();
             $table->timestamps();

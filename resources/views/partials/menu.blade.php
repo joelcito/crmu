@@ -245,7 +245,7 @@
                 </a>
               </li>
               <li class="nav-item ">
-                <a class="nav-link text-white " href="#">
+                <a class="nav-link text-white " href="{{ url('TipoCampania/listado') }}">
                   <span class="sidenav-mini-icon"> C </span>
                   <span class="sidenav-normal  ms-2  ps-1"> Tipo Campañas </span>
                 </a>
