@@ -6,7 +6,49 @@
 
 @section('content')
 
-<!-- Modal -->
+<!-- Modal ASIGANACION -->
+<div class="modal fade" id="modalAsignacionCampania" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Asignacionar al Vendedor <span class="text-success" id="CampVendedor"></span></h5>
+          <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="" id="formularioasignarCampaniaVendedor">
+                <input type="hidden" name="campania_id" id="campania_id">
+                <input type="hidden" name="vendedor_id" id="vendedor_id">
+                @csrf
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="input-group input-group-outline my-3">
+                            <label class="form-label">Buscar por Nombre de Campania</label>
+                            <input type="text" onclick="habilita()" name="busca_campania" id="busca_campania" class="form-control" required>
+                        </div>                       
+                    </div>
+                    <div class="col-md-6">
+                        <div id="select-formularios">
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div id="table-campanias">
+
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn bg-gradient-success" onclick="asignarCampaniaVendedor()">Asignar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<!-- Modal NUEVO VENDEDOR -->
 <div class="modal fade" id="modaNuevoVendedor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">
@@ -151,12 +193,36 @@
 
         ajaxListado();
 
-    });
+        // $('.holas_pruebn').select2({
+        //     tags: true
+        // });
 
-    // const dataTableSearch = new simpleDatatables.DataTable("#datatable-search", {
-    //     searchable: true,
-    //     fixedHeight: true
-    // });
+
+        
+        $("#busca_campania").on('keyup', function(){
+
+            console.log($('#busca_campania').val());
+            var campania = $('#busca_campania').val();
+
+            $.ajax({
+                url: "{{ url('Vendedor/ajaxBuscaCampania') }}",
+                data: {
+                    campania:campania
+                },
+                type: 'POST',
+                success: function(data) {
+
+                    $('#table-campanias').html(data);
+
+                },
+                error: function(error){
+
+                }
+            });
+
+        }).keyup();
+
+    });
 
     function abreModalNuevoVendedor(){
 
@@ -223,6 +289,85 @@
             }
         });
     }
+
+    function asignarCampania(vendedor, nombre){
+
+        $('#CampVendedor').text(nombre);
+        $('#vendedor_id').val(vendedor);
+
+        $('#modalAsignacionCampania').modal('show');
+        // console.log(vendedor);
+        // $.ajax({
+        //     url: "{{ url('Vendedor/asiganaCampania') }}",
+        //     data: {
+        //         vendedor: vendedor
+        //     },
+        //     type: 'POST',
+        //     success: function(data) {
+
+        //         $('#tabla-vendedores').html(data);
+
+        //     },
+        //     error: function(error){
+
+        //     }
+        // });
+    }
+
+    function muestraFormularios(campania){
+
+        $('#campania_id').val(campania);
+
+         $.ajax({
+            url: "{{ url('Vendedor/muestraFormularios') }}",
+            data: {
+                campania: campania
+            },
+            type: 'POST',
+            success: function(data) {
+
+                $('#select-formularios').html(data);
+
+                $('#table-campanias').toggle('show');
+
+            },
+            error: function(error){
+
+            }
+        });
+    }
+
+    function asignarCampaniaVendedor(){
+
+        if($('#formularioasignarCampaniaVendedor')[0].checkValidity()){
+
+            var datos = $('#formularioasignarCampaniaVendedor').serialize();
+        
+            $.ajax({
+                url: "{{ url('Vendedor/asignarCampaniaVendedor') }}",
+                data: datos,
+                type: 'POST',
+                success: function(data) {
+
+                    $('#select-formularios').html(data)
+
+                },
+                error: function(error){
+
+                }
+            });
+        }else{
+
+            $('#formularioasignarCampaniaVendedor')[0].reportValidity()
+
+        }
+
+    }
+
+    function habilita(){
+        $("#table-campanias").css("display", "block");
+    }
+
     
 </script>   
 

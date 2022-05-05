@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Campania;
+use App\Models\Vendedor;
+use App\Models\Asignacion;
+use App\Models\Oportunidad;
 use Illuminate\Http\Request;
 use App\Models\FormularioCampania;
 use Illuminate\Support\Facades\Validator;
@@ -77,8 +80,83 @@ class CampaniaController extends Controller
         
         $formularios = FormularioCampania::where('campania_id',$campania_id)->get();
 
+        $oportunidades = Oportunidad::where('campania_id',$campania_id)->get();
+
+        $vendedores = Vendedor::select('vendedores.id','vendedores.nombres', 'vendedores.apellido_paterno', 'vendedores.apellido_materno')
+                                ->join('asignaciones', 'vendedores.id', '=', 'asignaciones.vendedor_id')
+                                ->join('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
+                                ->where('oportunidades.campania_id',$campania_id)
+                                ->groupBy('vendedores.id')
+                                ->get();
+
         // return view('campania.home')->with(compact('formularios'));
-        return view('campania.home')->with(compact('campania_id', 'formularios'));
+        return view('campania.home')->with(compact('campania_id', 'formularios', 'oportunidades', 'vendedores'));
+    }
+
+    public function ajaxBuscaVendedor(Request $request){
+        // dd($request->all());
+
+        if($request->input('vendedor')){
+
+            $queryVendedor = Vendedor::query();
+
+            if($request->filled('vendedor')){
+
+                $vendedor = $request->input('vendedor');
+                $queryVendedor->Orwhere('nombres', 'like', "%$vendedor%");
+                $queryVendedor->Orwhere('apellido_paterno', 'like', "%$vendedor%");
+                $queryVendedor->Orwhere('apellido_materno', 'like', "%$vendedor%");
+
+                $queryVendedor->limit(8);
+            }
+
+            $vendedores = $queryVendedor->get();
+            
+            return view('campania.ajaxBuscaVendedor')->with(compact('vendedores'));
+
+        }
+    }
+
+    public function asignacionVendedorCampania(Request $request){
+
+        $asignacion = new Asignacion();
+
+        $asignacion->oportunidad_id   = $request->input('oportunidad');
+        $asignacion->vendedor_id      = $request->input('vendedor');
+        $asignacion->fecha_asignacion = date('Y-m-d H:i:s');
+
+        $asignacion->save();
+
+    }
+
+    public function ajaxListadoOportunidades(Request $request){
+
+        $campania_id = $request->input('campania');
+
+        $oportunidades = Asignacion::select('*')
+                                    ->rightJoin('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
+                                    ->rightJoin('personas', 'personas.id', '=', 'oportunidades.persona_id')
+                                    ->where('oportunidades.campania_id', $campania_id)
+                                    ->whereNull('asignaciones.vendedor_id')
+                                    ->get();
+
+        
+        return view('campania.ajaxListadoOportunidades')->with(compact('oportunidades'));
+
+    }
+
+    public function ajaxListadoVendedores(Request $request){
+
+        $campania_id = $request->input('campania');
+
+        $vendedores = Vendedor::select('vendedores.id','vendedores.nombres', 'vendedores.apellido_paterno', 'vendedores.apellido_materno')
+                                ->join('asignaciones', 'vendedores.id', '=', 'asignaciones.vendedor_id')
+                                ->join('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
+                                ->where('oportunidades.campania_id',$campania_id)
+                                ->groupBy('vendedores.id')
+                                ->get();
+
+        return view('campania.ajaxListadoVendedores',)->with(compact('vendedores'));
     }
 
     /**

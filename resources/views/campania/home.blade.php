@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('metadatos')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+@endsection
+
 @section('css')
 {{-- <link id="pagestyle" href="{{ asset('assets/css/material-dashboard.min.css?v=3.0.3') }}" rel="stylesheet" /> --}}
 @endsection
@@ -383,10 +387,151 @@
   </div>
 </div>
 
+<br>
+<div class="row">
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    
+    <div class="card h-100">
+      <div class="card-header pb-0 p-3">
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <h6 class="mb-0">Buscar Vendedor</h6>
+          </div>
+        </div>
+      </div>
+      <div class="card-body p-3">
+        <div class="row">
+          <div class="col-md-12">
+            
+            <div id="bloque-cambiar">
+              
+            </div>
+
+            <div id="bloque-buscar">
+              <div class="input-group input-group-outline my-3">
+                <label class="form-label">Buscar Vendedor</label>
+                <input type="text" class="form-control" name="busca_vendedor" id="busca_vendedor">
+              </div>
+            </div>
+
+            <div id="bloque-buscador-lista">
+    
+            </div>
+          </div>
+        </div>
+
+        <input type="hidden" name="vendedor_id" id="vendedor_id">
+        
+        <div id="lista-vendedores">
+          
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="col-md-1"></div>
+</div>
+<br>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header pb-0 p-3">
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="mb-0">Oportunidades Recientes</h6>
+          </div>
+          <div class="col-md-6 d-flex justify-content-end align-items-center">
+            <i class="material-icons me-2 text-lg">date_range</i>
+            <small>01 - 10 Mayo 2022</small>
+          </div>
+        </div>
+      </div>
+      <div class="card-body p-3">
+        <ul class="list-group">
+          <div id="tabla-oportunidades-show">
+
+            {{-- <div class="table-responsive">
+              <table class="table table-flush" id="tabla-oportunidades">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Nombres</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                  @foreach ($oportunidades as $opor)
+                    <tr>
+                      <td>
+                        {{ $opor->persona->nombres." ".$opor->persona->apellido_paterno." ".$opor->persona->apellido_materno }}
+                      </td>
+                      <td>
+                        <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center" onclick="asignacion('{{ $opor->id }}')"><i class="material-icons text-lg">expand_more</i></button>
+                      </td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div> --}}
+
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header pb-0 p-3">
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="mb-0">Vendedores</h6>
+          </div>
+          <div class="col-md-6 d-flex justify-content-end align-items-center">
+            <i class="material-icons me-2 text-lg">date_range</i>
+            <small>01 - 10 Mayo 2022</small>
+          </div>
+        </div>
+      </div>
+      <div class="card-body p-3">
+        <ul class="list-group">
+          <div id="tabla-vendedores-show">
+
+            {{-- <div class="table-responsive">
+              <table class="table table-flush" id="tabla-vendedores">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Nombres</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                  @foreach ($vendedores as $ven)
+                    <tr>
+                      <td>
+                        {{ $ven->nombres." ".$ven->apellido_paterno." ".$ven->apellido_materno }}
+                      </td>
+                      <td>
+                        <button class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center" onclick="asignacion()"><i class="material-icons text-lg">expand_more</i></button>
+                      </td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div> --}}
+
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
 @stop
 
 @section('js')
-
+<script src="{{ asset('assets/js/plugins/datatables.js') }}"></script>
 <script>
     var ctx1 = document.getElementById("chart-line-1").getContext("2d");
 
@@ -525,13 +670,174 @@
 </script>
 <script>
 
+;
+    $( document ).ready(function() {
+
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+
+      // var dataTableSearch = new simpleDatatables.DataTable("#tabla-oportunidades", {
+      //     searchable: true,
+      //     fixedHeight: true
+      // })
+
+      
+      // var dataTableSearch = new simpleDatatables.DataTable("#tabla-vendedores", {
+      //     searchable: true,
+      //     fixedHeight: true
+      // })
+
+      $("#busca_vendedor").on('keyup', function(){
+
+        console.log($('#busca_vendedor').val());
+        var vendedor = $('#busca_vendedor').val();
+
+        $.ajax({
+            url: "{{ url('Campania/ajaxBuscaVendedor') }}",
+            data: {
+                vendedor:vendedor
+            },
+            type: 'POST',
+            success: function(data) {
+
+                $('#lista-vendedores').html(data);
+
+            },
+            error: function(error){
+
+            }
+        });
+
+      }).keyup();
+
+      ajaxListadoOportunidades();
+      ajaxListadoVendedores();
+
+    });
+
     var win = navigator.platform.indexOf('Win') > -1;
+
     if (win && document.querySelector('#sidenav-scrollbar')) {
         var options = {
         damping: '0.5'
         }
         Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
+
+    function guardaVendedor(vendedor, nombre){
+      var html = "<button class='btn btn-success btn-lg w-100'  onclick='buscarVendedor()'>"+nombre+"</button>";
+
+      $('#vendedor_id').val(vendedor);
+
+      $('#bloque-cambiar').html(html);
+
+      $('#bloque-buscar').toggle('show');
+
+      $('#bloque-buscador-lista').toggle('hide');
+
+      setTimeout(function(){
+        $('#lista-vendedores').toggle('hide');
+      }, 500);
+
+
+    }
+
+    function buscarVendedor(){
+
+      $('#vendedor_id').val(0);
+
+      $('#bloque-buscar').toggle('show');
+      // $('#bloque-cambiar').toggle('hide');
+      $('#lista-vendedores').html('');
+      $('#lista-vendedores').toggle('show');
+      
+    }
+
+    function asignacion(oportunidad){
+      // console.log(oportunidad);
+      var vendedor = $('#vendedor_id').val();
+
+      if(vendedor != 0){
+
+
+        $.ajax({
+            url: "{{ url('Campania/asignacionVendedorCampania') }}",
+            data: {
+                oportunidad:oportunidad,
+                vendedor:vendedor
+            },
+            type: 'POST',
+            success: function(data) {
+              ajaxListadoOportunidades();
+              ajaxListadoVendedores();
+                // $('#lista-vendedores').html(data);
+
+            },
+            error: function(error){
+
+            }
+        });
+
+      }else{
+
+        Swal.fire({
+          icon: 'error',
+          title: 'No se pudo completar',
+          text: 'Debe elegir primero un vendedor',
+          // footer: '<a href="">Why do I have this issue?</a>'
+        })
+
+      }
+    }
+
+    function ajaxListadoOportunidades(){
+      
+      $.ajax({
+          url: "{{ url('Campania/ajaxListadoOportunidades') }}",
+          data: {
+              campania:{{ $campania_id }}
+          },
+          type: 'POST',
+          success: function(data) {
+
+              // $('#lista-vendedores').html(data);
+              $('#tabla-oportunidades-show').html(data);
+
+          },
+          error: function(error){
+
+          }
+      });
+
+    }
+
+    function ajaxListadoVendedores(){
+      
+      $.ajax({
+          url: "{{ url('Campania/ajaxListadoVendedores') }}",
+          data: {
+              campania:{{ $campania_id }}
+          },
+          type: 'POST',
+          success: function(data) {
+
+              // $('#lista-vendedores').html(data);
+              $('#tabla-vendedores-show').html(data);
+
+          },
+          error: function(error){
+
+          }
+      });
+
+    }
+
+
+
+    
 
 </script>
 @endsection

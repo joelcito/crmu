@@ -35,6 +35,9 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
   <link id="pagestyle" href="{{ asset('assets/css/material-dashboard.css?v=3.0.3') }}" rel="stylesheet" />
+  <link id="pagestyle" href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet" />
+
+  {{-- para los select 2 --}}
 
   @section('css')
   @show
@@ -299,6 +302,8 @@
 
   {{-- jalasmos a los JQUERY --}}
   <script src="{{ asset('assets/js/plugins/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('assets/js/select2.min.js') }}"></script>
+
 
   {{-- LLAMAMMOS A LOS SWEET ALERTS --}}
   <script src="{{ asset('assets/js/plugins/sweetalert.min.js') }}"></script>

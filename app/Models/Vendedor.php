@@ -28,4 +28,11 @@ class Vendedor extends Model
         'deleted_at',
     ];
 
+    public function holas(){
+
+        // $r = "holas";
+        // return $r;
+        
+    }
+
 }

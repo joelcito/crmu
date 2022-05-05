@@ -8,6 +8,7 @@
                 <th>Email</th>
                 <th>Celular</th>
                 <th>Progreso</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +24,9 @@
                             <div class="progress-bar progress-bar-warning" style="width: {{ rand(0, 100) }}%">
                             </div>
                         </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-info" onclick="asignarCampania('{{ $v->id }}', '{{ $v->nombres.' '.$v->apellido_paterno.' '.$v->apellido_materno }}')"><i class="fa fa-plus"></i></button>
                     </td>
                 </tr>
             @endforeach

@@ -24,6 +24,11 @@ Route::get('Campania/Listado', 'CampaniaController@listado');
 Route::post('Campania/guarda', 'CampaniaController@guarda');
 Route::post('Campania/ajaxListado', 'CampaniaController@ajaxListado');
 Route::get('Campania/home/{campania_id}', 'CampaniaController@home');
+Route::post('Campania/ajaxBuscaVendedor', 'CampaniaController@ajaxBuscaVendedor');
+Route::post('Campania/asignacionVendedorCampania', 'CampaniaController@asignacionVendedorCampania');
+Route::post('Campania/ajaxListadoOportunidades', 'CampaniaController@ajaxListadoOportunidades');
+Route::post('Campania/ajaxListadoVendedores', 'CampaniaController@ajaxListadoVendedores');
+
 
 // FORMULARIO
 Route::post('Formulario/guardaFormulario', 'FormularioController@guardaFormulario');
@@ -37,6 +42,9 @@ Route::post('Formulario/guardarRespuestaFormulario', 'FormularioController@guard
 Route::get('Vendedor/listado', 'VendedorController@listado');
 Route::post('Vendedor/ajaxListado', 'VendedorController@ajaxListado');
 Route::post('Vendedor/guarda', 'VendedorController@guarda');
+Route::post('Vendedor/ajaxBuscaCampania', 'VendedorController@ajaxBuscaCampania');
+Route::post('Vendedor/muestraFormularios', 'VendedorController@muestraFormularios');
+Route::post('Vendedor/asignarCampaniaVendedor', 'VendedorController@asignarCampaniaVendedor');
 
 // PERSONA
 Route::get('Persona/listado', 'PersonaController@listado');
@@ -62,3 +70,4 @@ Route::get('EstadoFinal/listado', 'EstadoFinalController@listado');
 
 // ASIGNACIONES
 Route::get('Asignacion/listado', 'AsignacionController@listado');
+
