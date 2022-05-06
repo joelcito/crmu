@@ -119,13 +119,20 @@ class CampaniaController extends Controller
 
     public function asignacionVendedorCampania(Request $request){
 
-        $asignacion = new Asignacion();
+        $oportunidades = $request->input('oportunidades');
 
-        $asignacion->oportunidad_id   = $request->input('oportunidad');
-        $asignacion->vendedor_id      = $request->input('vendedor');
-        $asignacion->fecha_asignacion = date('Y-m-d H:i:s');
+        $vendedor = $request->input('vendedorAsignacion');
 
-        $asignacion->save();
+        foreach ($oportunidades as $key => $opo){
+
+            $asignacion = new Asignacion();
+
+            $asignacion->oportunidad_id   = $key;
+            $asignacion->vendedor_id      = $vendedor;
+            $asignacion->fecha_asignacion = date('Y-m-d H:i:s');
+
+            $asignacion->save();
+        }
 
     }
 
@@ -133,7 +140,7 @@ class CampaniaController extends Controller
 
         $campania_id = $request->input('campania');
 
-        $oportunidades = Asignacion::select('*')
+        $oportunidades = Asignacion::select('*','oportunidades.id as opo')
                                     ->rightJoin('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
                                     ->rightJoin('personas', 'personas.id', '=', 'oportunidades.persona_id')
                                     ->where('oportunidades.campania_id', $campania_id)
@@ -147,16 +154,18 @@ class CampaniaController extends Controller
 
     public function ajaxListadoVendedores(Request $request){
 
-        $campania_id = $request->input('campania');
+        // $campania_id = $request->input('campania');
 
-        $vendedores = Vendedor::select('vendedores.id','vendedores.nombres', 'vendedores.apellido_paterno', 'vendedores.apellido_materno')
-                                ->join('asignaciones', 'vendedores.id', '=', 'asignaciones.vendedor_id')
-                                ->join('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
-                                ->where('oportunidades.campania_id',$campania_id)
-                                ->groupBy('vendedores.id')
-                                ->get();
+        // $vendedores = Vendedor::select('vendedores.id','vendedores.nombres', 'vendedores.apellido_paterno', 'vendedores.apellido_materno')
+        //                         ->join('asignaciones', 'vendedores.id', '=', 'asignaciones.vendedor_id')
+        //                         ->join('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
+        //                         ->where('oportunidades.campania_id',$campania_id)
+        //                         ->groupBy('vendedores.id')
+        //                         ->get();
 
-        return view('campania.ajaxListadoVendedores',)->with(compact('vendedores'));
+        $vendedores = Vendedor::all();
+
+        return view('campania.ajaxListadoVendedores')->with(compact('vendedores'));
     }
 
     /**

@@ -432,99 +432,110 @@
   </div>
   <div class="col-md-1"></div>
 </div>
+
 <br>
 
+  <form action="" id="formulario-asignacion">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-header pb-0 p-3">
+            {{-- <div class="row">
+              <div class="col-md-6">
+                <h6 class="mb-0">Oportunidades Recientes</h6>
+              </div>
+              <div class="col-md-6 d-flex justify-content-end align-items-center">
+                <i class="material-icons me-2 text-lg">date_range</i>
+                <small>01 - 10 Mayo 2022</small>
+              </div>
+            </div> --}}
+          </div>
+          <div class="card-body p-3">
+            <ul class="list-group">
+              <div id="tabla-oportunidades-show">
+    
+                {{-- <div class="table-responsive">
+                  <table class="table table-flush" id="tabla-oportunidades">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Nombres</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      @foreach ($oportunidades as $opor)
+                        <tr>
+                          <td>
+                            {{ $opor->persona->nombres." ".$opor->persona->apellido_paterno." ".$opor->persona->apellido_materno }}
+                          </td>
+                          <td>
+                            <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center" onclick="asignacion('{{ $opor->id }}')"><i class="material-icons text-lg">expand_more</i></button>
+                          </td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div> --}}
+    
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+    
+      <div class="col-md-6">
+        <div class="card h-100">
+          <div class="card-header pb-0 p-3">
+            {{-- <div class="row">
+              <div class="col-md-6">
+                <h6 class="mb-0">Vendedores</h6>
+              </div>
+              <div class="col-md-6 d-flex justify-content-end align-items-center">
+                <i class="material-icons me-2 text-lg">date_range</i>
+                <small>01 - 10 Mayo 2022</small>
+              </div>
+            </div> --}}
+          </div>
+          <div class="card-body p-3">
+            <ul class="list-group">
+              <div id="tabla-vendedores-show">
+    
+                {{-- <div class="table-responsive">
+                  <table class="table table-flush" id="tabla-vendedores">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Nombres</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      @foreach ($vendedores as $ven)
+                        <tr>
+                          <td>
+                            {{ $ven->nombres." ".$ven->apellido_paterno." ".$ven->apellido_materno }}
+                          </td>
+                          <td>
+                            <button class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center" onclick="asignacion()"><i class="material-icons text-lg">expand_more</i></button>
+                          </td>
+                        </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div> --}}
+    
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+
+<br>
 <div class="row">
-  <div class="col-md-6">
-    <div class="card h-100">
-      <div class="card-header pb-0 p-3">
-        <div class="row">
-          <div class="col-md-6">
-            <h6 class="mb-0">Oportunidades Recientes</h6>
-          </div>
-          <div class="col-md-6 d-flex justify-content-end align-items-center">
-            <i class="material-icons me-2 text-lg">date_range</i>
-            <small>01 - 10 Mayo 2022</small>
-          </div>
-        </div>
-      </div>
-      <div class="card-body p-3">
-        <ul class="list-group">
-          <div id="tabla-oportunidades-show">
-
-            {{-- <div class="table-responsive">
-              <table class="table table-flush" id="tabla-oportunidades">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Nombres</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                  @foreach ($oportunidades as $opor)
-                    <tr>
-                      <td>
-                        {{ $opor->persona->nombres." ".$opor->persona->apellido_paterno." ".$opor->persona->apellido_materno }}
-                      </td>
-                      <td>
-                        <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center" onclick="asignacion('{{ $opor->id }}')"><i class="material-icons text-lg">expand_more</i></button>
-                      </td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
-            </div> --}}
-
-          </div>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-6">
-    <div class="card h-100">
-      <div class="card-header pb-0 p-3">
-        <div class="row">
-          <div class="col-md-6">
-            <h6 class="mb-0">Vendedores</h6>
-          </div>
-          <div class="col-md-6 d-flex justify-content-end align-items-center">
-            <i class="material-icons me-2 text-lg">date_range</i>
-            <small>01 - 10 Mayo 2022</small>
-          </div>
-        </div>
-      </div>
-      <div class="card-body p-3">
-        <ul class="list-group">
-          <div id="tabla-vendedores-show">
-
-            {{-- <div class="table-responsive">
-              <table class="table table-flush" id="tabla-vendedores">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Nombres</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                  @foreach ($vendedores as $ven)
-                    <tr>
-                      <td>
-                        {{ $ven->nombres." ".$ven->apellido_paterno." ".$ven->apellido_materno }}
-                      </td>
-                      <td>
-                        <button class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center" onclick="asignacion()"><i class="material-icons text-lg">expand_more</i></button>
-                      </td>
-                    </tr>
-                  @endforeach
-                </tbody>
-              </table>
-            </div> --}}
-
-          </div>
-        </ul>
-      </div>
-    </div>
+  <div class="col-md-12">
+    <button class="btn btn-success w-100" onclick="asignarOportunidades()">Asignar</button>
   </div>
 </div>
 
@@ -669,8 +680,6 @@
     });
 </script>
 <script>
-
-;
     $( document ).ready(function() {
 
       $.ajaxSetup({
@@ -833,6 +842,26 @@
           }
       });
 
+    }
+
+    function asignarOportunidades(){
+
+      var datos = $('#formulario-asignacion').serialize();
+
+      $.ajax({
+          url: "{{ url('Campania/asignacionVendedorCampania') }}",
+          data: datos,
+          type: 'POST',
+          success: function(data) {
+            ajaxListadoOportunidades();
+            ajaxListadoVendedores();
+              // $('#lista-vendedores').html(data);
+
+          },
+          error: function(error){
+
+          }
+      });
     }
 
 
