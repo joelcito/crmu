@@ -545,7 +545,7 @@
                                 // '<option value="select">Seleccion Unica</option>'+
                                 // '<option value="checkbox">Seleccion Multiple</option>'+
                                 // '<option value="input">Respuesta Corta</option>'+
-                                // '<option value="taxtarea">Respuesta Largo</option>'+
+                                // '<option value="textarea">Respuesta Largo</option>'+
                                 // '<option value="file">Adjuntar Archivo</option>'+
                                 option+
                               '</select>'+

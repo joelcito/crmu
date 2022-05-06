@@ -6,6 +6,7 @@ use App\Models\Campania;
 use App\Models\Vendedor;
 use App\Models\Asignacion;
 use App\Models\Oportunidad;
+use App\Models\Seguimiento;
 use Illuminate\Http\Request;
 use App\Models\FormularioCampania;
 use Illuminate\Support\Facades\Validator;
@@ -132,7 +133,18 @@ class CampaniaController extends Controller
             $asignacion->fecha_asignacion = date('Y-m-d H:i:s');
 
             $asignacion->save();
+
+            
+            $seguimiento = new Seguimiento();
+
+            $seguimiento->asignacion_id          = $asignacion->id;
+            $seguimiento->estado_seguimiento_id  = 1;
+
+            $seguimiento->save();
+
         }
+
+
 
     }
 
@@ -166,6 +178,24 @@ class CampaniaController extends Controller
         $vendedores = Vendedor::all();
 
         return view('campania.ajaxListadoVendedores')->with(compact('vendedores'));
+    }
+
+    public function ajaxListadoClientesAsignados(Request $request){
+
+        $campania_id = $request->input('campania');
+
+        $clientesAsigandos  = Asignacion::select('personas.nombres', 'personas.apellido_paterno', 'personas.apellido_materno', 'vendedores.nombres as nombrev', 'vendedores.apellido_paterno as appaternov', 'vendedores.apellido_materno as apmaternov', 'asignaciones.id as id_asignacion')
+                                        ->join('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
+                                        ->join('personas', 'personas.id', '=', 'oportunidades.persona_id')
+                                        ->join('vendedores','vendedores.id', '=','asignaciones.vendedor_id')
+                                        ->where('oportunidades.campania_id',$campania_id)
+                                        // ->toSql();
+                                        ->get();
+
+        // dd($clientesAsigandos);
+
+        return view('campania.ajaxListadoClientesAsignados')->with(compact('clientesAsigandos'));
+
     }
 
     /**

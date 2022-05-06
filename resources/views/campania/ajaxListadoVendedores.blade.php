@@ -11,9 +11,9 @@
                 <table class="table table-flush" id="tabla-vendedores">
                     <thead class="thead-light">
                         <tr>
-                            <th>Nombre</th>
-                            <th>Apellido Paterno</th>
-                            <th>Apellido Materno</th>
+                            <th>Nombre Completo</th>
+                            {{-- <th>Apellido Paterno</th> --}}
+                            {{-- <th>Apellido Materno</th> --}}
                             <th>Oportunidades</th>
                             <th>Estado</th>
                         </tr>
@@ -24,21 +24,21 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <div class="form-check mb-3">
-                                            <input class="form-check-input" type="radio" name="vendedorAsignacion" id="listaVendedor{{ $hey }}" value="{{ $ven->id }}">
-                                            <label class="custom-control-label" for="listaVendedor{{ $hey }}">{{ $ven->nombres }}</label>
+                                            <input class="form-check-input"{{ ($hey == 0)? 'checked' : ''}} type="radio" name="vendedorAsignacion" id="listaVendedor{{ $hey }}" value="{{ $ven->id }}">
+                                            <label class="custom-control-label" for="listaVendedor{{ $hey }}">{{ $ven->nombres." ".$ven->apellido_paterno." ".$ven->apellido_materno }}</label>
                                           </div>
                                     </div>
                                 </td>
-                                <td>
+                                {{-- <td>
                                     <label for="listaVendedor{{ $hey }}">
                                         <span class="my-2 text-xs">{{ $ven->apellido_paterno }}</span>
                                     </label>
-                                </td>
-                                <td>
+                                </td> --}}
+                                {{-- <td>
                                     <label for="listaVendedor{{ $hey }}">
                                         <span class="my-2 text-xs">{{ $ven->apellido_materno }}</span>
                                     </label>
-                                </td>
+                                </td> --}}
                                 <td>
                                     @php
                                         $cant = App\Models\Asignacion::where('vendedor_id', $ven->id)->count();

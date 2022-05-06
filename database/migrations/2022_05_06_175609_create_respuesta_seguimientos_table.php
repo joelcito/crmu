@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEstadoSeguimientosTable extends Migration
+class CreateRespuestaSeguimientosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateEstadoSeguimientosTable extends Migration
      */
     public function up()
     {
-        Schema::create('estado_seguimientos', function (Blueprint $table) {
+        Schema::create('respuesta_seguimientos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('creador_id')->nullable();
             $table->foreign('creador_id')->references('id')->on('users');
@@ -21,9 +21,9 @@ class CreateEstadoSeguimientosTable extends Migration
             $table->foreign('modificador_id')->references('id')->on('users');
             $table->unsignedBigInteger('eliminador_id')->nullable();
             $table->foreign('eliminador_id')->references('id')->on('users');
-            $table->string('nombre',45)->nullable();
-            $table->string('color',50)->nullable();
-            $table->string('descripcion',45)->nullable();
+            $table->unsignedBigInteger('seguimiento_id')->nullable()->nullable();
+            $table->foreign('seguimiento_id')->references('id')->on('seguimientos')->onDelete('cascade');
+            $table->text('descripcion')->nullable();
             $table->string('estado')->nullable();
             $table->datetime('deleted_at')->nullable();
             $table->timestamps();
@@ -37,6 +37,6 @@ class CreateEstadoSeguimientosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('estado_seguimientos');
+        Schema::dropIfExists('respuesta_seguimientos');
     }
 }

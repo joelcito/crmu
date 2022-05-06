@@ -6,6 +6,13 @@
 
 @section('css')
 {{-- <link id="pagestyle" href="{{ asset('assets/css/material-dashboard.min.css?v=3.0.3') }}" rel="stylesheet" /> --}}
+<style>
+  .mi-boton {
+    position: sticky;
+    top: 80vh;
+    left: 50px;
+  }
+</style>
 @endsection
 
 @section('content')
@@ -66,6 +73,63 @@
       f.parentNode.insertBefore(j, f);
     })(window, document, 'script', 'dataLayer', 'GTM-NKDMSK6');
   </script> --}}
+
+
+  
+
+<!-- Modal -->
+<div class="modal fade" id="modatramsferenciaAsignacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Detalle de Seguimiento de <span id="persona_asignacion" class="text-info"></span></h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form action="" id="formularioNuevoCampania">
+              @csrf
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="input-group input-group-outline my-3">
+                          <label class="form-label">Nombre de la campaña</label>
+                          <input type="text" name="nombre_campania" id="nombre_campania" class="form-control" required>
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="input-group input-group-static my-3">
+                          <label>Fecha inicio</label>
+                          <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="input-group input-group-static my-3">
+                          <label>Fecha fin</label>
+                          <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
+                      </div>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="input-group input-group-outline my-3">
+                          <textarea name="descripcion_campania" id="descripcion_campania" cols="5" rows="5" class="form-control" placeholder="Descripcion" required></textarea>
+                      </div>
+                  </div>
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn bg-gradient-success" onclick="guarda()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <div class="row mt-5">
   <div class="col-xl-8 col-lg-7">
@@ -386,156 +450,52 @@
     </div>
   </div>
 </div>
-
-<br>
-<div class="row">
-  <div class="col-md-1"></div>
-  <div class="col-md-10">
-    
-    <div class="card h-100">
-      <div class="card-header pb-0 p-3">
-        <div class="row">
-          <div class="col-md-12 text-center">
-            <h6 class="mb-0">Buscar Vendedor</h6>
-          </div>
-        </div>
-      </div>
-      <div class="card-body p-3">
-        <div class="row">
-          <div class="col-md-12">
-            
-            <div id="bloque-cambiar">
-              
-            </div>
-
-            <div id="bloque-buscar">
-              <div class="input-group input-group-outline my-3">
-                <label class="form-label">Buscar Vendedor</label>
-                <input type="text" class="form-control" name="busca_vendedor" id="busca_vendedor">
-              </div>
-            </div>
-
-            <div id="bloque-buscador-lista">
-    
-            </div>
-          </div>
-        </div>
-
-        <input type="hidden" name="vendedor_id" id="vendedor_id">
-        
-        <div id="lista-vendedores">
-          
-        </div>
-        
-      </div>
-    </div>
-  </div>
-  <div class="col-md-1"></div>
-</div>
-
-<br>
-
-  <form action="" id="formulario-asignacion">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card h-100">
-          <div class="card-header pb-0 p-3">
-            {{-- <div class="row">
-              <div class="col-md-6">
-                <h6 class="mb-0">Oportunidades Recientes</h6>
-              </div>
-              <div class="col-md-6 d-flex justify-content-end align-items-center">
-                <i class="material-icons me-2 text-lg">date_range</i>
-                <small>01 - 10 Mayo 2022</small>
-              </div>
-            </div> --}}
-          </div>
-          <div class="card-body p-3">
-            <ul class="list-group">
-              <div id="tabla-oportunidades-show">
-    
-                {{-- <div class="table-responsive">
-                  <table class="table table-flush" id="tabla-oportunidades">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Nombres</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      @foreach ($oportunidades as $opor)
-                        <tr>
-                          <td>
-                            {{ $opor->persona->nombres." ".$opor->persona->apellido_paterno." ".$opor->persona->apellido_materno }}
-                          </td>
-                          <td>
-                            <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center" onclick="asignacion('{{ $opor->id }}')"><i class="material-icons text-lg">expand_more</i></button>
-                          </td>
-                        </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
-                </div> --}}
-    
-              </div>
-            </ul>
-          </div>
-        </div>
-      </div>
-    
-      <div class="col-md-6">
-        <div class="card h-100">
-          <div class="card-header pb-0 p-3">
-            {{-- <div class="row">
-              <div class="col-md-6">
-                <h6 class="mb-0">Vendedores</h6>
-              </div>
-              <div class="col-md-6 d-flex justify-content-end align-items-center">
-                <i class="material-icons me-2 text-lg">date_range</i>
-                <small>01 - 10 Mayo 2022</small>
-              </div>
-            </div> --}}
-          </div>
-          <div class="card-body p-3">
-            <ul class="list-group">
-              <div id="tabla-vendedores-show">
-    
-                {{-- <div class="table-responsive">
-                  <table class="table table-flush" id="tabla-vendedores">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Nombres</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      @foreach ($vendedores as $ven)
-                        <tr>
-                          <td>
-                            {{ $ven->nombres." ".$ven->apellido_paterno." ".$ven->apellido_materno }}
-                          </td>
-                          <td>
-                            <button class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center" onclick="asignacion()"><i class="material-icons text-lg">expand_more</i></button>
-                          </td>
-                        </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
-                </div> --}}
-    
-              </div>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
-
-
 <br>
 <div class="row">
   <div class="col-md-12">
-    <button class="btn btn-success w-100" onclick="asignarOportunidades()">Asignar</button>
+    <div class="card">
+      <div class="card-header">
+        <h6 class="text-center">ASIGNACIONES DE OPORTUNIDADES</h6>
+      </div>
+      <div class="card-body">
+        <form action="" id="formulario-asignacion">
+          <div class="row">
+            <div class="col-md-5">
+              <ul class="list-group">
+                <div id="tabla-oportunidades-show">
+      
+                </div>
+              </ul>
+            </div>
+            <div class="col-md-1">
+              <button class="btn btn-success mi-boton" type="button"  onclick="asignarOportunidades()">Asignar <i class="fas fa-arrow-right"></i></button>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-group">
+                <div id="tabla-vendedores-show">
+      
+                </div>
+              </ul>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-12">
+    {{-- <div class="card"> --}}
+      {{-- <div class="card-header">
+        <h6 class="text-center">Listado de clientes asignados</h6>
+      </div> --}}
+      {{-- <div class="card-body"> --}}
+        <div id="tabla_listado_clientes_asignados">
+
+        </div>
+      {{-- </div> --}}
+    {{-- </div>     --}}
   </div>
 </div>
 
@@ -688,17 +648,6 @@
           }
       });
 
-      // var dataTableSearch = new simpleDatatables.DataTable("#tabla-oportunidades", {
-      //     searchable: true,
-      //     fixedHeight: true
-      // })
-
-      
-      // var dataTableSearch = new simpleDatatables.DataTable("#tabla-vendedores", {
-      //     searchable: true,
-      //     fixedHeight: true
-      // })
-
       $("#busca_vendedor").on('keyup', function(){
 
         console.log($('#busca_vendedor').val());
@@ -722,8 +671,14 @@
 
       }).keyup();
 
+      // lista las oportuniades recientes
       ajaxListadoOportunidades();
+
+      // lista las vendedores disponibles
       ajaxListadoVendedores();
+
+      // lista de clientes asignados a un vendedor
+      ajaxListadoClientesAsignados();
 
     });
 
@@ -737,6 +692,7 @@
     }
 
     function guardaVendedor(vendedor, nombre){
+
       var html = "<button class='btn btn-success btn-lg w-100'  onclick='buscarVendedor()'>"+nombre+"</button>";
 
       $('#vendedor_id').val(vendedor);
@@ -750,7 +706,6 @@
       setTimeout(function(){
         $('#lista-vendedores').toggle('hide');
       }, 500);
-
 
     }
 
@@ -846,22 +801,110 @@
 
     function asignarOportunidades(){
 
-      var datos = $('#formulario-asignacion').serialize();
+      Swal.fire({
+        title: 'Esta seguro de realizar la asignación?',
+        text: "No podrás revertir esto.!",
+        icon: 'warning',
+        showCancelButton: true,
+        // confirmButtonColor: '#3085d6',
+        // cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, asignar!'
+
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if ($('#navbarFixed').prop('checked')) {
+            if( $('#navbarMinimize').prop('checked')){
+              var desminuir = 2;
+            }else{
+              var desminuir = 1;
+            }
+            if (($('input[type=checkbox]:checked').length-desminuir) != 0) {
+              var datos = $('#formulario-asignacion').serialize();
+
+              $.ajax({
+                url: "{{ url('Campania/asignacionVendedorCampania') }}",
+                data: datos,
+                type: 'POST',
+                success: function(data) {
+
+                  Swal.fire({
+                    title: 'Correcto',
+                    text: "Se realizo la asignacion!",
+                    icon: 'success',
+                    timer: 800
+                  })
+
+                  ajaxListadoOportunidades();
+                  ajaxListadoVendedores();
+                  ajaxListadoClientesAsignados();
+
+                },
+                  error: function(error){
+                    
+                  }
+              });
+            }
+            else{
+              Swal.fire({
+                  title: 'Alerta!',
+                  text: "Debe seleccionar al menos una oportunidad!",
+                  icon: 'warning',
+                })
+            }
+          }
+        }
+
+      })
+
+      
+    }
+
+    function ajaxListadoClientesAsignados(){
 
       $.ajax({
-          url: "{{ url('Campania/asignacionVendedorCampania') }}",
-          data: datos,
+          url: "{{ url('Campania/ajaxListadoClientesAsignados') }}",
+          data: {
+              campania:{{ $campania_id }}
+          },
           type: 'POST',
           success: function(data) {
-            ajaxListadoOportunidades();
-            ajaxListadoVendedores();
-              // $('#lista-vendedores').html(data);
+
+              $('#tabla_listado_clientes_asignados').html(data);
 
           },
           error: function(error){
 
           }
       });
+      
+    }
+
+    function abreModaltramsferencia(asignacion, nombre) {
+
+      $('#persona_asignacion').text(nombre)
+      
+      $('#modatramsferenciaAsignacion').modal('show');
+
+    }
+
+    function ajaxDetalleOportunidad(){
+
+      $.ajax({
+          url: "{{ url('Campania/ajaxListadoVendedores') }}",
+          data: {
+              campania:{{ $campania_id }}
+          },
+          type: 'POST',
+          success: function(data) {
+
+              $('#tabla-vendedores-show').html(data);
+
+          },
+          error: function(error){
+
+          }
+      });
+
     }
 
 
