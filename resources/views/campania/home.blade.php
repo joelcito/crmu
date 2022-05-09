@@ -88,38 +88,31 @@
         </button>
       </div>
       <div class="modal-body">
-          <form action="" id="formularioNuevoCampania">
-              @csrf
-              <div class="row">
+        <div class="row">
+          <div class="col-md-12">
+
+            <input type="hidden" id="asignacion_tramsferencia_id">
+            <input type="hidden" id="oportunidad_tramsferencia_id">
+
+            <div class="card">
+              <div class="card-body">
+                <div id="asignaciones-listado">
+
+                </div>
+                <div class="row">
                   <div class="col-md-12">
-                      <div class="input-group input-group-outline my-3">
-                          <label class="form-label">Nombre de la campaña</label>
-                          <input type="text" name="nombre_campania" id="nombre_campania" class="form-control" required>
-                      </div>
+                    <button class="btn btn-success" onclick="ajaxListadoVendedorTramsferencia()">REASIGNAR A OTRO VENDEDOR</button>
                   </div>
+                </div>
+                <div id="listado-vendedores-reasignar" style="display: none;">
+                  <div id="tabla-ajax-reasignarVendedor">
+                    
+                  </div>
+                </div>
               </div>
-              <div class="row">
-                  <div class="col-md-6">
-                      <div class="input-group input-group-static my-3">
-                          <label>Fecha inicio</label>
-                          <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
-                      </div>
-                  </div>
-                  <div class="col-md-6">
-                      <div class="input-group input-group-static my-3">
-                          <label>Fecha fin</label>
-                          <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
-                      </div>
-                  </div>
-              </div>
-              <div class="row">
-                  <div class="col-md-12">
-                      <div class="input-group input-group-outline my-3">
-                          <textarea name="descripcion_campania" id="descripcion_campania" cols="5" rows="5" class="form-control" placeholder="Descripcion" required></textarea>
-                      </div>
-                  </div>
-              </div>
-          </form>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -221,10 +214,6 @@
             </div>
           </div>
           <div class="card-body py-3">
-            {{-- <a class="btn btn-round btn-sm btn-outline-dark mb-0" href="{{ url('Formulario/formulario',[1]) }}">
-            Read More
-            <i class="material-icons text-sm ms-1">chevron_right</i>
-            </a> --}}
           </div>
         </div>
       </div>
@@ -245,80 +234,19 @@
                       </div>
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">{{ $f->formulario->nombre }}</h6>
-                        {{-- <span class="text-xs">2150 personas resgistradas, <span class="font-weight-bold">346+ sold</span></span> --}}
                         <span class="text-xs">2150 personas resgistradas</span>
                       </div>
                     </div>
                     <div class="d-flex">
-                      {{-- <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></button> --}}
                       <a href="{{ url('Formulario/respuestaFormulario', [$f->campania_id, $f->formulario_id]) }}" class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></a>
                     </div>
                   </li>
                 @endif
               @endforeach
-              {{-- <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                <div class="d-flex align-items-center">
-                  <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                    <i class="material-icons opacity-10">launch</i>
-                  </div>
-                  <div class="d-flex flex-column">
-                    <h6 class="mb-1 text-dark text-sm">Devices</h6>
-                    <span class="text-xs">250 in stock, <span class="font-weight-bold">346+ sold</span></span>
-                  </div>
-                </div>
-                <div class="d-flex">
-                  <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
-                </div>
-              </li> --}}
-              {{-- <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                <div class="d-flex align-items-center">
-                  <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                    <i class="material-icons opacity-10">book_online</i>
-                  </div>
-                  <div class="d-flex flex-column">
-                    <h6 class="mb-1 text-dark text-sm">Tickets</h6>
-                    <span class="text-xs">123 closed, <span class="font-weight-bold">15 open</span></span>
-                  </div>
-                </div>
-                <div class="d-flex">
-                  <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
-                </div>
-              </li> --}}
-              {{-- <li class="list-group-item border-0 d-flex justify-content-between ps-0 border-radius-lg">
-                <div class="d-flex align-items-center">
-                  <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                    <i class="material-icons opacity-10">priority_high</i>
-                  </div>
-                  <div class="d-flex flex-column">
-                    <h6 class="mb-1 text-dark text-sm">Error logs</h6>
-                    <span class="text-xs">1 is active, <span class="font-weight-bold">40 closed</span></span>
-                  </div>
-                </div>
-                <div class="d-flex">
-                <button class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></button>
-                </div>
-              </li> --}}
             </ul>
           </div>
         </div>
       </div>
-      {{-- <div class="col-lg-12 col-sm-6">
-        <div class="card mt-5">
-          <div class="card-body p-3 pt-0">
-            <div class="row">
-              <div class="col-4">
-                <img src="../../assets/img/kal-visuals-square.jpg" alt="kal" class="border-radius-lg shadow shadow-dark w-100 mt-n4">
-              </div>
-              <div class="col-8 my-auto">
-                <p class="text-muted text-sm mt-3">
-                Today is Mike's birthday. Wish him the best of luck!
-                </p>
-                <a href="javascript:;" class="btn btn-sm bg-gradient-dark mb-0">Send message</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> --}}
     </div>
   </div>
 </div>
@@ -486,16 +414,9 @@
 <br>
 <div class="row">
   <div class="col-md-12">
-    {{-- <div class="card"> --}}
-      {{-- <div class="card-header">
-        <h6 class="text-center">Listado de clientes asignados</h6>
-      </div> --}}
-      {{-- <div class="card-body"> --}}
         <div id="tabla_listado_clientes_asignados">
 
         </div>
-      {{-- </div> --}}
-    {{-- </div>     --}}
   </div>
 </div>
 
@@ -879,15 +800,40 @@
       
     }
 
-    function abreModaltramsferencia(asignacion, nombre) {
+    function abreModaltramsferencia(asignacion, nombre, oportunidad) {
 
       $('#persona_asignacion').text(nombre)
+
+      $('#asignacion_tramsferencia_id').val(asignacion);
+      $('#oportunidad_tramsferencia_id').val(oportunidad);
       
       $('#modatramsferenciaAsignacion').modal('show');
 
+
+      $.ajax({
+
+          url: "{{ url('Campania/ajaxListadoSeguimientos') }}",
+          data: {
+
+            asignacion: asignacion,
+            oportunidad:oportunidad
+
+          },
+          type: 'POST',
+          success: function(data) {
+
+            $('#asignaciones-listado').html(data);
+
+          },
+          error: function(error){
+
+          }
+
+      });
+
     }
 
-    function ajaxDetalleOportunidad(){
+    function ajaxDetalleOportunidad(){  
 
       $.ajax({
           url: "{{ url('Campania/ajaxListadoVendedores') }}",
@@ -907,9 +853,77 @@
 
     }
 
+    function ajaxListadoVendedorTramsferencia(){
+
+      $.ajax({
+          url: "{{ url('Campania/ajaxListadoVendedorTramsferencia') }}",
+          type: 'POST',
+          success: function(data) {
+
+              $('#tabla-ajax-reasignarVendedor').html(data);
+              $('#listado-vendedores-reasignar').toggle('show');
+
+          },
+          error: function(error){
+
+          }
+      });
 
 
-    
+
+    }
+
+    function reasignarVendedor(){
+
+      Swal.fire({
+        title: 'Esta seguro de hacer la tramsferencia?',
+        text: "No se podra revertir!",
+        icon: 'warning',
+        showCancelButton: true,
+        // confirmButtonColor: '#3085d6',
+        // cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Tramsferir!'
+      }).then((result) => {
+
+        if (result.isConfirmed) {
+
+          var ven= $("input[name='listaVendedorReasignacion']:checked").val();
+          var  asignacion = $('#asignacion_tramsferencia_id').val();
+          var oportunidad = $('#oportunidad_tramsferencia_id').val();
+
+          $.ajax({
+              url: "{{ url('Campania/tramsferirOportunidadVendedor') }}",
+              data: {
+                  vendedor:ven,
+                  asignacion:asignacion,
+                  oportunidad:oportunidad
+              },
+              type: 'POST',
+              success: function(data) {
+
+                Swal.fire({
+                  title: 'Correcto',
+                  text: "Se realizo la tramsferencia!",
+                  icon: 'success',
+                  timer: 800
+                })
+
+                ajaxListadoVendedorTramsferencia();
+                
+                ajaxListadoOportunidades();
+                ajaxListadoVendedores();
+                ajaxListadoClientesAsignados();
+                $('#modatramsferenciaAsignacion').modal('hide');
+
+              },
+              error: function(error){
+
+              }
+          });
+        }
+      })
+
+    }
 
 </script>
 @endsection

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class MedioSeguimiento extends Model
+class RespuestaSeguimiento extends Model
 {
     use HasFactory;
 
@@ -18,6 +18,7 @@ class MedioSeguimiento extends Model
         'eliminador_id',
         'nombre',
         'descripcion',
+        'fecha',
         'estado',
         'deleted_at',
     ];

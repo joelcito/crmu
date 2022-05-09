@@ -9,6 +9,7 @@ use App\Models\Oportunidad;
 use App\Models\Seguimiento;
 use Illuminate\Http\Request;
 use App\Models\FormularioCampania;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
 class CampaniaController extends Controller
@@ -131,20 +132,11 @@ class CampaniaController extends Controller
             $asignacion->oportunidad_id   = $key;
             $asignacion->vendedor_id      = $vendedor;
             $asignacion->fecha_asignacion = date('Y-m-d H:i:s');
+            $asignacion->estado = 1;
 
             $asignacion->save();
 
-            
-            $seguimiento = new Seguimiento();
-
-            $seguimiento->asignacion_id          = $asignacion->id;
-            $seguimiento->estado_seguimiento_id  = 1;
-
-            $seguimiento->save();
-
         }
-
-
 
     }
 
@@ -184,17 +176,71 @@ class CampaniaController extends Controller
 
         $campania_id = $request->input('campania');
 
-        $clientesAsigandos  = Asignacion::select('personas.nombres', 'personas.apellido_paterno', 'personas.apellido_materno', 'vendedores.nombres as nombrev', 'vendedores.apellido_paterno as appaternov', 'vendedores.apellido_materno as apmaternov', 'asignaciones.id as id_asignacion')
+        $clientesAsigandos  = Asignacion::select('personas.nombres', 'personas.apellido_paterno', 'personas.apellido_materno', 'vendedores.nombres as nombrev', 'vendedores.apellido_paterno as appaternov', 'vendedores.apellido_materno as apmaternov', 'asignaciones.id as id_asignacion', 'oportunidades.id as id_oportunidades')
                                         ->join('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
                                         ->join('personas', 'personas.id', '=', 'oportunidades.persona_id')
                                         ->join('vendedores','vendedores.id', '=','asignaciones.vendedor_id')
                                         ->where('oportunidades.campania_id',$campania_id)
-                                        // ->toSql();
+                                        ->where('asignaciones.estado',1)
                                         ->get();
 
-        // dd($clientesAsigandos);
-
         return view('campania.ajaxListadoClientesAsignados')->with(compact('clientesAsigandos'));
+
+    }
+
+    public function ajaxListadoSeguimientos(Request $request){
+
+        $asignacion_id = $request->input('asignacion');
+        $oportunidad_id = $request->input('oportunidad');
+
+
+        $asignaciones = Asignacion::where('oportunidad_id',$oportunidad_id)
+                                    ->get();
+                                    
+        $arrarAsignaciones = array();
+
+        foreach($asignaciones as $as){
+            
+            array_push($arrarAsignaciones,$as->id);
+
+        }
+
+        $seguimientos = Seguimiento::whereIn('asignacion_id', $arrarAsignaciones)
+                                    ->get();
+
+        return view('campania.ajaxListadoSeguimientos')->with(compact('seguimientos'));
+
+    }
+
+    public function ajaxListadoVendedorTramsferencia(Request $request){
+
+        $vendedores = Vendedor::all();
+
+        return view('campania.ajaxListadoVendedorTramsferencia')->with(compact('vendedores'));
+
+    }
+
+    public function tramsferirOportunidadVendedor(Request $request){    
+        // dd("holas");
+        // dd($request->all());
+
+        $asignacion_id = $request->input('asignacion');
+
+        $asignacion = Asignacion::find($asignacion_id);
+
+        $asignacion->estado = 0;
+
+        $asignacion->save();
+
+
+        $newAsignacion = new Asignacion();
+
+        $newAsignacion->vendedor_id         = $request->input('vendedor');
+        $newAsignacion->oportunidad_id      = $request->input('oportunidad');
+        $newAsignacion->fecha_asignacion    = date('Y-m-d H:i:s');
+        $newAsignacion->estado              = 1;
+
+        $newAsignacion->save();
 
     }
 

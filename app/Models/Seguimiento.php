@@ -18,6 +18,7 @@ class Seguimiento extends Model
         'eliminador_id',
         'asignacion_id',
         'estado_seguimiento_id',
+        'respuesta_seguimiento_id',
         'medio_seguimiento_id',
         'estado',
         'deleted_at',
@@ -26,6 +27,25 @@ class Seguimiento extends Model
     public function estado_seguimiento(){
 
         return $this->belongsTo('App\Models\EstadoSeguimiento', 'estado_seguimiento_id');
+
+    }
+
+    public function respuesta_seguimiento(){
+
+        return $this->belongsTo('App\Models\RespuestaSeguimiento', 'respuesta_seguimiento_id');
+
+    }
+
+    public function medio_seguimiento(){
+
+        return $this->belongsTo('App\Models\MedioSeguimiento', 'medio_seguimiento_id');
+
+    }
+
+    public function asignacion(){
+
+        // return $this->hasMany('App\Models\Asignacion');
+        return $this->belongsTo('App\Models\Asignacion', 'asignacion_id');
 
     }
 }

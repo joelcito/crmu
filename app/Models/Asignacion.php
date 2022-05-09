@@ -26,4 +26,10 @@ class Asignacion extends Model
         'estado',
         'deleted_at',
     ];
+
+    public function vendedor(){
+
+        return $this->belongsTo('App\Models\Vendedor', 'vendedor_id');
+
+    }
 }

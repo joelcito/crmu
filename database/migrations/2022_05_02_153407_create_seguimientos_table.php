@@ -27,6 +27,8 @@ class CreateSeguimientosTable extends Migration
             $table->foreign('estado_seguimiento_id')->references('id')->on('estado_seguimientos');
             $table->unsignedBigInteger('medio_seguimiento_id')->nullable();
             $table->foreign('medio_seguimiento_id')->references('id')->on('medio_seguimientos');
+            $table->text('descripcion')->nullable();
+            $table->dateTime('fecha')->nullable();
             $table->string('estado')->nullable();
             $table->datetime('deleted_at')->nullable();
             $table->timestamps();

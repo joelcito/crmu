@@ -2,10 +2,10 @@
     <div class="col-12">
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Lista de oportunidades</h5>
+                {{-- <h5 class="mb-0">Lista de oportunidades</h5>
                 <p class="text-sm mb-0">
-                    {{-- View all the orders from the previous year. --}}
-                </p>
+                    View all the orders from the previous year.
+                </p> --}}
             </div>
             <div class="table-responsive">
                 <table class="table table-flush" id="datatable-search">

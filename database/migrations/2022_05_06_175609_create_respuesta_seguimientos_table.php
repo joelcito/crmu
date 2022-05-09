@@ -21,8 +21,9 @@ class CreateRespuestaSeguimientosTable extends Migration
             $table->foreign('modificador_id')->references('id')->on('users');
             $table->unsignedBigInteger('eliminador_id')->nullable();
             $table->foreign('eliminador_id')->references('id')->on('users');
-            $table->unsignedBigInteger('seguimiento_id')->nullable()->nullable();
-            $table->foreign('seguimiento_id')->references('id')->on('seguimientos')->onDelete('cascade');
+            // $table->unsignedBigInteger( 'seguimiento_id')->nullable()->nullable();
+            // $table->foreign('seguimiento_id')->references('id')->on('seguimientos')->onDelete('cascade');
+            $table->string('nombre')->nullable();
             $table->text('descripcion')->nullable();
             $table->string('estado')->nullable();
             $table->datetime('deleted_at')->nullable();

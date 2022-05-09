@@ -32,22 +32,25 @@
                                 </td>
                                 <td>
                                     @php
-                                        $intento = App\Models\Seguimiento::where('asignacion_id', $clieAsig->id_asignacion)->count();
-
                                         $configuracion = App\Models\Configuracion::find(1);
 
-                                        // dd($configuracion->valor);
-                                        // dd($intento);
+                                        $intento = App\Models\Seguimiento::where('asignacion_id', $clieAsig->id_asignacion)
+                                                                        ->whereIn('respuesta_seguimiento_id',[2,3])
+                                                                        ->count();
 
-                                        // if($configuracion){
-                                            if($intento >= $configuracion->valor || $intento >= ($configuracion->valor - 1)){
-                                                echo "<span class='text-danger'>Peligro</span>";
-                                            }else if($intento == 1 || $intento == 2){
-                                                echo "<span class='text-success'>Bueno</span>";
-                                            }else if($intento > ($configuracion->valor/2) || $intento < ($configuracion->valor / 2)){
-                                                echo "<span class='text-warning'>Observacion</span>";
-                                            }
-                                        // }
+                                        if($intento >= $configuracion->valor || ($intento-1) >= $configuracion->valor){
+
+                                            echo "<span class='text-danger'>Peligro</span>";
+
+                                        }else if($intento == 1 || $intento == 2){
+
+                                            echo "<span class='text-success'>Bueno</span>";
+
+                                        }else if($intento < ($configuracion->valor/2) || $intento > ($configuracion->valor / 2)){
+                                            echo "<span class='text-warning'>Observacion</span>";
+                                        }else if($intento == 0){
+
+                                        }
 
                                     @endphp
                                 </td>
@@ -55,12 +58,17 @@
                                     @php
 
                                         $seguimiento = App\Models\Seguimiento::where('asignacion_id',$clieAsig->id_asignacion)->first();
+
+                                        if($seguimiento){
+                                            echo "<span class='badge bg-gradient-".$seguimiento->estado_seguimiento->color." '>".$seguimiento->estado_seguimiento->nombre."</span>";
+                                        }else{
+                                            echo "<span class='badge bg-gradient-info'>ASIGNADO</span>";
+                                        }
                                         
-                                        echo "<span class='badge bg-gradient-".$seguimiento->estado_seguimiento->color." '>".$seguimiento->estado_seguimiento->nombre."</span>";
                                     @endphp
                                 </td>
                                 <td>
-                                    <button class="btn btn-dark btn-sm btn-icon" onclick="abreModaltramsferencia({{ $clieAsig->id_asignacion }}, '{{ $clieAsig->nombres." ".$clieAsig->apellido_paterno." ".$clieAsig->apellido_materno }}')"><i class="fa fa-list"></i></button>                                </td>
+                                    <button class="btn btn-dark btn-sm btn-icon" onclick="abreModaltramsferencia({{ $clieAsig->id_asignacion }}, '{{ $clieAsig->nombres." ".$clieAsig->apellido_paterno." ".$clieAsig->apellido_materno }}', '{{ $clieAsig->id_oportunidades }}')"><i class="fa fa-list"></i></button>                                </td>
                             </tr>
                         @endforeach
                     </tbody>
