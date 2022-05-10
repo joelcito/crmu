@@ -33,16 +33,22 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="input-group input-group-static my-3">
                             <label>Fecha inicio</label>
                             <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="input-group input-group-static my-3">
                             <label>Fecha fin</label>
                             <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group input-group-static my-3">
+                            <label>Presupuesto</label>
+                            <input type="number" name="presupuesto" id="presupuesto" class="form-control" required>
                         </div>
                     </div>
                 </div>
