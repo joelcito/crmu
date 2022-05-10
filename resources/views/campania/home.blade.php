@@ -75,7 +75,116 @@
   </script> --}}
 
 
-  
+<!-- Modal NUEVO EGRESO -->
+<div class="modal fade" id="modalNuevoEgreso" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title font-weight-normal" id="exampleModalLabel">Formulario de egreso</h6>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+
+
+            <form action="" id="formulario_egreso">
+              <input type="text" name="campania_id_egreso" id="campania_id_egreso" value="{{ $campania_id }}">
+              <input type="text" name="presupuesto_id" id="presupuesto_id" value="{{ $campania_id }}">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                      <label for="exampleFormControlSelect1" class="ms-0">Seleccion el tipo</label>
+                      <select class="form-control" name="gasto_egreso" id="gasto_egreso">
+                        <option value="">Seleccion el tipo de gasto</option>
+                        @foreach($gastos as $gas)
+                            <option value="{{ $gas->id }}">{{ $gas->nombre }}</option>
+                        @endforeach
+                      </select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div style="margin-top:15px"></div>
+                  <div id="div_gasto_egreso" class="input-group input-group-outline mb-4">
+                    <label class="form-label">Monto de gasto en Bs.</label>
+                    <input type="number" name="monto_egreso" id="monto_egreso" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div id="div_descripcion_egreso" class="input-group input-group-static mb-4">
+                    <label class="form-label">Descripcion del Egreso</label>
+                    <input type="text" name="descripcion_egreso" id="descripcion_egreso" class="form-control">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn bg-gradient-success" onclick="guardarEgreso()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal NUEVO INGRESO -->
+<div class="modal fade" id="modalNuevoIngreso" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title font-weight-normal" id="exampleModalLabel">Formulario de nuevo ingreso</h6>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+
+
+            <form action="" id="formulario_ingreso">
+              <input type="hidden" name="campania_id_ingreso" id="campania_id_ingreso" value="{{ $campania_id }}">
+              <div class="row">
+                <div class="col-md-4">
+                  {{-- <div class="input-group input-group-outline my-3">
+                      <div class="input-group input-group-static mb-4">
+                        <label for="exampleFormControlSelect1" class="ms-0">Seleccion el tipo</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                          @foreach($gastos as $gas)
+                              <option value="{{ $gas->id }}">{{ $gas->nombre }}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                  </div> --}}
+                  <div class="input-group input-group-outline mb-4">
+                    <label class="form-label">Monto de ingreso en Bs.</label>
+                    <input type="number" name="monto_ingreso" id="monto_ingreso" class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="input-group input-group-outline mb-4">
+                    <label class="form-label">Descripcion del Ingreso</label>
+                    <input type="text" name="descripcion_ingreso" id="descripcion_ingreso" class="form-control">
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn bg-gradient-success" onclick="guardarIngreso()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="modatramsferenciaAsignacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -127,7 +236,27 @@
 <div class="row mt-5">
   <div class="col-xl-8 col-lg-7">
     <div class="row">
-      <div class="col-sm-4">
+
+      <div class="col-sm-3">
+        <div class="card">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+          <div class="bg-gradient-info shadow-success border-radius-lg py-2 pe-1">
+            <div class="chart">
+              <canvas id="chart-line-presupuesto" class="chart-canvas" height="100"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="card-body py-3">
+          <p class="text-sm mb-0">Presupuesto actual</p>
+          <h6 class="font-weight-bolder mb-0">
+            <span id="presupuestoActualCampania">{{ $presupuesto }}</span> Bs.
+            {{-- <span class="text-success text-sm font-weight-bolder">+55%</span> --}}
+          </h6>
+        </div>
+        </div>
+      </div>
+
+      <div class="col-sm-3">
         <div class="card">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-success shadow-success border-radius-lg py-2 pe-1">
@@ -145,7 +274,8 @@
         </div>
         </div>
       </div>
-      <div class="col-sm-4 mt-md-0 mt-5">
+
+      <div class="col-sm-3 mt-md-0 mt-5">
         <div class="card">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
             <div class="bg-gradient-primary shadow-primary border-radius-lg py-2 pe-1">
@@ -164,7 +294,8 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-4 mt-md-0 mt-5">
+
+      <div class="col-sm-3 mt-md-0 mt-5">
         <div class="card h-100">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
             <div class="bg-gradient-dark shadow-dark border-radius-lg py-2 pe-1 d-flex align-items-center text-center">
@@ -180,6 +311,7 @@
           </div>
         </div>
       </div>
+
     </div>
     <div class="row mt-4">
       <div class="col-12">
@@ -251,100 +383,59 @@
   </div>
 </div>
 <div class="row mt-4">
-  <div class="col-sm-6">
-    <div class="card h-100">
-      <div class="card-header pb-0 p-3">
-        <div class="row">
-          <div class="col-md-6">
-            <h6 class="mb-0">Inversion Medio publicitario</h6>
-          </div>
-          <div class="col-md-6 d-flex justify-content-end align-items-center">
-            <i class="material-icons me-2 text-lg">date_range</i>
-            <small>01 - 10 Mayo 2022</small>
-          </div>
-        </div>
-      </div>
-      <div class="card-body p-3">
-        <ul class="list-group">
-          <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
-            <div class="d-flex">
-              <div class="d-flex align-items-center">
-                <button class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_more</i></button>
-                <div class="d-flex flex-column">
-                  <h6 class="mb-1 text-dark text-sm">Facebook Ads</h6>
-                  <span class="text-xs">04 Mayo 2022, at 12:30 PM</span>
-                </div>
-              </div>
-              <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold ms-auto">
-              - $ 2,500
-              </div>
-            </div>
-            <hr class="horizontal dark mt-3 mb-2" />
-          </li>
-          <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
-            <div class="d-flex">
-              <div class="d-flex align-items-center">
-                <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_less</i></button>
-                <div class="d-flex flex-column">
-                  <h6 class="mb-1 text-dark text-sm">Google Ads</h6>
-                  <span class="text-xs">04 Mayo 2022, at 04:30 AM</span>
-                </div>
-              </div>
-              <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold ms-auto">
-                + $ 2,000
-              </div>
-            </div>
-            <hr class="horizontal dark mt-3 mb-2" />
-          </li>
-          <li class="list-group-item border-0 justify-content-between ps-0 mb-2 border-radius-lg">
-            <div class="d-flex">
-              <div class="d-flex align-items-center">
-                <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_less</i></button>
-                <div class="d-flex flex-column">
-                  <h6 class="mb-1 text-dark text-sm">Televisora</h6>
-                  <span class="text-xs">04 Mayo 2022, at 02:50 AM</span>
-                </div>
-              </div>
-              <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold ms-auto">
-                  + $ 1,400
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
   <div class="col-sm-6 mt-sm-0 mt-4">
     <div class="card h-100">
       <div class="card-header pb-0 p-3">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <h6 class="mb-0">Ingresos</h6>
           </div>
-          <div class="col-md-6 d-flex justify-content-end align-items-center">
+          <div class="col-md-4">
+            <button class="btn btn-success btn-sm" onclick="nuevoIngreso()">Nuevo Ingreso </button>
+          </div>
+          <div class="col-md-4 d-flex justify-content-end align-items-center">
             <i class="material-icons me-2 text-lg">date_range</i>
-            <small>01 - 10 Mayo 2022</small>
+            <small>
+              @php
+                $utilidades = new App\librerias\Utilidades();
+                $mesLiteral = $utilidades->mesLiteral(date('n'));
+
+                echo $mesLiteral." ".date('Y');
+
+              @endphp
+            </small>
           </div>
         </div>
       </div>
       <div class="card-body p-3">
         <ul class="list-group">
-          <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
-            <div class="d-flex">
-              <div class="d-flex align-items-center">
-                <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_less</i></button>
-                <div class="d-flex flex-column">
-                  <h6 class="mb-1 text-dark text-sm">via PayPal</h6>
-                  <span class="text-xs">07 June 2021, at 09:00 AM</span>
+
+          <div id="listadoIngresos">
+            @foreach ( $ingresos as $in)
+              <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
+                <div class="d-flex">
+                  <div class="d-flex align-items-center">
+                    <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_less</i></button>
+                    <div class="d-flex flex-column">
+                      <h6 class="mb-1 text-dark text-sm">{{ $in->descripcion }}</h6>
+                      <span class="text-xs">
+                        @php
+                          $fechaHoraEs = $utilidades->fechaHoraCastellano($in->fecha);
+                          echo $fechaHoraEs;
+                        @endphp
+                      </span>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold ms-auto">
+                    {{ $in->ingreso }} Bs.
+                  </div>
                 </div>
-              </div>
-              <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold ms-auto">
-                + $ 4,999
-              </div>
-            </div>
-            <hr class="horizontal dark mt-3 mb-2" />
-          </li>
-          <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
+                <hr class="horizontal dark mt-3 mb-2" />
+              </li>  
+            @endforeach
+          </div>
+          
+          {{-- <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
             <div class="d-flex">
               <div class="d-flex align-items-center">
                 <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_less</i></button>
@@ -358,8 +449,8 @@
               </div>
             </div>
             <hr class="horizontal dark mt-3 mb-2" />
-          </li>
-          <li class="list-group-item border-0 justify-content-between ps-0 mb-2 border-radius-lg">
+          </li> --}}
+          {{-- <li class="list-group-item border-0 justify-content-between ps-0 mb-2 border-radius-lg">
             <div class="d-flex">
               <div class="d-flex align-items-center">
                 <button class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_more</i></button>
@@ -372,7 +463,91 @@
                 - $ 1,800
               </div>
             </div>
-          </li>
+          </li> --}}
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card h-100">
+      <div class="card-header pb-0 p-3">
+        <div class="row">
+          <div class="col-md-4">
+            <h6 class="mb-0">Gastos</h6>
+          </div>
+          <div class="col-md-4">
+            <button class="btn btn-sm btn-info" onclick="nuevoEgreso()">Nuevo Gasto</button>
+          </div>
+          <div class="col-md-4 d-flex justify-content-end align-items-center">
+            <i class="material-icons me-2 text-lg">date_range</i>
+            <small>
+              @php
+                $mesLiteral = $utilidades->mesLiteral(date('n'));
+                
+                echo $mesLiteral." ".date('Y');
+
+              @endphp
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="card-body p-3">
+        <ul class="list-group">
+
+          <div id="listadoEgreso">
+            @foreach ($egresos as $egre)
+              <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
+                <div class="d-flex">
+                  <div class="d-flex align-items-center">
+                    <button onclick="editEgreso('{{ $egre->id }}', '{{ $egre->gasto_id }}', '{{ $egre->egreso }}', '{{ $egre->descripcion }}')" class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_more</i></button>
+                    <div class="d-flex flex-column">
+                      <h6 class="mb-1 text-dark text-sm">{{ $egre->gasto->nombre }}</h6>
+                      <span class="text-xs">
+                        @php
+                          $fechaHoraEs = $utilidades->fechaHoraCastellano($egre->fecha);
+
+                          echo $fechaHoraEs;
+                        @endphp
+                      </span>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold ms-auto">
+                    {{$egre->egreso}} Bs.
+                  </div>
+                </div>
+                <hr class="horizontal dark mt-3 mb-2" />
+              </li>
+            @endforeach
+          </div>
+          {{-- <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
+            <div class="d-flex">
+              <div class="d-flex align-items-center">
+                <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_less</i></button>
+                <div class="d-flex flex-column">
+                  <h6 class="mb-1 text-dark text-sm">Google Ads</h6>
+                  <span class="text-xs">04 Mayo 2022, at 04:30 AM</span>
+                </div>
+              </div>
+              <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold ms-auto">
+                + $ 2,000
+              </div>
+            </div>
+            <hr class="horizontal dark mt-3 mb-2" />
+          </li> --}}
+          {{-- <li class="list-group-item border-0 justify-content-between ps-0 mb-2 border-radius-lg">
+            <div class="d-flex">
+              <div class="d-flex align-items-center">
+                <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_less</i></button>
+                <div class="d-flex flex-column">
+                  <h6 class="mb-1 text-dark text-sm">Televisora</h6>
+                  <span class="text-xs">04 Mayo 2022, at 02:50 AM</span>
+                </div>
+              </div>
+              <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold ms-auto">
+                  + $ 1,400
+              </div>
+            </div>
+          </li> --}}
         </ul>
       </div>
     </div>
@@ -428,6 +603,8 @@
     var ctx1 = document.getElementById("chart-line-1").getContext("2d");
 
     var ctx2 = document.getElementById("chart-line-2").getContext("2d");
+
+    var presupuesto = document.getElementById("chart-line-presupuesto").getContext("2d");
 
     new Chart(ctx1, {
       type: "line",
@@ -559,7 +736,90 @@
         },
       },
     });
+
+    new Chart(presupuesto, {
+      type: "line",
+      data: {
+        labels: [
+              @php
+                foreach ($egresos as $egre){
+                    echo "'".$egre->gasto->nombre."',";
+                }
+              @endphp
+                // "Abr", "May", "Jun", "Jul", "Agu", "Sept", "Oct", "Non", "Dic"
+              ],
+        datasets: [{
+          label: "Income",
+          tension: 0.5,
+          borderWidth: 0,
+          pointRadius: 0,
+          borderColor: "#fff",
+          borderWidth: 2,
+          backgroundColor: "transparent",
+          data: [
+            @php
+              foreach ($egresos as $egre){
+                  echo "'".$egre->egreso."',";
+              }
+            @endphp
+            // 60, 80, 75, 90, 67, 100, 90, 110, 120
+          ],
+          maxBarThickness: 6,
+          fill: true
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false,
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
+        scales: {
+          y: {
+            grid: {
+              drawBorder: false,
+              display: false,
+              drawOnChartArea: true,
+              drawTicks: false,
+              borderDash: [5, 5],
+              color: 'rgba(255, 255, 255, .2)'
+
+            },
+            ticks: {
+              callback: function(value, index, values) {
+                return '$' + value;
+              },
+              display: true,
+              padding: 10,
+              color: '#f8f9fa',
+            }
+          },
+          x: {
+            grid: {
+              drawBorder: false,
+              display: true,
+              drawOnChartArea: true,
+              drawTicks: false,
+              borderDash: [5, 5],
+              color: 'rgba(255, 255, 255, .2)'
+            },
+            ticks: {
+              display: true,
+              padding: 10,
+              color: '#f8f9fa',
+            }
+          },
+        },
+      },
+    });
 </script>
+
 <script>
     $( document ).ready(function() {
 
@@ -925,5 +1185,127 @@
 
     }
 
+    function nuevoIngreso(){
+
+      $('#modalNuevoIngreso').modal('show');
+
+      $('#monto_ingreso').val('');
+      $('#descripcion_ingreso').val('');
+
+    }
+
+    function guardarIngreso(){
+    
+      Swal.fire({
+        title: 'Esta seguro ingresar el monto?',
+        text: "No se podra revertir!",
+        icon: 'warning',
+        showCancelButton: true,
+        // confirmButtonColor: '#3085d6',
+        // cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Ingresar!'
+      }).then((result) => {
+
+        if (result.isConfirmed) {
+
+          var datosFormulario = $('#formulario_ingreso').serialize();
+
+
+          $.ajax({
+              url: "{{ url('Campania/guardaIngreso') }}",
+              data: datosFormulario,
+              type: 'POST',
+              dataType: 'json',
+              success: function(data) {
+                
+                console.log(data);
+
+                $('#listadoIngresos').html(data.lista);
+                $('#presupuestoActualCampania').text(data.presupuesto);
+
+                Swal.fire({
+                  title: 'Correcto',
+                  text: "Se guardo el ingreso!",
+                  icon: 'success',
+                  timer: 800
+                })
+
+                $('#modalNuevoIngreso').modal('hide');
+
+              },
+              error: function(error){
+
+              }
+          });
+        }
+      })
+    
+    }
+
+    function nuevoEgreso(){
+      
+      $('#modalNuevoEgreso').modal('show');
+
+      $('#formulario_egreso')[0].reset();
+      $("#div_gasto_egreso, #div_descripcion_egreso").removeClass("is-focused");
+
+    }
+
+    function guardarEgreso(){
+      Swal.fire({
+        title: 'Esta seguro guardar el egreso?',
+        text: "No se podra revertir!",
+        icon: 'warning',
+        showCancelButton: true,
+        // confirmButtonColor: '#3085d6',
+        // cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Ingresar!'
+      }).then((result) => {
+
+        if (result.isConfirmed) {
+
+          var datosFormulario = $('#formulario_egreso').serialize();
+
+          $.ajax({
+              url: "{{ url('Campania/guardaEgreso') }}",
+              data: datosFormulario,
+              type: 'POST',
+              dataType: 'json',
+              success: function(data) {
+
+                $('#listadoEgreso').html(data.lista);
+                $('#presupuestoActualCampania').text(data.presupuesto);
+
+                Swal.fire({
+                  title: 'Correcto',
+                  text: "Se guardo el Egreso!",
+                  icon: 'success',
+                  timer: 800
+                })
+
+                $('#modalNuevoEgreso').modal('hide');
+
+              },
+              error: function(error){
+                console.log(error);
+              }
+          });
+        }
+      })
+    }
+
+    function editEgreso(presupuesto, gasto, monto, descripcion){
+
+      $('#presupuesto_id').val(presupuesto);
+      $('#gasto_egreso').val(gasto);
+      $('#monto_egreso').val(monto);
+      $('#descripcion_egreso').val(descripcion);
+
+      $("#div_gasto_egreso, #div_descripcion_egreso").addClass("is-focused");
+      
+      $('#modalNuevoEgreso').modal('show');
+
+    }
+    
 </script>
 @endsection

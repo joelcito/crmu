@@ -23,11 +23,15 @@ class CreatePresupuestosTable extends Migration
             $table->foreign('eliminador_id')->references('id')->on('users');
             $table->unsignedBigInteger('campania_id')->nullable();
             $table->foreign('campania_id')->references('id')->on('campanias');
-            $table->unsignedBigInteger('medio_publicitario_id')->nullable();
-            $table->foreign('medio_publicitario_id')->references('id')->on('medio_publicitarios');
+            $table->unsignedBigInteger('gasto_id')->nullable();
+            $table->foreign('gasto_id')->references('id')->on('gastos');
             $table->decimal('ingreso',12,2)->nullable();
             $table->decimal('egreso',12,2)->nullable();
+            $table->integer('candidad')->nullable();
+            $table->datetime('fecha')->nullable();
+            $table->string('tipo')->nullable();
             $table->string('estado')->nullable();
+            $table->text('descripcion')->nullable();
             $table->datetime('deleted_at')->nullable();
             $table->timestamps();
         });

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMedioPublicitariosTable extends Migration
+class CreateGastosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMedioPublicitariosTable extends Migration
      */
     public function up()
     {
-        Schema::create('medio_publicitarios', function (Blueprint $table) {
+        Schema::create('gastos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('creador_id')->nullable();
             $table->foreign('creador_id')->references('id')->on('users');
@@ -36,6 +36,6 @@ class CreateMedioPublicitariosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('medio_publicitarios');
+        Schema::dropIfExists('gastos');
     }
 }

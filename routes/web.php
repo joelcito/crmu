@@ -32,6 +32,8 @@ Route::post('Campania/ajaxListadoClientesAsignados', 'CampaniaController@ajaxLis
 Route::post('Campania/ajaxListadoSeguimientos', 'CampaniaController@ajaxListadoSeguimientos');
 Route::post('Campania/ajaxListadoVendedorTramsferencia', 'CampaniaController@ajaxListadoVendedorTramsferencia');
 Route::post('Campania/tramsferirOportunidadVendedor', 'CampaniaController@tramsferirOportunidadVendedor');
+Route::post('Campania/guardaIngreso', 'CampaniaController@guardaIngreso');
+Route::post('Campania/guardaEgreso', 'CampaniaController@guardaEgreso');
 
 
 // FORMULARIO

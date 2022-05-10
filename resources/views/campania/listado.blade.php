@@ -36,7 +36,7 @@
                     <div class="col-md-4">
                         <div class="input-group input-group-static my-3">
                             <label>Fecha inicio</label>
-                            <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
+                            <input type="date" min="{{ date('Y-m-d') }}" onchange="validafechaini()" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -84,12 +84,9 @@
                         <div class="row">
                             <div class="col-md-4"></div>
                             <div class="col-md-4">
-                                {{-- <button type="button" class="btn bg-gradient-success btn-block mb-3" data-bs-toggle="modal" data-bs-target="#exampleModalMessage">
-                                    Message Modal
-                                </button> --}}
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-success" onclick="abreModal()"><i class="fa fa-plus"></i> Nuevo</button>
+                                <button class="btn btn-success" onclick="abreModal()"><i class="fa fa-plus"></i> Nueva Campaña</button>
                             </div>
                         </div>
                     </div>
@@ -141,11 +138,13 @@
     }
 
     function formulario(campania){
-        // window.location.href = "{{ url('Campania/formulario') }}";
+        
         window.location.href = "{{ url('Campania/home') }}/"+campania;
     }
 
     function abreModal(){
+        
+        $('#formularioNuevoCampania')[0].reset()
 
         $('#modaNuevoCampania').modal('show');
 
@@ -188,6 +187,11 @@
             $('#formularioNuevoCampania')[0].reportValidity()
         }
 
+    }
+
+    function validafechaini(){
+
+        $("#fecha_fin").attr("min",$('#fecha_inicio').val());
     }
 
     // document.querySelectorAll(".export").forEach(function(el) {

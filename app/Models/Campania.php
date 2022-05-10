@@ -24,5 +24,44 @@ class Campania extends Model
         'estado',
         'deleted_at',
     ];
+
+    public static function ingresos($campania_id){
+        
+        $ingresos = Presupuesto::where('campania_id',$campania_id)
+                                ->where('tipo',"Ingreso")
+                                ->get();
+
+        return $ingresos;
+
+    }
+
+    public static function egresos($campania_id){
+        
+        $egresos = Presupuesto::where('campania_id',$campania_id)
+                                ->where('tipo',"Egreso")
+                                ->get();
+
+        return $egresos;
+
+    }
+
+    public static function presupuestoActual($campania_id){
+
+        $total = Presupuesto::selectRaw('SUM(ingreso) - SUM(egreso) AS total')
+                                ->where('campania_id',$campania_id)
+                                ->groupBy('campania_id')
+                                ->first();
+
+        if($total){
+
+            return $total->total;
+
+        }else{
+
+            return 0;
+
+        }
+
+    }
     
 }

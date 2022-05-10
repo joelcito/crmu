@@ -21,6 +21,7 @@ class Pregunta extends Model
         'nombre',
         'requerido',
         'descripcion',
+        'tipo',
         'estado',
         'deleted_at',
     ];

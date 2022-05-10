@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gasto;
 use App\Models\Campania;
 use App\Models\Vendedor;
 use App\Models\Asignacion;
 use App\Models\Oportunidad;
+use App\Models\Presupuesto;
 use App\Models\Seguimiento;
 use Illuminate\Http\Request;
+use App\librerias\Utilidades;
+use GuzzleHttp\Handler\Proxy;
 use App\Models\FormularioCampania;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +24,7 @@ class CampaniaController extends Controller
 
         return view('campania.listado');
 
-     }
+    }
 
 
     public function ajaxListado(Request $request){
@@ -54,6 +58,7 @@ class CampaniaController extends Controller
 
             }else{
 
+                // AGREGAMOS LA NUEVA CAMPANIA
                 $campania = new Campania();
 
                 $campania->nombre       = $request->input('nombre_campania');
@@ -63,6 +68,19 @@ class CampaniaController extends Controller
 
                 $campania->save();
 
+
+                // AGREGAMOS EL NUEVO PRESUPUESTO
+                $presupuesto = new Presupuesto();
+
+                $presupuesto->campania_id    = $campania->id;
+                $presupuesto->ingreso        = $request->input('presupuesto');
+                $presupuesto->fecha          = date('Y-m-d H:i:s');
+                $presupuesto->tipo           = "Ingreso";
+                $presupuesto->descripcion    = "Primer Ingreso para la camaña";
+                $presupuesto->egreso         = 0;
+
+                $presupuesto->save();
+
                 return json_encode(['success' => true, 'id' => $campania->id]);
             }
         }else{
@@ -70,16 +88,14 @@ class CampaniaController extends Controller
         }
 
     }
-
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function home(Request $request, $campania_id)
-    {
-        
+    public function home(Request $request, $campania_id){
+
+        // PARA LAS ASIGACIONES
         $formularios = FormularioCampania::where('campania_id',$campania_id)->get();
 
         $oportunidades = Oportunidad::where('campania_id',$campania_id)->get();
@@ -90,9 +106,23 @@ class CampaniaController extends Controller
                                 ->where('oportunidades.campania_id',$campania_id)
                                 ->groupBy('vendedores.id')
                                 ->get();
+        
+        // PARA EL CONTROL DE BALANCE GENERAL
+        $ingresos = Campania::ingresos($campania_id);
+                                
+        // EGRESOS
+        $egresos = Campania::egresos($campania_id);
+
+        // GASTOS
+        $gastos = Gasto::all();
+
+        // PRESUPUESTO ACTUAL
+        $presupuesto = Campania::presupuestoActual($campania_id);
+
+        
 
         // return view('campania.home')->with(compact('formularios'));
-        return view('campania.home')->with(compact('campania_id', 'formularios', 'oportunidades', 'vendedores'));
+        return view('campania.home')->with(compact('campania_id', 'formularios', 'oportunidades', 'vendedores', 'ingresos', 'egresos', 'gastos', 'presupuesto'));
     }
 
     public function ajaxBuscaVendedor(Request $request){
@@ -242,6 +272,127 @@ class CampaniaController extends Controller
 
         $newAsignacion->save();
 
+    }
+
+    public function guardaIngreso(Request $request){
+
+        if($request->ajax()){
+
+            $campania_id = $request->input('campania_id_ingreso');
+            
+            $presupuesto = new Presupuesto();
+
+            $presupuesto->campania_id   = $campania_id;
+            $presupuesto->ingreso       = $request->input('monto_ingreso');
+            $presupuesto->fecha         = date('Y-m-d H:i:s');
+            $presupuesto->tipo          = "Ingreso";
+            $presupuesto->egreso       = 0;
+            $presupuesto->descripcion   = $request->input('descripcion_ingreso');
+    
+            $presupuesto->save();
+
+        
+            $ingresos = Campania::ingresos($campania_id);
+
+            $lista = '';
+
+            $utilidades = new Utilidades();
+
+            foreach ($ingresos as $ing){
+                
+                $fechaHoraEs = $utilidades->fechaHoraCastellano($ing->fecha);
+
+                $lista = $lista .'
+                                <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
+                                    <div class="d-flex">
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_less</i></button>
+                                        <div class="d-flex flex-column">
+                                        <h6 class="mb-1 text-dark text-sm">'.$ing->descripcion.'</h6>
+                                        <span class="text-xs">
+                                            '.$fechaHoraEs.'
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold ms-auto">
+                                        '.$ing->ingreso.' Bs.
+                                    </div>
+                                    </div>
+                                    <hr class="horizontal dark mt-3 mb-2" />
+                                </li>
+                                ';
+            }
+
+            $html['lista'] = $lista;
+
+            $presupuestoActual = Campania::presupuestoActual($campania_id);
+
+            $html['presupuesto'] = $presupuestoActual;
+
+            return json_encode($html);
+        }
+
+    }
+
+    public function guardaEgreso(Request $request){
+
+        if($request->ajax()){
+
+            $campania_id = $request->input('campania_id_egreso');
+
+            $presupuesto = new Presupuesto();
+
+            $presupuesto->campania_id = $campania_id;
+            $presupuesto->gasto_id    = $request->input('gasto_egreso');
+            $presupuesto->egreso      = $request->input('monto_egreso');
+            $presupuesto->fecha       = date('Y-m-d H:i:s');
+            $presupuesto->tipo        = "Egreso";
+            $presupuesto->descripcion = $request->input('descripcion_egreso');
+
+            $presupuesto->save();
+
+            $egresso = Campania::egresos($campania_id);
+
+            $lista = '';
+
+            $utilidades = new Utilidades();
+
+            foreach ($egresso as $egre){
+                
+                $fechaHoraEs = $utilidades->fechaHoraCastellano($egre->fecha);
+                
+                $lista = $lista.'
+                                <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
+                                    <div class="d-flex">
+                                    <div class="d-flex align-items-center">
+                                        <button class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_more</i></button>
+                                        <div class="d-flex flex-column">
+                                        <h6 class="mb-1 text-dark text-sm">'.$egre->gasto->nombre.'</h6>
+                                        <span class="text-xs">
+                                        '.$fechaHoraEs.'
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold ms-auto">
+                                        '.$egre->egreso.' Bs.
+                                    </div>
+                                    </div>
+                                    <hr class="horizontal dark mt-3 mb-2" />
+                                </li>
+                                ';
+            }
+
+            $html['lista'] = $lista;
+
+            $presupuestoActual = Campania::presupuestoActual($campania_id);
+
+            $html['presupuesto'] = $presupuestoActual;
+
+            // dd(json_encode($html));
+
+            return json_encode($html);
+
+        }
     }
 
     /**
