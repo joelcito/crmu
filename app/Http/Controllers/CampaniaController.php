@@ -6,6 +6,7 @@ use App\Models\Gasto;
 use App\Models\Campania;
 use App\Models\Vendedor;
 use App\Models\Asignacion;
+use App\Models\Comprobante;
 use App\Models\Oportunidad;
 use App\Models\Presupuesto;
 use App\Models\Seguimiento;
@@ -338,9 +339,19 @@ class CampaniaController extends Controller
 
         if($request->ajax()){
 
-            $campania_id = $request->input('campania_id_egreso');
+            $presupuesto_id = $request->input('presupuesto_id');
 
-            $presupuesto = new Presupuesto();
+            if($presupuesto_id != 0){
+
+                $presupuesto = Presupuesto::find($presupuesto_id);
+
+            }else{
+                
+                $presupuesto = new Presupuesto();
+
+            }
+
+            $campania_id = $request->input('campania_id_egreso');
 
             $presupuesto->campania_id = $campania_id;
             $presupuesto->gasto_id    = $request->input('gasto_egreso');
@@ -351,35 +362,77 @@ class CampaniaController extends Controller
 
             $presupuesto->save();
 
+
             $egresso = Campania::egresos($campania_id);
+
+
+            // PROCEDEMOS AL SUBIDO DE ARCHIVO Y MODIFICACION DE DATOS DE LA BASE DE DATOS 
+            $comprobante_id = $request->input('comprobante_id');
+
+            if($comprobante_id != 0){
+
+                $comprobante = Comprobante::find($comprobante_id);
+
+            }else{
+
+                $comprobante = new Comprobante();
+                
+            }
+
+            if($request->has('comprobante')){
+                // subiendo el archivo al servidor
+                $archivo    = $request->file('comprobante');
+                $direcion   = "imagenesComprobantes/";
+                $nombreArchivo = date('YmdHis').".".$archivo->getClientOriginalExtension();
+                $archivo->move($direcion,$nombreArchivo);
+
+                $comprobante->nombre            = $nombreArchivo;
+            }
+
+            // GUARDANDO EL NOMBRE DEL ARCHIVO EN LA DATE BASE
+            $comprobante->presupuesto_id    = $presupuesto->id;
+            $comprobante->nro_comprobante   = $request->input('nro_comprobante');
+
+            $comprobante->save();
+
 
             $lista = '';
 
             $utilidades = new Utilidades();
 
             foreach ($egresso as $egre){
+
+                $comprobante = Comprobante::where('presupuesto_id', $egre->id)->first();
+
+                if($comprobante){
+                    $numComprobante = $comprobante->nro_comprobante; 
+                    $idComprobante = $comprobante->id;
+                }else{
+                    $numComprobante = '""'; 
+                    $idComprobante = 0;
+                }
                 
                 $fechaHoraEs = $utilidades->fechaHoraCastellano($egre->fecha);
                 
-                $lista = $lista.'
-                                <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
-                                    <div class="d-flex">
-                                    <div class="d-flex align-items-center">
-                                        <button class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_more</i></button>
-                                        <div class="d-flex flex-column">
-                                        <h6 class="mb-1 text-dark text-sm">'.$egre->gasto->nombre.'</h6>
-                                        <span class="text-xs">
-                                        '.$fechaHoraEs.'
+                $lista = $lista."
+                                <li class='list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg'>
+                                    <div class='d-flex'>
+                                    <div class='d-flex align-items-center'>
+                                        <button onclick='editEgreso($egre->id, $egre->gasto_id, $egre->egreso,".'"'.$egre->descripcion.'"'.",$numComprobante, $idComprobante)' class='btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center'><i class='material-icons text-lg'>expand_more</i></button>
+                                        <div class='d-flex flex-column'>
+                                        <h6 class='mb-1 text-dark text-sm'>".$egre->gasto->nombre."</h6>
+                                        <span class='text-xs'>
+                                        $fechaHoraEs
                                         </span>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold ms-auto">
-                                        '.$egre->egreso.' Bs.
+                                    <div class='d-flex align-items-center text-danger text-gradient text-sm font-weight-bold ms-auto'>
+                                        $egre->egreso Bs.
                                     </div>
                                     </div>
-                                    <hr class="horizontal dark mt-3 mb-2" />
+                                    <hr class='horizontal dark mt-3 mb-2' />
                                 </li>
-                                ';
+                                ";
             }
 
             $html['lista'] = $lista;
@@ -388,11 +441,32 @@ class CampaniaController extends Controller
 
             $html['presupuesto'] = $presupuestoActual;
 
-            // dd(json_encode($html));
-
             return json_encode($html);
 
         }
+    }
+
+    public function balanceGeneral(Request $request, $campania_id){
+        
+        // PRESUPUESTO ACTUAL
+        $presupuesto = Campania::presupuestoActual($campania_id);
+
+        // PRESUPUESTO POR GASTOS TOTALES
+        $gastosTotales = Campania::tiposGasto($campania_id);
+
+        // TOTAL INGRESO
+        $totalIngreso = Campania::totalIngresoEgreso($campania_id, "Ingreso");
+        
+        // TOTAL EGRESO
+        $totalEgreso = Campania::totalIngresoEgreso($campania_id, "Egreso");
+
+        // INGRESOS POR SEPARADOS
+        $ingresos = Campania::ingresos($campania_id);
+                                
+        // EGRESOS POR SEPARADOS
+        $egresos = Campania::egresos($campania_id);
+
+        return view('campania.balanceGeneral')->with(compact('presupuesto', 'gastosTotales', 'totalIngreso', 'totalEgreso', 'ingresos' ,'egresos'));
     }
 
     /**

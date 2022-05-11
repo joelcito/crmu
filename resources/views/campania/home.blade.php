@@ -90,9 +90,10 @@
           <div class="col-md-12">
 
 
-            <form action="" id="formulario_egreso">
-              <input type="text" name="campania_id_egreso" id="campania_id_egreso" value="{{ $campania_id }}">
-              <input type="text" name="presupuesto_id" id="presupuesto_id" value="{{ $campania_id }}">
+            <form action="" id="formulario_egreso" enctype="multipart/form-data">
+              <input type="hidden" name="campania_id_egreso" id="campania_id_egreso" value="{{ $campania_id }}">
+              <input type="hidden" name="presupuesto_id" id="presupuesto_id" value="0">
+              <input type="hidden" name="comprobante_id" id="comprobante_id" value="0">
               <div class="row">
                 <div class="col-md-6">
                   <div class="input-group input-group-static mb-4">
@@ -118,6 +119,20 @@
                   <div id="div_descripcion_egreso" class="input-group input-group-static mb-4">
                     <label class="form-label">Descripcion del Egreso</label>
                     <input type="text" name="descripcion_egreso" id="descripcion_egreso" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="input-group input-group-static mb-4">
+                    <input type="file" name="comprobante" id="comprobante" class="form-control">
+                    <small class="text-success" style="font-size: 11px;">Si desea Remplazar o Subir un comporbante de egreso puede subir un archivo</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div  id="div_comprobante_egreso" class="input-group input-group-static mb-4">
+                    <label class="form-label">Nro de Comprobante</label>
+                    <input type="number" name="nro_comprobante" id="nro_comprobante" class="form-control">
                   </div>
                 </div>
               </div>
@@ -241,9 +256,11 @@
         <div class="card">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
           <div class="bg-gradient-info shadow-success border-radius-lg py-2 pe-1">
-            <div class="chart">
-              <canvas id="chart-line-presupuesto" class="chart-canvas" height="100"></canvas>
-            </div>
+            <a href="{{ url('Campania/balanceGeneral',[$campania_id]) }}">
+              <div class="chart">
+                <canvas id="chart-line-presupuesto" class="chart-canvas" height="100"></canvas>
+              </div>
+            </a>
           </div>
         </div>
         <div class="card-body py-3">
@@ -496,10 +513,13 @@
 
           <div id="listadoEgreso">
             @foreach ($egresos as $egre)
+            @php
+              $comprobante = App\Models\Comprobante::where('presupuesto_id',$egre->id)->first();
+            @endphp
               <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
                 <div class="d-flex">
                   <div class="d-flex align-items-center">
-                    <button onclick="editEgreso('{{ $egre->id }}', '{{ $egre->gasto_id }}', '{{ $egre->egreso }}', '{{ $egre->descripcion }}')" class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_more</i></button>
+                    <button onclick="editEgreso('{{ $egre->id }}', '{{ $egre->gasto_id }}', '{{ $egre->egreso }}', '{{ $egre->descripcion }}', '{{ ($comprobante)? $comprobante->nro_comprobante: '' }}', '{{ ($comprobante)? $comprobante->id : '0' }}')" class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_more</i></button>
                     <div class="d-flex flex-column">
                       <h6 class="mb-1 text-dark text-sm">{{ $egre->gasto->nombre }}</h6>
                       <span class="text-xs">
@@ -599,6 +619,7 @@
 
 @section('js')
 <script src="{{ asset('assets/js/plugins/datatables.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/dropzone.min.js') }}"></script>
 <script>
     var ctx1 = document.getElementById("chart-line-1").getContext("2d");
 
@@ -1245,9 +1266,10 @@
     function nuevoEgreso(){
       
       $('#modalNuevoEgreso').modal('show');
+      $('#presupuesto_id').val(0);
 
       $('#formulario_egreso')[0].reset();
-      $("#div_gasto_egreso, #div_descripcion_egreso").removeClass("is-focused");
+      $("#div_gasto_egreso, #div_descripcion_egreso, #div_comprobante_egreso").removeClass("is-focused");
 
     }
 
@@ -1264,11 +1286,17 @@
 
         if (result.isConfirmed) {
 
-          var datosFormulario = $('#formulario_egreso').serialize();
+          // var datosFormulario = $('#formulario_egreso').serialize();
+          // console.log(datosFormulario);
+
+          var formulario = new FormData($('#formulario_egreso')[0]);
 
           $.ajax({
               url: "{{ url('Campania/guardaEgreso') }}",
-              data: datosFormulario,
+              // data:datosFormulario,
+              data:formulario,
+              processData: false,
+              contentType: false, 
               type: 'POST',
               dataType: 'json',
               success: function(data) {
@@ -1294,14 +1322,16 @@
       })
     }
 
-    function editEgreso(presupuesto, gasto, monto, descripcion){
+    function editEgreso(presupuesto, gasto, monto, descripcion, nro_comprobante, comprobante){
 
       $('#presupuesto_id').val(presupuesto);
       $('#gasto_egreso').val(gasto);
       $('#monto_egreso').val(monto);
       $('#descripcion_egreso').val(descripcion);
+      $('#nro_comprobante').val(nro_comprobante);
+      $('#comprobante_id').val(comprobante)
 
-      $("#div_gasto_egreso, #div_descripcion_egreso").addClass("is-focused");
+      $("#div_gasto_egreso, #div_descripcion_egreso, #div_comprobante_egreso").addClass("is-focused");
       
       $('#modalNuevoEgreso').modal('show');
 

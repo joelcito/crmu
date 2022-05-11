@@ -55,7 +55,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="input-group input-group-outline my-3">
-                            <textarea name="descripcion_campania" id="descripcion_campania" cols="5" rows="5" class="form-control" placeholder="Descripcion" required></textarea>
+                            <textarea name="descripcion_campania" id="descripcion_campania" cols="5" rows="5" class="form-control" placeholder="Descripcion de la Campaña" required></textarea>
                         </div>
                     </div>
                 </div>
@@ -82,11 +82,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="row">
-                            <div class="col-md-4"></div>
-                            <div class="col-md-4">
-                            </div>
-                            <div class="col-md-4">
-                                <button class="btn btn-success" onclick="abreModal()"><i class="fa fa-plus"></i> Nueva Campaña</button>
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                                <button class="btn btn-success btn-block" onclick="abreModal()"><i class="fa fa-plus"></i> Nueva Campaña</button>
                             </div>
                         </div>
                     </div>

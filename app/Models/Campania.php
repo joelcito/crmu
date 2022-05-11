@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -62,6 +63,45 @@ class Campania extends Model
 
         }
 
+    }
+
+    public static function tiposGasto($campania_id){
+
+        $gastos = Presupuesto::select(DB::raw('sum(egreso) as TotalGastado, gasto_id'))
+                            ->where('campania_id',$campania_id)
+                            ->where('tipo',"Egreso")
+                            ->groupBy('gasto_id')
+                            ->get();
+
+        if($gastos){
+
+            return $gastos;
+            
+        }else{
+
+            return 0;
+
+        }
+    }
+
+    public static function totalIngresoEgreso($campania_id, $tipo){
+
+        $campo = strtolower($tipo);
+
+        $total = Presupuesto::select(DB::raw("sum($campo) as total"))
+                                    ->where('campania_id', $campania_id)
+                                    ->where('tipo', $tipo)
+                                    ->first();
+
+        if($total){
+
+            return $total->total;
+
+        }else{
+
+            return 0;
+
+        }
     }
     
 }

@@ -32,4 +32,10 @@ class Presupuesto extends Model
         return $this->belongsTo('App\Models\Gasto', 'gasto_id');
     }
 
+    public function comprbante(){
+
+        return $this->hasMany('App\Models\Comprobante');
+        
+    }
+
 }
