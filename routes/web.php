@@ -43,6 +43,7 @@ Route::get('Formulario/listado', 'FormularioController@listado');
 Route::get('Formulario/formulario/{campania_id}', 'FormularioController@formulario');
 Route::get('Formulario/respuestaFormulario/{campania_id}/{formulario_id}', 'FormularioController@respuestaFormulario');
 Route::post('Formulario/guardarRespuestaFormulario', 'FormularioController@guardarRespuestaFormulario');
+Route::get('Formulario/respuestaFormularioCompartir/{campania_id}/{formulario_id}/{red_social}', 'FormularioController@respuestaFormularioCompartir');
 
 
 // VENDEDORES

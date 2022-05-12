@@ -51,9 +51,16 @@ class TipoCampaniaController extends Controller
 
     public function ajaxListado(Request $request){
 
-        $tiposCampanias = TipoCampania::all();
+        if($request->ajax()){
 
-        return view('tipo_campania.ajaxListado')->with(compact('tiposCampanias'));
+            $tiposCampanias = TipoCampania::all();
+
+            return view('tipo_campania.ajaxListado')->with(compact('tiposCampanias'));
+            
+        }else{
+        
+        }
+
     }
     /**
      * Display a listing of the resource.

@@ -4,7 +4,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @endsection
 
-
 @section('css')
     <style>
         :root {
@@ -46,7 +45,7 @@
             margin: 1rem;
         } */
         
-        .title > .border {
+        .title > .borderColor {
             height: 10px;
             background: var(--color-three);
         }
@@ -196,16 +195,26 @@
                         <div class="col-md-3"></div>
                         <div class="col-md-3"></div>
                         <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                </div>
+                                <div class="col-md-6 border ">
+                                    <label for="">Color</label>
+                                    <input type="color" class="form-control" id="color-form" name="color-form" value="#673ab7" onchange="cambiaColor()">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="card-body">
                   <form action="{{ url('Formulario/guardaFormulario') }}" method="post" target="_target">
                     @csrf
                     <div class="row">
                       <div class="col-md-12">
                         <div class="title">
-                            <div class="border"></div>
+                            <div class="borderColor"></div>
                             <h1>
                               <div>
                                   <input type="text" name="nombre_formulario" id="nombre_formulario" class="boredes-cajas" placeholder="TITULO DEL FORMULARIO"/>
@@ -216,7 +225,8 @@
                         </div>
                       </div>
                     </div>
-                    <input type="hidden" value="{{ $campania_id }}" name="campania_id">
+                    <input type="text" value="{{ $campania_id }}" name="campania_id">
+                    <input type="text" value="#673ab7" name="color_formulario" id="color_formulario">
                     <br>
                     <div class="row">
                         <div class="col-md-4" style="border-right: 1px solid #ccc; border-radius:5px">
@@ -604,6 +614,13 @@
     function deleteBlock(bloque){
         // console.log("me quiers eliminar ??? => "+bloque);
         $("#bloque_"+bloque).remove();
+    }
+
+    function cambiaColor(){
+
+        $('#color_formulario').val($('#color-form').val());
+
+        $(".borderColor").css("background", $('#color-form').val());
     }
 
 

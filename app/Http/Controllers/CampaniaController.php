@@ -120,158 +120,212 @@ class CampaniaController extends Controller
         // PRESUPUESTO ACTUAL
         $presupuesto = Campania::presupuestoActual($campania_id);
 
-        
+        // CANTIDAD DE PERSONAS QUE RESPONDIERON EL FORMULARIO
+
+        $cantidadPersonasRespondieron = Campania::cantPersonasRegistradas($campania_id);
 
         // return view('campania.home')->with(compact('formularios'));
-        return view('campania.home')->with(compact('campania_id', 'formularios', 'oportunidades', 'vendedores', 'ingresos', 'egresos', 'gastos', 'presupuesto'));
+        return view('campania.home')->with(compact('campania_id', 'formularios', 'oportunidades', 'vendedores', 'ingresos', 'egresos', 'gastos', 'presupuesto', 'cantidadPersonasRespondieron'));
     }
 
     public function ajaxBuscaVendedor(Request $request){
         // dd($request->all());
 
-        if($request->input('vendedor')){
+        if($request->ajax()){
+            if($request->input('vendedor')){
 
-            $queryVendedor = Vendedor::query();
-
-            if($request->filled('vendedor')){
-
-                $vendedor = $request->input('vendedor');
-                $queryVendedor->Orwhere('nombres', 'like', "%$vendedor%");
-                $queryVendedor->Orwhere('apellido_paterno', 'like', "%$vendedor%");
-                $queryVendedor->Orwhere('apellido_materno', 'like', "%$vendedor%");
-
-                $queryVendedor->limit(8);
+                $queryVendedor = Vendedor::query();
+    
+                if($request->filled('vendedor')){
+    
+                    $vendedor = $request->input('vendedor');
+                    $queryVendedor->Orwhere('nombres', 'like', "%$vendedor%");
+                    $queryVendedor->Orwhere('apellido_paterno', 'like', "%$vendedor%");
+                    $queryVendedor->Orwhere('apellido_materno', 'like', "%$vendedor%");
+    
+                    $queryVendedor->limit(8);
+                }
+    
+                $vendedores = $queryVendedor->get();
+                
+                return view('campania.ajaxBuscaVendedor')->with(compact('vendedores'));
             }
-
-            $vendedores = $queryVendedor->get();
-            
-            return view('campania.ajaxBuscaVendedor')->with(compact('vendedores'));
-
+        }else{
+        
         }
+
+        
     }
 
     public function asignacionVendedorCampania(Request $request){
 
-        $oportunidades = $request->input('oportunidades');
+        if($request->ajax()){
 
-        $vendedor = $request->input('vendedorAsignacion');
+            $oportunidades = $request->input('oportunidades');
 
-        foreach ($oportunidades as $key => $opo){
+            $vendedor = $request->input('vendedorAsignacion');
+    
+            foreach ($oportunidades as $key => $opo){
+    
+                $asignacion = new Asignacion();
+    
+                $asignacion->oportunidad_id   = $key;
+                $asignacion->vendedor_id      = $vendedor;
+                $asignacion->fecha_asignacion = date('Y-m-d H:i:s');
+                $asignacion->estado = 1;
+    
+                $asignacion->save();
+    
+            }
 
-            $asignacion = new Asignacion();
-
-            $asignacion->oportunidad_id   = $key;
-            $asignacion->vendedor_id      = $vendedor;
-            $asignacion->fecha_asignacion = date('Y-m-d H:i:s');
-            $asignacion->estado = 1;
-
-            $asignacion->save();
-
+        }else{
+        
         }
+
+       
 
     }
 
     public function ajaxListadoOportunidades(Request $request){
 
-        $campania_id = $request->input('campania');
+        if($request->ajax()){
 
-        $oportunidades = Asignacion::select('*','oportunidades.id as opo')
-                                    ->rightJoin('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
-                                    ->rightJoin('personas', 'personas.id', '=', 'oportunidades.persona_id')
-                                    ->where('oportunidades.campania_id', $campania_id)
-                                    ->whereNull('asignaciones.vendedor_id')
-                                    ->get();
+            $campania_id = $request->input('campania');
 
+            $oportunidades = Asignacion::select('*','oportunidades.id as opo')
+                                        ->rightJoin('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
+                                        ->rightJoin('personas', 'personas.id', '=', 'oportunidades.persona_id')
+                                        ->where('oportunidades.campania_id', $campania_id)
+                                        ->whereNull('asignaciones.vendedor_id')
+                                        ->get();
+    
+            
+            return view('campania.ajaxListadoOportunidades')->with(compact('oportunidades'));
+
+        }else{
         
-        return view('campania.ajaxListadoOportunidades')->with(compact('oportunidades'));
+        }
+
 
     }
 
     public function ajaxListadoVendedores(Request $request){
 
-        // $campania_id = $request->input('campania');
+        if($request->ajax()){
 
-        // $vendedores = Vendedor::select('vendedores.id','vendedores.nombres', 'vendedores.apellido_paterno', 'vendedores.apellido_materno')
-        //                         ->join('asignaciones', 'vendedores.id', '=', 'asignaciones.vendedor_id')
-        //                         ->join('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
-        //                         ->where('oportunidades.campania_id',$campania_id)
-        //                         ->groupBy('vendedores.id')
-        //                         ->get();
+            // $campania_id = $request->input('campania');
 
-        $vendedores = Vendedor::all();
+            // $vendedores = Vendedor::select('vendedores.id','vendedores.nombres', 'vendedores.apellido_paterno', 'vendedores.apellido_materno')
+            //                         ->join('asignaciones', 'vendedores.id', '=', 'asignaciones.vendedor_id')
+            //                         ->join('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
+            //                         ->where('oportunidades.campania_id',$campania_id)
+            //                         ->groupBy('vendedores.id')
+            //                         ->get();
 
-        return view('campania.ajaxListadoVendedores')->with(compact('vendedores'));
+            $vendedores = Vendedor::all();
+
+            return view('campania.ajaxListadoVendedores')->with(compact('vendedores'));
+
+        }else{
+        
+        }
+
     }
 
     public function ajaxListadoClientesAsignados(Request $request){
 
-        $campania_id = $request->input('campania');
+        if($request->ajax()){
 
-        $clientesAsigandos  = Asignacion::select('personas.nombres', 'personas.apellido_paterno', 'personas.apellido_materno', 'vendedores.nombres as nombrev', 'vendedores.apellido_paterno as appaternov', 'vendedores.apellido_materno as apmaternov', 'asignaciones.id as id_asignacion', 'oportunidades.id as id_oportunidades')
-                                        ->join('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
-                                        ->join('personas', 'personas.id', '=', 'oportunidades.persona_id')
-                                        ->join('vendedores','vendedores.id', '=','asignaciones.vendedor_id')
-                                        ->where('oportunidades.campania_id',$campania_id)
-                                        ->where('asignaciones.estado',1)
-                                        ->get();
+            $campania_id = $request->input('campania');
 
-        return view('campania.ajaxListadoClientesAsignados')->with(compact('clientesAsigandos'));
+            $clientesAsigandos  = Asignacion::select('personas.nombres', 'personas.apellido_paterno', 'personas.apellido_materno', 'vendedores.nombres as nombrev', 'vendedores.apellido_paterno as appaternov', 'vendedores.apellido_materno as apmaternov', 'asignaciones.id as id_asignacion', 'oportunidades.id as id_oportunidades')
+                                            ->join('oportunidades', 'oportunidades.id', '=', 'asignaciones.oportunidad_id')
+                                            ->join('personas', 'personas.id', '=', 'oportunidades.persona_id')
+                                            ->join('vendedores','vendedores.id', '=','asignaciones.vendedor_id')
+                                            ->where('oportunidades.campania_id',$campania_id)
+                                            ->where('asignaciones.estado',1)
+                                            ->get();
+    
+            return view('campania.ajaxListadoClientesAsignados')->with(compact('clientesAsigandos'));
+
+        }else{
+        
+        }
+
 
     }
 
     public function ajaxListadoSeguimientos(Request $request){
 
-        $asignacion_id = $request->input('asignacion');
-        $oportunidad_id = $request->input('oportunidad');
+        if($request->ajax()){
 
+            $asignacion_id = $request->input('asignacion');
+            $oportunidad_id = $request->input('oportunidad');
+    
+    
+            $asignaciones = Asignacion::where('oportunidad_id',$oportunidad_id)
+                                        ->get();
+                                        
+            $arrarAsignaciones = array();
+    
+            foreach($asignaciones as $as){
+                
+                array_push($arrarAsignaciones,$as->id);
+    
+            }
+    
+            $seguimientos = Seguimiento::whereIn('asignacion_id', $arrarAsignaciones)
+                                        ->get();
+    
+            return view('campania.ajaxListadoSeguimientos')->with(compact('seguimientos'));
 
-        $asignaciones = Asignacion::where('oportunidad_id',$oportunidad_id)
-                                    ->get();
-                                    
-        $arrarAsignaciones = array();
-
-        foreach($asignaciones as $as){
-            
-            array_push($arrarAsignaciones,$as->id);
-
+        }else{
+        
         }
 
-        $seguimientos = Seguimiento::whereIn('asignacion_id', $arrarAsignaciones)
-                                    ->get();
-
-        return view('campania.ajaxListadoSeguimientos')->with(compact('seguimientos'));
 
     }
 
     public function ajaxListadoVendedorTramsferencia(Request $request){
 
-        $vendedores = Vendedor::all();
+        if($request->ajax()){
 
-        return view('campania.ajaxListadoVendedorTramsferencia')->with(compact('vendedores'));
+            $vendedores = Vendedor::all();
+
+            return view('campania.ajaxListadoVendedorTramsferencia')->with(compact('vendedores'));
+
+        }else{
+        
+        }
 
     }
 
-    public function tramsferirOportunidadVendedor(Request $request){    
-        // dd("holas");
-        // dd($request->all());
+    public function tramsferirOportunidadVendedor(Request $request){   
+        
+        if($request->ajax()){
 
-        $asignacion_id = $request->input('asignacion');
+            $asignacion_id = $request->input('asignacion');
 
-        $asignacion = Asignacion::find($asignacion_id);
+            $asignacion = Asignacion::find($asignacion_id);
+    
+            $asignacion->estado = 0;
+    
+            $asignacion->save();
+    
+    
+            $newAsignacion = new Asignacion();
+    
+            $newAsignacion->vendedor_id         = $request->input('vendedor');
+            $newAsignacion->oportunidad_id      = $request->input('oportunidad');
+            $newAsignacion->fecha_asignacion    = date('Y-m-d H:i:s');
+            $newAsignacion->estado              = 1;
+    
+            $newAsignacion->save();
 
-        $asignacion->estado = 0;
+        }else{
+        
+        }
 
-        $asignacion->save();
-
-
-        $newAsignacion = new Asignacion();
-
-        $newAsignacion->vendedor_id         = $request->input('vendedor');
-        $newAsignacion->oportunidad_id      = $request->input('oportunidad');
-        $newAsignacion->fecha_asignacion    = date('Y-m-d H:i:s');
-        $newAsignacion->estado              = 1;
-
-        $newAsignacion->save();
 
     }
 

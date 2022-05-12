@@ -25,6 +25,7 @@ class CreateFormularioCampaniasTable extends Migration
             $table->foreign('campania_id')->references('id')->on('campanias');
             $table->unsignedBigInteger('formulario_id')->nullable();
             $table->foreign('formulario_id')->references('id')->on('formularios');
+            // $table->string('color')->nullable();
             $table->text('url')->nullable();
             $table->string('estado')->nullable();
             $table->datetime('deleted_at')->nullable();

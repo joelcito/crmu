@@ -149,42 +149,52 @@
     }
 
     function guarda(){
-
-        if($('#formularioNuevoCampania')[0].checkValidity()){
-            var datos = $('#formularioNuevoCampania').serialize();
-            $.ajax({
-                url: "{{ url('Campania/guarda') }}",
-                data: datos,
-                type: 'POST',
-                success: function(data) {
-                    let campania = JSON.parse(data);
-                    $('#_fecha_inicio, #_nombre_campania, #_fecha_fin, #_descripcion_campania').text('');
-                    if(campania.success === false){
-                        $.each(campania.errors, function(index, value){
-                            $('#_'+index).text(value);
-                        });    
-                    }else{
-                        Swal.fire({
-                            title: 'Exito!',
-                            text: 'Se guardo los datos con exito',
-                            icon: 'success',
-                            confirmButtonText: 'Ok'
-                        });
-                        setTimeout(function(){
-                            $('#modal-nuevo').modal('hide');
-                        }, 3000);
-                        
-                        window.location.href = "{{ url('Campania/home')}}/"+campania.id;
-                        ajaxListado();
-                    }
-                },
-                error: function(error){
+        Swal.fire({
+            title: 'Esta seguro de guardar la nueva campaña?',
+            text: "No podra revertir!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, Guardar!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                if($('#formularioNuevoCampania')[0].checkValidity()){
+                    var datos = $('#formularioNuevoCampania').serialize();
+                    $.ajax({
+                        url: "{{ url('Campania/guarda') }}",
+                        data: datos,
+                        type: 'POST',
+                        success: function(data) {
+                            let campania = JSON.parse(data);
+                            $('#_fecha_inicio, #_nombre_campania, #_fecha_fin, #_descripcion_campania').text('');
+                            if(campania.success === false){
+                                $.each(campania.errors, function(index, value){
+                                    $('#_'+index).text(value);
+                                });    
+                            }else{
+                                Swal.fire({
+                                    title: 'Exito!',
+                                    text: 'Se guardo los datos con exito',
+                                    icon: 'success',
+                                    confirmButtonText: 'Ok'
+                                });
+                                setTimeout(function(){
+                                    $('#modal-nuevo').modal('hide');
+                                }, 3000);
+                                
+                                window.location.href = "{{ url('Campania/home')}}/"+campania.id;
+                                ajaxListado();
+                            }
+                        },
+                        error: function(error){
+                        }
+                    });
+                }else{
+                    $('#formularioNuevoCampania')[0].reportValidity()
                 }
-            });
-        }else{
-            $('#formularioNuevoCampania')[0].reportValidity()
-        }
-
+            }
+        })
     }
 
     function validafechaini(){

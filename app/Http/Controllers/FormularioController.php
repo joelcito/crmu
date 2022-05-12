@@ -25,12 +25,15 @@ class FormularioController extends Controller
     }
 
     public function guardaFormulario(Request $request){
+
+        // dd($request->all());
       
         $formulario = new Formulario();
 
         // $formulario->Creador_id         = Auth()::user()->id;
         $formulario->nombre             = $request->input('nombre_formulario');
         $formulario->descripcion        = $request->input('descripcion_formulario');
+        $formulario->color              = $request->input('color_formulario');
 
         $formulario->save();
 
@@ -319,6 +322,62 @@ class FormularioController extends Controller
         }
 
         // dd($request->all());
+
+    }
+
+    public function respuestaFormularioCompartir(Request $requestt, $campania_id, $formulario_id, $red_social){
+
+        if($red_social == "fb" || $red_social == "wa" || $red_social == "ig" || $red_social == "tw"){
+
+            $formulario = Formulario::find($formulario_id);
+
+            $preguntas_form = Pregunta::where('formulario_id', $formulario_id)
+                                        ->where('estado', 0)
+                                        ->get();
+
+                                        
+            $ap_paterno = Pregunta::where('formulario_id', $formulario_id)
+                                    ->where('estado',1)
+                                    ->where('nombre','ap_paterno')
+                                    ->first();
+
+            $ap_materno = Pregunta::where('formulario_id', $formulario_id)
+                                    ->where('estado',1)
+                                    ->where('nombre','ap_materno')
+                                    ->first();
+
+            $nombre = Pregunta::where('formulario_id', $formulario_id)
+                                    ->where('estado',1)
+                                    ->where('nombre','nombre')
+                                    ->first();
+
+            $email = Pregunta::where('formulario_id', $formulario_id)
+                                    ->where('estado',1)
+                                    ->where('nombre','email')
+                                    ->first();
+
+            $celular = Pregunta::where('formulario_id', $formulario_id)
+                                    ->where('estado',1)
+                                    ->where('nombre','celular')
+                                    ->first();
+
+            $cedula = Pregunta::where('formulario_id', $formulario_id)
+                                    ->where('estado',1)
+                                    ->where('nombre','cedula')
+                                    ->first();
+
+            $expedido = Pregunta::where('formulario_id', $formulario_id)
+                                    ->where('estado',1)
+                                    ->where('nombre','expedido')
+                                    ->first();
+
+            return view("formulario.respuestaFormularioCompartir")->with(compact('campania_id','formulario', 'preguntas_form', 'ap_paterno',  'ap_materno', 'nombre', 'email', 'celular', 'cedula', 'expedido'));
+
+        }else{
+
+            return view("errors.error404");
+
+        }
 
     }
     /**

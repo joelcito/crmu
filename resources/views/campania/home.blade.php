@@ -379,11 +379,15 @@
                   <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                     <div class="d-flex align-items-center">
                       <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                        <i class="material-icons opacity-10">launch</i>
+                        <a type="button" onclick="copiarLink({{ $f->id }})">
+                          <i class="material-icons opacity-10">launch</i>
+                        </a>
                       </div>
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">{{ $f->formulario->nombre }}</h6>
-                        <span class="text-xs">2150 personas resgistradas</span>
+                        <span class="text-xs">{{ $cantidadPersonasRespondieron }} personas resgistradas en el formulario</span>
+                        {{-- <p style="display: none;" id="urlFormulario_{{ $f->id }}">{{ url('Formulario/respuestaFormulario', [$f->campania_id, $f->formulario_id]) }}</p> --}}
+                        <p style="display: none;" id="urlFormulario_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$f->campania_id, $f->formulario_id,"fb"]) }}</p>
                       </div>
                     </div>
                     <div class="d-flex">
@@ -939,8 +943,6 @@
             success: function(data) {
               ajaxListadoOportunidades();
               ajaxListadoVendedores();
-                // $('#lista-vendedores').html(data);
-
             },
             error: function(error){
 
@@ -1190,10 +1192,10 @@
                 })
 
                 ajaxListadoVendedorTramsferencia();
-                
                 ajaxListadoOportunidades();
                 ajaxListadoVendedores();
                 ajaxListadoClientesAsignados();
+
                 $('#modatramsferenciaAsignacion').modal('hide');
 
               },
@@ -1334,6 +1336,26 @@
       $("#div_gasto_egreso, #div_descripcion_egreso, #div_comprobante_egreso").addClass("is-focused");
       
       $('#modalNuevoEgreso').modal('show');
+
+    }
+
+    function copiarLink(link){
+
+      var aux = document.createElement("urlFormulario_"+link);
+      var element_id = "urlFormulario_"+link;
+      var aux = document.createElement("input");
+      aux.setAttribute("value", document.getElementById(element_id).innerHTML);
+      document.body.appendChild(aux);
+      aux.select();
+      document.execCommand("copy");
+      document.body.removeChild(aux);
+
+      Swal.fire({
+        title: 'Excelente!',
+        text: "Link Copiado!",
+        icon: 'success',
+        timer: 1500
+      })
 
     }
     

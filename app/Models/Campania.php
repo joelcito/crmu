@@ -103,5 +103,18 @@ class Campania extends Model
 
         }
     }
+
+    public static function cantPersonasRegistradas($campania_id){
+
+        $cantidad = Oportunidad::select(DB::raw("count(persona_id) as cantidad"))
+                                ->where('campania_id', $campania_id)
+                                ->first();
+
+        if($cantidad){
+            return  $cantidad->cantidad;
+        }else{
+            return 0;
+        }
+    }
     
 }

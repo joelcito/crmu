@@ -8,10 +8,10 @@ use App\Models\Asignacion;
 use App\Models\Oportunidad;
 use Illuminate\Http\Request;
 use App\Models\FormularioCampania;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 
-class VendedorController extends Controller
-{
+class VendedorController extends Controller{
 
     public function listado(Request $request){
 
@@ -60,90 +60,110 @@ class VendedorController extends Controller
 
     }
 
-    public function ajaxListado(){
+    public function ajaxListado(Request $request){
 
-        $vendedores = Vendedor::all();
+        if($request->ajax()){
 
-        return view('vendedor.ajaxListado')->with(compact('vendedores'));
+            $vendedores = Vendedor::all();
+
+            return view('vendedor.ajaxListado')->with(compact('vendedores'));
+
+        }else{
+        
+        }
+
 
     }
 
     public function ajaxBuscaCampania(Request $request){
-        
-        if($request->input('campania')){
+        if($request->ajax()){
+            if($request->input('campania')){
 
-            $queryCampania = Campania::query();
-
-            if($request->filled('campania')){
-
-                $campania = $request->input('campania');
-                $queryCampania->where('nombre', 'like', "%$campania%");
-
-                $queryCampania->limit(8);
+                $queryCampania = Campania::query();
+    
+                if($request->filled('campania')){
+    
+                    $campania = $request->input('campania');
+                    $queryCampania->where('nombre', 'like', "%$campania%");
+    
+                    $queryCampania->limit(8);
+                }
+    
+                $campanias = $queryCampania->get();
+                
+                return view('vendedor.ajaxBuscaCampania')->with(compact('campanias'));
+    
             }
-
-            $campanias = $queryCampania->get();
-            
-            return view('vendedor.ajaxBuscaCampania')->with(compact('campanias'));
-
+        }else{
+        
         }
+        
+        
 
 
     }
 
     public function muestraFormularios(Request $request){
-        
-        $campanias_id = $request->input('campania');
 
-        $campaniasFormularios = FormularioCampania::where('campania_id',$campanias_id)
-                                                    ->get();
-        $options = "";
+        if($request->ajax()){
 
-        foreach($campaniasFormularios as $fc){
-            if($fc->formulario){
+            $campanias_id = $request->input('campania');
 
-                $options =$options.'<option value="'.$fc->formulario->id.'">'.$fc->formulario->nombre.'</option>';
-
+            $campaniasFormularios = FormularioCampania::where('campania_id',$campanias_id)
+                                                        ->get();
+            $options = "";
+    
+            foreach($campaniasFormularios as $fc){
+                if($fc->formulario){
+    
+                    $options =$options.'<option value="'.$fc->formulario->id.'">'.$fc->formulario->nombre.'</option>';
+    
+                }
             }
+    
+            $html = '
+                    <div class="input-group input-group-static mb-4">
+                        <label for="exampleFormControlSelect1" class="ms-0">Seleccione el Formulario</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="formulario_id">
+                            '.$options.'
+                        </select>
+                    </div>
+                    ';
+    
+            return $html;
+
+        }else{
+        
         }
-
-        $html = '
-                <div class="input-group input-group-static mb-4">
-                    <label for="exampleFormControlSelect1" class="ms-0">Seleccione el Formulario</label>
-                    <select class="form-control" id="exampleFormControlSelect1" name="formulario_id">
-                        '.$options.'
-                    </select>
-                </div>
-                ';
-
-        return $html;
+        
 
     }
 
     public function asignarCampaniaVendedor(Request $request){
 
-        // dd($request->all());
-
-        $formulario_id = $request->input('formulario_id');
-        $campanias_id  = $request->input('campania_id');
-
-        $oportunidades = Oportunidad::where('formulario_id',$formulario_id)
-                                    ->where('campania_id',$campanias_id)
-                                    ->get();
-                                    // ->toSql();
-        // dd($oportunidades);
-
-        foreach($oportunidades as $o){
-
-            $asignacion = new Asignacion();
-
-            $asignacion->vendedor_id = $request->input('vendedor_id');
-            $asignacion->oportunidad_id = $o->id;
-            $asignacion->fecha_asignacion = date('Y-m-d h:i:s');
-
-            $asignacion->save();
-
+        if($request->ajax()){
+            $formulario_id = $request->input('formulario_id');
+            $campanias_id  = $request->input('campania_id');
+    
+            $oportunidades = Oportunidad::where('formulario_id',$formulario_id)
+                                        ->where('campania_id',$campanias_id)
+                                        ->get();
+    
+            foreach($oportunidades as $o){
+    
+                $asignacion = new Asignacion();
+    
+                $asignacion->vendedor_id = $request->input('vendedor_id');
+                $asignacion->oportunidad_id = $o->id;
+                $asignacion->fecha_asignacion = date('Y-m-d h:i:s');
+    
+                $asignacion->save();
+    
+            }
+        }else{
+        
         }
+        
 
 
     }

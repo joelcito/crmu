@@ -5,9 +5,8 @@
 @endsection
 
 @section('css')
-@endsection
-<style>
-    :root {
+    <style>
+        :root {
             --color-one: #f0ebf8;
             --color-two: #ffffff;
             --color-three: #673ab7;
@@ -179,7 +178,9 @@
         .listaul{
             list-style-type: circle;
         }
-</style>
+    </style>
+@endsection
+
 
 @section('content')
 
@@ -194,6 +195,14 @@
                         <div class="col-md-3"></div>
                         <div class="col-md-3"></div>
                         <div class="col-md-3">
+                            <p style="display: none;" id="urlFormulario_fb">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $formulario->id,"fb"]) }}</p>
+                            <p style="display: none;" id="urlFormulario_wa">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $formulario->id,"wa"]) }}</p>
+                            <p style="display: none;" id="urlFormulario_ig">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $formulario->id,"ig"]) }}</p>
+                            <p style="display: none;" id="urlFormulario_tw">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $formulario->id,"tw"]) }}</p>
+                            <button onclick="copiaLinkRedes('fb')" class="btn btn-icon-only btn-rounded btn-dark mb-0 p-1"><i class="fa fa-facebook"></i></button>
+                            <button onclick="copiaLinkRedes('wa')" class="btn btn-icon-only btn-rounded btn-success mb-0 p-1"><i class="fa fa-whatsapp"></i></button>
+                            <button onclick="copiaLinkRedes('ig')" class="btn btn-icon-only btn-rounded btn-danger mb-0 p-1"><i class="fa fa-instagram"></i></button>
+                            <button onclick="copiaLinkRedes('tw')" class="btn btn-icon-only btn-rounded btn-info mb-0 p-1"><i class="fa fa-twitter"></i></button>
                         </div>
                     </div>
                 </div>
@@ -206,7 +215,7 @@
                             <div class="border"></div>
                             <h1>
                               <div>
-                                  <h1>{{ $formulario->nombre }}</h1>
+                                  <h2>{{ $formulario->nombre }}</h2>
                                   <p style="padding: 2px"></p>
                                   <hr>
                                   <h6>{{ $formulario->descripcion }}</h6>
@@ -304,7 +313,7 @@
                                             <option value="{{ $v->valor }}">{{ $v->valor }}</option>
                                             @endforeach
                                         </select>  --}}
-                                          {{-- <input type="text" name="pregunta_ids[]" value="{{ $p->id }}"> --}}
+                                        {{-- <input type="text" name="pregunta_ids[]" value="{{ $p->id }}"> --}}    
                                           
                                         @else
 
@@ -338,7 +347,7 @@
                     <hr>
                     <div class="row">
                       <div class="col-md-12">
-                        <button class="btn btn-outline-success btn-circle btn-block">ENVIAR RESPUESTA</button>
+                        <button class="btn btn-outline-success btn-circle btn-block" disabled >ENVIAR RESPUESTA</button>
                       </div>
                     </div>
                   </form>
@@ -373,8 +382,6 @@
     }
 
     function addComponentInput(type, bloque){
-
-        console.log(type);
 
         if(type == 'input'){
             var component =  '<input type="text" name="input_'+bloque+'[]" class="boredes-cajas" placeholder="ESCRIBA SU RESPUESTA"/>';
@@ -541,28 +548,43 @@
     // }
 
 
-  $(".sortable1").sortable({
-    items: ".s1"
-  });
+//   $(".sortable1").sortable({
+//     items: ".s1"
+//   });
 
-  $(".sortable1").disableSelection();
+//   $(".sortable1").disableSelection();
 
-  $(".sortable1").on("sortstop", function(event, ui) {
-    alert('ordenar detener a los padres');
-    console.log('sortstop padres Evento =', event, ' interfaz de usuario = ', ui);
-    console.log(ui.item);
-    if ($(ui.item).hasClass('s1')) {
+//   $(".sortable1").on("sortstop", function(event, ui) {
+//     alert('ordenar detener a los padres');
+//     console.log('sortstop padres Evento =', event, ' interfaz de usuario = ', ui);
+//     console.log(ui.item);
+//     if ($(ui.item).hasClass('s1')) {
 
-      console.log($(ui.item).hasClass('s1'));
-      console.log($(ui.item));
+//       console.log($(ui.item).hasClass('s1'));
+//       console.log($(ui.item));
 
-      alert('es el elemento principal que se acaba de mover. Aquí puede hacer las cosas específicas de los elementos ordenables principales.');
-    } 
-    /*else {
-      console.log('it is child');
-    }*/
-    //do sort of parents
-  });
+//       alert('es el elemento principal que se acaba de mover. Aquí puede hacer las cosas específicas de los elementos ordenables principales.');
+//     } 
+//   });
 
+
+        function copiaLinkRedes(redSocial){
+            
+            var element_id = "urlFormulario_"+redSocial;
+            var aux = document.createElement("input");
+            aux.setAttribute("value", document.getElementById(element_id).innerHTML);
+            document.body.appendChild(aux);
+            aux.select();
+            document.execCommand("copy");
+            document.body.removeChild(aux);
+
+            Swal.fire({
+                title: 'Excelente!',
+                text: "Link Copiado!",
+                icon: 'success',
+                timer: 1500
+            })
+            
+        }
     </script>
 @endsection

@@ -22,6 +22,7 @@ class CreateFormulariosTable extends Migration
             $table->unsignedBigInteger('eliminador_id')->nullable();
             $table->foreign('eliminador_id')->references('id')->on('users');
             $table->string('nombre')->nullable();
+            $table->string('color')->nullable();
             $table->string('descripcion')->nullable();
             $table->string('estado')->nullable();
             $table->datetime('deleted_at')->nullable();
