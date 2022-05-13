@@ -74,6 +74,77 @@
     })(window, document, 'script', 'dataLayer', 'GTM-NKDMSK6');
   </script> --}}
 
+  
+<!-- Modal NUEVO INGRESO -->
+<div class="modal fade" id="modalcopiaLink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title font-weight-normal" id="exampleModalLabel">Modal de para compartir link</h6>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+
+      <div class="modal-body">
+
+        <div class="d-flex align-items-center mb-2">
+          <div class="form-group w-70">
+            <div class="input-group bg-gray-200 border-radius-md">
+              <input class="form-control form-control-sm border-radius-md" id="url-fb" type="text" disabled>
+              <button type="button" class="btn btn-icon-only btn-rounded btn-facebook mb-0 p-1"><i class="fa fa-facebook"></i></button>
+              <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
+            </div>
+          </div>
+          <button onclick="clickBoton('fb')" class="">Link</button>
+          <a href="javascript:;" class="btn btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
+        </div>
+
+        <div class="d-flex align-items-center mb-2">
+          <div class="form-group w-70">
+            <div class="input-group bg-gray-200 border-radius-md">
+              <input class="form-control form-control-sm border-radius-md" id="url-wa" type="text" disabled>
+              <button type="button" class="btn btn-icon-only btn-rounded btn-success mb-0 p-1"><i class="fa fa-whatsapp"></i></button>
+              <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
+            </div>
+          </div>
+          <a onclick="copyToClipboard('wa')" class="btn btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</a>
+          <a href="javascript:;" class="btn btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
+        </div>
+
+        <div class="d-flex align-items-center mb-2">
+          <div class="form-group w-70">
+            <div class="input-group bg-gray-200 border-radius-md">
+              <input class="form-control form-control-sm border-radius-md" id="url-ig" type="text" disabled>
+              <button type="button" class="btn btn-icon-only btn-rounded btn-danger mb-0 p-1"><i class="fa fa-instagram"></i></button>
+              <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
+            </div>
+          </div>
+          <a onclick="copyToClipboard('ig')" class="btn btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</a>
+          <a href="javascript:;" class="btn btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
+        </div>
+
+        <div class="d-flex align-items-center mb-2">
+          <div class="form-group w-70">
+            <div class="input-group bg-gray-200 border-radius-md">
+              <input class="form-control form-control-sm border-radius-md" id="url-tw" type="text" disabled>
+              <button type="button" class="btn btn-icon-only btn-rounded btn-info mb-0 p-1"><i class="fa fa-twitter"></i></button>
+              <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
+            </div>
+          </div>
+          <a onclick="copyToClipboard('tw')" class="btn btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</a>
+          <a href="javascript:;" class="btn btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn bg-gradient-success" onclick="guardarIngreso()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal NUEVO EGRESO -->
 <div class="modal fade" id="modalNuevoEgreso" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -252,6 +323,7 @@
   <div class="col-xl-8 col-lg-7">
     <div class="row">
 
+
       <div class="col-sm-3">
         <div class="card">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -374,19 +446,164 @@
           <div class="card-body p-3">
             <ul class="list-group">
 
-              @foreach ($formularios as $f)
+
+              <div class="accordion-1">
+                <div class="container">
+                  {{-- <div class="row my-5">
+                    <div class="col-md-6 mx-auto text-center">
+                      <h2>Frequently Asked Questions</h2>
+                      <p>A lot of people don’t appreciate the moment until it’s passed. I'm not trying my hardest, and I'm not trying to do </p>
+                    </div>
+                  </div> --}}
+                    
+                  <div class="row">
+                    <div class="col-md-12 mx-auto">
+                      <div class="accordion" id="accordionRental">
+                        @foreach ($formularios as $key => $f)
+                          @if ($f->formulario)
+                            <div class="accordion-item mb-3">
+                              <h6 class="accordion-header" id="headingOne">
+                                <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{ $key }}" aria-expanded="false" aria-controls="collapseOne">
+                                  {{ $f->formulario->nombre }}
+                                  <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                                  <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                                </button>
+                              </h6>
+                              <div id="collapseOne{{ $key }}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionRental" style="">
+                                <div class="accordion-body text-sm opacity-8">
+                                            
+                                  <p style="display: none;" id="urlFormulario_fb_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"fb"]) }}</p>
+                                  <p style="display: none;" id="urlFormulario_wa_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"wa"]) }}</p>
+                                  <p style="display: none;" id="urlFormulario_ig_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"ig"]) }}</p>
+                                  <p style="display: none;" id="urlFormulario_tw_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"tw"]) }}</p>
+                                  <p style="display: none;" id="iframeFormulario_fb_{{ $f->id }}">&lt;iframe src="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"fb"]) }}" width=”100%” height=”60%” &gt;&lt;/iframe&gt;</p>
+                                  <p style="display: none;" id="iframeFormulario_wa_{{ $f->id }}">&lt;iframe src="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"wa"]) }}" width=”100%” height=”60%” &gt;&lt;/iframe&gt; </p>
+                                  <p style="display: none;" id="iframeFormulario_ig_{{ $f->id }}">&lt;iframe src="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"ig"]) }}" width=”100%” height=”60%” &gt;&lt;/iframe&gt; </p>
+                                  <p style="display: none;" id="iframeFormulario_tw_{{ $f->id }}">&lt;iframe src="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"tw"]) }}" width=”100%” height=”60%” &gt;&lt;/iframe&gt; </p>
+
+                                  <div class="d-flex align-items-center mb-2">
+                                    <div class="form-group w-100">
+                                      <div class="input-group bg-gray-200 border-radius-md">
+                                        <input class="form-control form-control-sm border-radius-md" id="url-fb" type="text" disabled value="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"fb"]) }}">
+                                        <button type="button" class="btn btn-icon-only btn-rounded btn-facebook mb-0 p-1"><i class="fa fa-facebook"></i></button>
+                                        <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <button onclick="copyToClipboard('fb', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <a onclick="copyToIframe('fb', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
+                                    </div>
+                                  </div>
+                                  <hr>
+
+                                  <div class="d-flex align-items-center mb-2">
+                                    <div class="form-group w-100">
+                                      <div class="input-group bg-gray-200 border-radius-md">
+                                        <input class="form-control form-control-sm border-radius-md" id="url-wa" value="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"wa"]) }}" type="text" disabled>
+                                        <button type="button" class="btn btn-icon-only btn-rounded btn-success mb-0 p-1"><i class="fa fa-whatsapp"></i></button>
+                                        <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <a onclick="copyToClipboard('wa', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</a>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <a onclick="copyToIframe('wa', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
+                                    </div>
+                                  </div>
+                                  <hr>
+
+                                  <div class="d-flex align-items-center mb-2">
+                                    <div class="form-group w-100">
+                                      <div class="input-group bg-gray-200 border-radius-md">
+                                        <input class="form-control form-control-sm border-radius-md" id="url-ig" value="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"ig"]) }}" type="text" disabled>
+                                        <button type="button" class="btn btn-icon-only btn-rounded btn-danger mb-0 p-1"><i class="fa fa-instagram"></i></button>
+                                        <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <a onclick="copyToClipboard('ig', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</a>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <a onclick="copyToIframe('ig', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
+                                    </div>
+                                  </div>
+                                  <hr>
+                          
+                                  <div class="d-flex align-items-center mb-2">
+                                    <div class="form-group w-100">
+                                      <div class="input-group bg-gray-200 border-radius-md">
+                                        <input class="form-control form-control-sm border-radius-md" value="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"tw"]) }}" id="url-tw" type="text" disabled>
+                                        <button type="button" class="btn btn-icon-only btn-rounded btn-info mb-0 p-1"><i class="fa fa-twitter"></i></button>
+                                        <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <a onclick="copyToClipboard('tw', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</a>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <a onclick="copyToIframe('tw', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>  
+                          @endif
+                        @endforeach
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {{-- @foreach ($formularios as $key => $f)
                 @if ($f->formulario)
                   <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                     <div class="d-flex align-items-center">
                       <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                        <a type="button" onclick="copiarLink({{ $f->id }})">
+                        <a type="button" onclick="abreModalCopiaLink({{ $f->id }})">
                           <i class="material-icons opacity-10">launch</i>
                         </a>
+                        <p style="display: none;" id="urlFormulario_fb_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"fb"]) }}</p>
+                        <p style="display: none;" id="urlFormulario_wa_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"wa"]) }}</p>
+                        <p style="display: none;" id="urlFormulario_ig_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"ig"]) }}</p>
+                        <p style="display: none;" id="urlFormulario_tw_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"tw"]) }}</p>
+
+                        <div class="dropdown">
+                          <a href="#" class="btn bg-gradient-info dropdown-toggle btn-sm" data-bs-toggle="dropdown" id="navbarDropdownMenuLink2">
+                              <i class="fa-solid fa-share-nodes"></i>
+                          </a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2" style="height: 0;">
+                              <li style="padding-bottom:2px;">
+                                    <button onclick="copiarLink('fb','{{ $f->id }}')" class="btn btn-icon-only btn-rounded btn-dark mb-0 p-1"><i class="fa fa-facebook"></i></button>
+                              </li>
+                              <li style="padding-bottom:2px;">
+                                    <button onclick="copiarLink('ig','{{ $f->id }}')" class="btn btn-icon-only btn-rounded btn-danger mb-0 p-1"><i class="fa fa-instagram"></i></button>
+                              </li>
+                              <li style="padding-bottom:2px;">
+                                    <button onclick="copiarLink('wa','{{ $f->id }}')" class="btn btn-icon-only btn-rounded btn-success mb-0 p-1"><i class="fa fa-whatsapp"></i></button>
+                              </li>
+                              <li style="padding-bottom:2px;">
+                                  <button onclick="copiarLink('tw','{{ $f->id }}')" class="btn btn-icon-only btn-rounded btn-info mb-0 p-1"><i class="fa fa-twitter"></i></button>
+                            </li>
+                          </ul>
+                        </div>
+
                       </div>
+                      
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-dark text-sm">{{ $f->formulario->nombre }}</h6>
                         <span class="text-xs">{{ $cantidadPersonasRespondieron }} personas resgistradas en el formulario</span>
-                        {{-- <p style="display: none;" id="urlFormulario_{{ $f->id }}">{{ url('Formulario/respuestaFormulario', [$f->campania_id, $f->formulario_id]) }}</p> --}}
                         <p style="display: none;" id="urlFormulario_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$f->campania_id, $f->formulario_id,"fb"]) }}</p>
                       </div>
                     </div>
@@ -395,7 +612,7 @@
                     </div>
                   </li>
                 @endif
-              @endforeach
+              @endforeach --}}
             </ul>
           </div>
         </div>
@@ -403,6 +620,7 @@
     </div>
   </div>
 </div>
+
 <div class="row mt-4">
   <div class="col-sm-6 mt-sm-0 mt-4">
     <div class="card h-100">
@@ -455,36 +673,6 @@
               </li>  
             @endforeach
           </div>
-          
-          {{-- <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
-            <div class="d-flex">
-              <div class="d-flex align-items-center">
-                <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_less</i></button>
-                <div class="d-flex flex-column">
-                  <h6 class="mb-1 text-dark text-sm">Partner #90211</h6>
-                  <span class="text-xs">07 June 2021, at 05:50 AM</span>
-                </div>
-              </div>
-              <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold ms-auto">
-              + $ 700
-              </div>
-            </div>
-            <hr class="horizontal dark mt-3 mb-2" />
-          </li> --}}
-          {{-- <li class="list-group-item border-0 justify-content-between ps-0 mb-2 border-radius-lg">
-            <div class="d-flex">
-              <div class="d-flex align-items-center">
-                <button class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_more</i></button>
-                <div class="d-flex flex-column">
-                  <h6 class="mb-1 text-dark text-sm">Services</h6>
-                  <span class="text-xs">07 June 2021, at 07:10 PM</span>
-                </div>
-              </div>
-              <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold ms-auto">
-                - $ 1,800
-              </div>
-            </div>
-          </li> --}}
         </ul>
       </div>
     </div>
@@ -618,7 +806,6 @@
         </div>
   </div>
 </div>
-
 @stop
 
 @section('js')
@@ -1339,23 +1526,56 @@
 
     }
 
-    function copiarLink(link){
+    function copyToClipboard(red, formulario) {
 
-      var aux = document.createElement("urlFormulario_"+link);
-      var element_id = "urlFormulario_"+link;
-      var aux = document.createElement("input");
-      aux.setAttribute("value", document.getElementById(element_id).innerHTML);
-      document.body.appendChild(aux);
-      aux.select();
+      var redsocial = "";
+      if(red == "fb"){redsocial = "Facebook";}else if(red == "wa"){redsocial = "Whatsapp";}else if(red == "ig"){redsocial = "Instagram";}else if(red == "tw"){redsocial = "twitter";}
+
+      var elemento = "#urlFormulario_"+red+"_"+formulario;
+      
+      var $temp = $("<input>")
+      $("body").append($temp);
+      $temp.val($(elemento).text()).select();
+      console.log($temp);
       document.execCommand("copy");
-      document.body.removeChild(aux);
+      $temp.remove();
 
       Swal.fire({
-        title: 'Excelente!',
-        text: "Link Copiado!",
+        title: 'Correcto',
+        text: "Se copio el link de "+redsocial+"!",
         icon: 'success',
-        timer: 1500
+        timer: 1000
       })
+    }
+
+    function copyToIframe(red, formulario){
+
+      
+      var redsocial = "";
+      if(red == "fb"){redsocial = "Facebook";}else if(red == "wa"){redsocial = "Whatsapp";}else if(red == "ig"){redsocial = "Instagram";}else if(red == "tw"){redsocial = "twitter";}
+
+      var elemento = "#iframeFormulario_"+red+"_"+formulario;
+
+      console.log(elemento)
+
+      var $temp = $("<input>")
+      $("body").append($temp);
+      $temp.val($(elemento).text()).select();
+      console.log($temp);
+      console.log($temp);
+      document.execCommand("copy");
+      $temp.remove();
+
+      Swal.fire({
+        title: 'Correcto',
+        text: "Se copio el iframe de "+redsocial+"!",
+        icon: 'success',
+        timer: 1000
+      })
+
+      // console.log(red);
+      
+      // console.log(formulario);
 
     }
     

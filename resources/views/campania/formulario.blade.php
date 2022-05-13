@@ -193,11 +193,14 @@
                             CREACION DE FORMULARIO
                         </div>
                         <div class="col-md-3"></div>
-                        <div class="col-md-3"></div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="row">
-                                <div class="col-md-6">
-
+                                <div class="col-md-6 border">
+                                    <form id="form1">
+                                        <input type='file' id="imgInp" />
+                                        <br>
+                                        <img id="blah" src="https://via.placeholder.com/150" alt="Tu imagen" />
+                                    </form> 
                                 </div>
                                 <div class="col-md-6 border ">
                                     <label for="">Color</label>
@@ -212,6 +215,11 @@
                   <form action="{{ url('Formulario/guardaFormulario') }}" method="post" target="_target">
                     @csrf
                     <div class="row">
+                        <div class="col-md-12">
+                            <img id="image-previw" src="{{ asset('blanco.jpg') }}" alt="">
+                        </div>
+                    </div>
+                    <div class="row">
                       <div class="col-md-12">
                         <div class="title">
                             <div class="borderColor"></div>
@@ -225,8 +233,8 @@
                         </div>
                       </div>
                     </div>
-                    <input type="text" value="{{ $campania_id }}" name="campania_id">
-                    <input type="text" value="#673ab7" name="color_formulario" id="color_formulario">
+                    <input type="hidden" value="{{ $campania_id }}" name="campania_id">
+                    <input type="hidden" value="#673ab7" name="color_formulario" id="color_formulario">
                     <br>
                     <div class="row">
                         <div class="col-md-4" style="border-right: 1px solid #ccc; border-radius:5px">
@@ -623,28 +631,20 @@
         $(".borderColor").css("background", $('#color-form').val());
     }
 
+    // PARA SUBIR LA IMAGEN Y PREVISULIR ESE RATO
+    function readImage (input) {
+        if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#image-previw').attr('src', e.target.result); // Renderizamos la imagen
+        }
+        reader.readAsDataURL(input.files[0]);
+        }
+    }
 
-//   $(".sortable1").sortable({
-//     items: ".s1"
-//   });
-
-//   $(".sortable1").disableSelection();
-
-//   $(".sortable1").on("sortstop", function(event, ui) {
-//     alert('ordenar detener a los padres');
-//     console.log('sortstop padres Evento =', event, ' interfaz de usuario = ', ui);
-//     console.log(ui.item);
-//     if ($(ui.item).hasClass('s1')) {
-
-//       console.log($(ui.item).hasClass('s1'));
-//       console.log($(ui.item));
-
-//       alert('es el elemento principal que se acaba de mover. Aquí puede hacer las cosas específicas de los elementos ordenables principales.');
-//     } 
-//     /*else {
-//       console.log('it is child');
-//     }*/
-//     //do sort of parents
-//   });
+    $("#imgInp").change(function () {
+        // Código a ejecutar cuando se detecta un cambio de archivO
+        readImage(this);
+    });
     </script>
 @endsection

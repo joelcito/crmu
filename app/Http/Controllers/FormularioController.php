@@ -26,8 +26,6 @@ class FormularioController extends Controller
 
     public function guardaFormulario(Request $request){
 
-        // dd($request->all());
-      
         $formulario = new Formulario();
 
         // $formulario->Creador_id         = Auth()::user()->id;

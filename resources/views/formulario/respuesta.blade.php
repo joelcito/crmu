@@ -45,7 +45,7 @@
             margin: 1rem;
         } */
         
-        .title > .border {
+        .title > .borderColor {
             height: 10px;
             background: var(--color-three);
         }
@@ -191,6 +191,7 @@
                     <div class="row">
                         <div class="col-md-3">
                             FORMULARIO
+                            {{-- @dd($formulario->color) --}}
                         </div>
                         <div class="col-md-3"></div>
                         <div class="col-md-3"></div>
@@ -212,7 +213,7 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="title">
-                            <div class="border"></div>
+                            <div class="borderColor"></div>
                             <h1>
                               <div>
                                   <h2>{{ $formulario->nombre }}</h2>
@@ -360,6 +361,7 @@
 
   <script  type="text/javascript">
 
+
     $( document ).ready(function() {
 
         $.ajaxSetup({
@@ -367,6 +369,12 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        // $('.borderColor').css('background', 'red');
+        
+        $('.borderColor').css('background', "{{ $formulario->color }}");
+        // $('.borderColor').css('background', "red");
+
 
         // showQuestions();
 
