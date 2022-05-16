@@ -16,65 +16,6 @@
 @endsection
 
 @section('content')
-{{-- <script>
-    (function(a, s, y, n, c, h, i, d, e) {
-      s.className += ' ' + y;
-      h.start = 1 * new Date;
-      h.end = i = function() {
-        s.className = s.className.replace(RegExp(' ?' + y), '')
-      };
-      (a[n] = a[n] || []).hide = h;
-      setTimeout(function() {
-        i();
-        h.end = null
-      }, c);
-      h.timeout = c;
-    })(window, document.documentElement, 'async-hide', 'dataLayer', 4000, {
-      'GTM-K9BGS8K': true
-    });
-  </script>
-
-<script>
-    (function(i, s, o, g, r, a, m) {
-      i['GoogleAnalyticsObject'] = r;
-      i[r] = i[r] || function() {
-        (i[r].q = i[r].q || []).push(arguments)
-      }, i[r].l = 1 * new Date();
-      a = s.createElement(o),
-        m = s.getElementsByTagName(o)[0];
-      a.async = 1;
-      a.src = g;
-      m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-    ga('create', 'UA-46172202-22', 'auto', {
-      allowLinker: true
-    });
-    ga('set', 'anonymizeIp', true);
-    ga('require', 'GTM-K9BGS8K');
-    ga('require', 'displayfeatures');
-    ga('require', 'linker');
-    ga('linker:autoLink', ["2checkout.com", "avangate.com"]);
-  </script>
-
-
-<script>
-    (function(w, d, s, l, i) {
-      w[l] = w[l] || [];
-      w[l].push({
-        'gtm.start': new Date().getTime(),
-        event: 'gtm.js'
-      });
-      var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s),
-        dl = l != 'dataLayer' ? '&l=' + l : '';
-      j.async = true;
-      j.src =
-        'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-      f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-NKDMSK6');
-  </script> --}}
-
-  
 <!-- Modal NUEVO INGRESO -->
 <div class="modal fade" id="modalcopiaLink" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -463,11 +404,21 @@
                           @if ($f->formulario)
                             <div class="accordion-item mb-3">
                               <h6 class="accordion-header" id="headingOne">
-                                <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{ $key }}" aria-expanded="false" aria-controls="collapseOne">
-                                  {{ $f->formulario->nombre }}
-                                  <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                  <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                </button>
+                                <div class="row">
+                                  {{-- <p style="padding-top:50px;"></p> --}}
+                                  <div class="col-md-2">
+                                    <button class="btn btn-icon-only btn-rounded btn-outline-warning mb-0 p-1" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-edit"></i></button>
+                                  </div>
+                                  <div class="col-md-10" style="margin-top:-10px">
+                                    <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{ $key }}" aria-expanded="false" aria-controls="collapseOne">
+                                      {{ $f->formulario->nombre }}
+                                      <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                                      <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                                    </button>
+                                  </div>
+                                </div>
+
+
                               </h6>
                               <div id="collapseOne{{ $key }}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionRental" style="">
                                 <div class="accordion-body text-sm opacity-8">
@@ -1556,8 +1507,6 @@
 
       var elemento = "#iframeFormulario_"+red+"_"+formulario;
 
-      console.log(elemento)
-
       var $temp = $("<input>")
       $("body").append($temp);
       $temp.val($(elemento).text()).select();
@@ -1573,9 +1522,11 @@
         timer: 1000
       })
 
-      // console.log(red);
-      
-      // console.log(formulario);
+    }
+
+    function editaFormulario(formulario){
+
+      window.location.href = "{{ url('Formulario/editaFormulario') }}/"+{{ $campania_id }}+"/"+formulario;
 
     }
     

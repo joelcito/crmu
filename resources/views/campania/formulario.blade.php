@@ -187,228 +187,234 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-md-3">
-                            CREACION DE FORMULARIO
-                        </div>
-                        <div class="col-md-3"></div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-6 border">
-                                    <form id="form1">
-                                        <input type='file' id="imgInp" />
+                <form action="{{ url('Formulario/guardaFormulario') }}" method="post" target="_target" id="formulario_formulario" enctype="multipart/form-data">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-3">
+                                CREACION DE FORMULARIO
+                            </div>
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-8 border">
+                                        <input type='file' id="imgInp" name="img-formulario"/>
                                         <br>
-                                        <img id="blah" src="https://via.placeholder.com/150" alt="Tu imagen" />
-                                    </form> 
-                                </div>
-                                <div class="col-md-6 border ">
-                                    <label for="">Color</label>
-                                    <input type="color" class="form-control" id="color-form" name="color-form" value="#673ab7" onchange="cambiaColor()">
+                                        <small>Imagen permitida de 720 px de ancho y 150 px de alto</small>
+                                    </div>
+                                    <div class="col-md-4 border ">
+                                        <label for="">Color</label>
+                                        <input type="color" class="form-control" id="color-form" name="color-form" value="#673ab7" onchange="cambiaColor()">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="card-body">
-                  <form action="{{ url('Formulario/guardaFormulario') }}" method="post" target="_target">
-                    @csrf
-                    <div class="row">
+                    <div class="card-body">
+                        @csrf
+                        <div class="row">
+                            <div class="title">
+                                <div class="col-md-12">
+                                    <center>
+                                        <div style="max-height:200px;">
+                                            <img id="image-previw" src="{{ asset('blanco.jpg') }}" alt="">
+                                        </div>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
                         <div class="col-md-12">
-                            <img id="image-previw" src="{{ asset('blanco.jpg') }}" alt="">
-                        </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="title">
-                            <div class="borderColor"></div>
-                            <h1>
-                              <div>
-                                  <input type="text" name="nombre_formulario" id="nombre_formulario" class="boredes-cajas" placeholder="TITULO DEL FORMULARIO"/>
-                                  <p style="padding: 2px"></p>
-                                  <textarea class="boredes-cajas" name="descripcion_formulario" id="descripcion_formulario" cols="30" rows="2" placeholder="DESCRIPCION DEL FORMULARIO" ></textarea>
-                              </div>
-                            </h1>
-                        </div>
-                      </div>
-                    </div>
-                    <input type="hidden" value="{{ $campania_id }}" name="campania_id">
-                    <input type="hidden" value="#673ab7" name="color_formulario" id="color_formulario">
-                    <br>
-                    <div class="row">
-                        <div class="col-md-4" style="border-right: 1px solid #ccc; border-radius:5px">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <input type="text" height="100%" disabled name="apellido_paterno_in" id="apellido_paterno_in" class="boredes-cajas" placeholder="APELLIDO PATERNO"/>
+                            <div class="title">
+                                <div class="borderColor"></div>
+                                <h1>
+                                <div>
+                                    <input type="text" name="nombre_formulario" id="nombre_formulario" class="boredes-cajas" placeholder="TITULO DEL FORMULARIO"/>
+                                    <p style="padding: 2px"></p>
+                                    <textarea class="boredes-cajas" name="descripcion_formulario" id="descripcion_formulario" cols="30" rows="2" placeholder="DESCRIPCION DEL FORMULARIO" ></textarea>
                                 </div>
-                                <div class="col-md-2" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
-                                    <p style="margin-bottom:10px;"></p>
-                                    <div class="form-check form-switch ps-0">
-                                        <input class="form-check-input ms-auto" type="checkbox" name="apellido_paterno" id="flexSwitchCheckDefault" checked>
-                                    </div>
-                                </div>
+                                </h1>
                             </div>
                         </div>
-                        <div class="col-md-4" style="border-right: 1px solid #ccc; border-radius:5px">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <input type="text" height="100%" disabled name="apellido_materno_in" id="apellido_materno_in" class="boredes-cajas" placeholder="APELLIDO MATERNO"/>
-                                </div>
-                                <div class="col-md-2" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
-                                    <p style="margin-bottom:10px;"></p>
-                                    <div class="form-check form-switch ps-0">
-                                        <input class="form-check-input ms-auto" type="checkbox" name="apellido_materno" id="flexSwitchCheckDefault" checked>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
-                        <div class="col-md-4" style="border-right: 1px solid #ccc; border-radius:5px">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <input type="text" height="100%" disabled name="nombres_in" id="nombres_in" class="boredes-cajas" placeholder="NOMBRES  COMPLETOS"/>
-                                </div>
-                                <div class="col-md-2" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
-                                    <p style="margin-bottom:10px;"></p>
-                                    <div class="form-check form-switch ps-0">
-                                        <input class="form-check-input ms-auto" type="checkbox" name="nombres" id="flexSwitchCheckDefault" checked>
+                        <input type="hidden" value="{{ $campania_id }}" name="campania_id">
+                        <input type="hidden" value="#673ab7" name="color_formulario" id="color_formulario">
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4" style="border-right: 1px solid #ccc; border-radius:5px">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <input type="text" height="100%" disabled name="apellido_paterno_in" id="apellido_paterno_in" class="boredes-cajas" placeholder="APELLIDO PATERNO"/>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-3" style="border-right: 1px solid #ccc; border-radius:5px">
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <input type="text" disabled name="email_in" id="email_in" class="boredes-cajas" placeholder="EMAIL"/>
-                                </div>
-                                <div class="col-md-3" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
-                                    <p style="margin-bottom:10px;"></p>
-                                    <div class="form-check form-switch ps-0">
-                                        <input class="form-check-input ms-auto" type="checkbox" name="email" id="flexSwitchCheckDefault" checked>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3" style="border-right: 1px solid #ccc; border-radius:5px">
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <input type="number" disabled name="celular_in" id="celular_in" class="boredes-cajas" placeholder="CELULAR"/>
-                                </div>
-                                <div class="col-md-3" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
-                                    <p style="margin-bottom:10px;"></p>
-                                    <div class="form-check form-switch ps-0">
+                                    <div class="col-md-2" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
                                         <p style="margin-bottom:10px;"></p>
                                         <div class="form-check form-switch ps-0">
-                                            <input class="form-check-input ms-auto" type="checkbox" name="celular" id="flexSwitchCheckDefault" checked>
+                                            <input class="form-check-input ms-auto" type="checkbox" name="apellido_paterno" id="flexSwitchCheckDefault" checked>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="border-right: 1px solid #ccc; border-radius:5px">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <input type="text" height="100%" disabled name="apellido_materno_in" id="apellido_materno_in" class="boredes-cajas" placeholder="APELLIDO MATERNO"/>
+                                    </div>
+                                    <div class="col-md-2" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
+                                        <p style="margin-bottom:10px;"></p>
+                                        <div class="form-check form-switch ps-0">
+                                            <input class="form-check-input ms-auto" type="checkbox" name="apellido_materno" id="flexSwitchCheckDefault" checked>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="border-right: 1px solid #ccc; border-radius:5px">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <input type="text" height="100%" disabled name="nombres_in" id="nombres_in" class="boredes-cajas" placeholder="NOMBRES  COMPLETOS"/>
+                                    </div>
+                                    <div class="col-md-2" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
+                                        <p style="margin-bottom:10px;"></p>
+                                        <div class="form-check form-switch ps-0">
+                                            <input class="form-check-input ms-auto" type="checkbox" name="nombres" id="flexSwitchCheckDefault" checked>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3" style="border-right: 1px solid #ccc; border-radius:5px">
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <input type="number" disabled name="cedula_in" id="cedula_in" class="boredes-cajas" placeholder="CEDULA"/>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-3" style="border-right: 1px solid #ccc; border-radius:5px">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <input type="text" disabled name="email_in" id="email_in" class="boredes-cajas" placeholder="EMAIL"/>
+                                    </div>
+                                    <div class="col-md-3" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
+                                        <p style="margin-bottom:10px;"></p>
+                                        <div class="form-check form-switch ps-0">
+                                            <input class="form-check-input ms-auto" type="checkbox" name="email" id="flexSwitchCheckDefault" checked>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-3" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
-                                    <p style="margin-bottom:10px;"></p>
-                                    <div class="form-check form-switch ps-0">
-                                        <input class="form-check-input ms-auto" type="checkbox" name="cedula" id="flexSwitchCheckDefault" checked>
+                            </div>
+                            <div class="col-md-3" style="border-right: 1px solid #ccc; border-radius:5px">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <input type="number" disabled name="celular_in" id="celular_in" class="boredes-cajas" placeholder="CELULAR"/>
+                                    </div>
+                                    <div class="col-md-3" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
+                                        <p style="margin-bottom:10px;"></p>
+                                        <div class="form-check form-switch ps-0">
+                                            <p style="margin-bottom:10px;"></p>
+                                            <div class="form-check form-switch ps-0">
+                                                <input class="form-check-input ms-auto" type="checkbox" name="celular" id="flexSwitchCheckDefault" checked>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="border-right: 1px solid #ccc; border-radius:5px">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <input type="number" disabled name="cedula_in" id="cedula_in" class="boredes-cajas" placeholder="CEDULA"/>
+                                    </div>
+                                    <div class="col-md-3" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
+                                        <p style="margin-bottom:10px;"></p>
+                                        <div class="form-check form-switch ps-0">
+                                            <input class="form-check-input ms-auto" type="checkbox" name="cedula" id="flexSwitchCheckDefault" checked>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3" style="border-right: 1px solid #ccc; border-radius:5px">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <input type="text" disabled name="expedido_in" id="expedido_in" class="boredes-cajas" placeholder="EXPEDIDO"/>
+                                    </div>
+                                    <div class="col-md-3" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
+                                        <p style="margin-bottom:10px;"></p>
+                                        <div class="form-check form-switch ps-0">
+                                            <input class="form-check-input ms-auto" type="checkbox" name="expedido" id="flexSwitchCheckDefault" checked>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3" style="border-right: 1px solid #ccc; border-radius:5px">
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <input type="text" disabled name="expedido_in" id="expedido_in" class="boredes-cajas" placeholder="EXPEDIDO"/>
-                                </div>
-                                <div class="col-md-3" style="border-bottom: 1px solid #ccc; border-top: 1px solid #ccc">
-                                    <p style="margin-bottom:10px;"></p>
-                                    <div class="form-check form-switch ps-0">
-                                        <input class="form-check-input ms-auto" type="checkbox" name="expedido" id="flexSwitchCheckDefault" checked>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="title">
-                          <div style="padding: 25px;">
-                            <div class="row">
-                              <div class="col-md-9">
-                                <input type="text" id="" name="nombre_pregunta[]" class="boredes-cajas" placeholder="Nombre de la pregunta"/>
-                              </div>
-                              <div class="col-md-3">
-                                <div class="input-group input-group-static mb-4">
-                                    <select name="componente_tipo[]" id="" class="form-control" onchange="addComponent(this,1)">
-                                    <option>Seleccione una opcion</option>
-
-                                    @foreach ($componentes as $con )
-                                        <option value="{{ $con->nombre }}">{{ $con->descripcion }}</option>
-                                    @endforeach
-                                    
-                                    {{-- <option value="select">Seleccion Unica</option>
-                                    <option value="checkbox">Seleccion Multiple</option>
-                                    <option value="input">Respuesta Corta</option>
-                                    <option value="taxtarea">Respuesta Largo</option>
-                                    <option value="file">Adjuntar Archivo</option> --}}
-                                    </select>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-md-12">
-                                <p style="padding: 2px"></p>
-                                <div id="component_1">
-
-                                </div>
-                                <hr>
-                                <div class="footer">
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="title">
+                                <div style="padding: 25px;">
                                     <div class="row">
-                                        <div class="col-md-5">
-                                            {{-- <ol style="list-style-type: circle">
-                                                <li><input type="text" class="form-control boredes-cajas"></li>
-                                                <li><input type="text" class="form-control boredes-cajas"></li>
-                                                <li><input type="text" class="form-control boredes-cajas"></li>
-                                            </ol> --}}
+                                        <div class="col-md-9">
+                                            <input type="text" id="" name="nombre_pregunta[]" class="boredes-cajas" placeholder="Nombre de la pregunta"/>
                                         </div>
-                                        <div class="col-md-5">
+                                        <div class="col-md-3">
+                                            <div class="input-group input-group-static mb-4">
+                                                <select name="componente_tipo[]" id="" class="form-control" onchange="addComponent(this,1)">
+                                                <option>Seleccione una opcion</option>
 
+                                                @foreach ($componentes as $con )
+                                                    <option value="{{ $con->nombre }}">{{ $con->descripcion }}</option>
+                                                @endforeach
+                                                
+                                                {{-- <option value="select">Seleccion Unica</option>
+                                                <option value="checkbox">Seleccion Multiple</option>
+                                                <option value="input">Respuesta Corta</option>
+                                                <option value="taxtarea">Respuesta Largo</option>
+                                                <option value="file">Adjuntar Archivo</option> --}}
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="col-md-2 float-right">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    {{-- <button type="button" class="btn btn-outline-danger btn-circle btn-sm" onclick="deleteBlock(1)"><i class="fa fa-trash-o"></i></button> --}}
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <button type="button" class="btn btn-outline-success btn-circle btn-sm" onclick="addBlock()"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p style="padding: 2px"></p>
+                                            <div id="component_1">
+
+                                            </div>
+                                            <hr>
+                                            <div class="footer">
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        {{-- <ol style="list-style-type: circle">
+                                                            <li><input type="text" class="form-control boredes-cajas"></li>
+                                                            <li><input type="text" class="form-control boredes-cajas"></li>
+                                                            <li><input type="text" class="form-control boredes-cajas"></li>
+                                                        </ol> --}}
+                                                    </div>
+                                                    <div class="col-md-5">
+
+                                                    </div>
+                                                    <div class="col-md-2 float-right">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                {{-- <button type="button" class="btn btn-outline-danger btn-circle btn-sm" onclick="deleteBlock(1)"><i class="fa fa-trash-o"></i></button> --}}
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <button type="button" class="btn btn-outline-success btn-circle btn-sm" onclick="addBlock()"><i class="fa fa-plus"></i></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                              </div>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
+                        <div id="cuerpos_form" class="sortable1">
+
+                        </div>
+                        <hr>
+                        <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-outline-success btn-circle btn-block">GENERAR FORMULARIO</button>
+                        </div>
+                        </div>
                     </div>
-                    <div id="cuerpos_form" class="sortable1">
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <button class="btn btn-outline-success btn-circle btn-block">GENERAR FORMULARIO</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -497,6 +503,7 @@
         // a.removeChild(item);
 
         // listid.removeChild(li.id);
+        
         listid.removeChild(li);
     }
 
@@ -620,8 +627,9 @@
     }
 
     function deleteBlock(bloque){
-        // console.log("me quiers eliminar ??? => "+bloque);
+        
         $("#bloque_"+bloque).remove();
+
     }
 
     function cambiaColor(){
@@ -645,6 +653,7 @@
     $("#imgInp").change(function () {
         // Código a ejecutar cuando se detecta un cambio de archivO
         readImage(this);
+
     });
     </script>
 @endsection

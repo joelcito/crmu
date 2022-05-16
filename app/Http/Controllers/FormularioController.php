@@ -26,12 +26,25 @@ class FormularioController extends Controller
 
     public function guardaFormulario(Request $request){
 
+        // dd($request->all());
+        // dd($request->file('img-formulario'));
+
         $formulario = new Formulario();
 
         // $formulario->Creador_id         = Auth()::user()->id;
         $formulario->nombre             = $request->input('nombre_formulario');
         $formulario->descripcion        = $request->input('descripcion_formulario');
         $formulario->color              = $request->input('color_formulario');
+
+        if($request->has('img-formulario')){
+            // subiendo el archivo al servidor
+            $archivo    = $request->file('img-formulario');
+            $direcion   = "imagenesFormulario/";
+            $nombreArchivo = date('YmdHis').".".$archivo->getClientOriginalExtension();
+            $archivo->move($direcion,$nombreArchivo);
+
+            $formulario->imagen            = $nombreArchivo;
+        }
 
         $formulario->save();
 
@@ -206,6 +219,7 @@ class FormularioController extends Controller
     }
 
     public function respuestaFormulario(Request $request, $campania_id, $formulario_id){
+
         $formulario = Formulario::find($formulario_id);
 
         $preguntas_form = Pregunta::where('formulario_id', $formulario_id)
@@ -376,6 +390,164 @@ class FormularioController extends Controller
             return view("errors.error404");
 
         }
+
+    }
+
+    public function editaFormulario(Request $request,  $campania_id,$formulario_id){
+
+        // dd($formulario_id);
+        
+        $formulario = Formulario::find($formulario_id);
+
+        $preguntas_form = Pregunta::where('formulario_id', $formulario_id)
+                                    ->where('estado', 0)
+                                    ->get();
+
+                                    
+        $ap_paterno = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','ap_paterno')
+                                ->first();
+
+        $ap_materno = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','ap_materno')
+                                ->first();
+
+        $nombre = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','nombre')
+                                ->first();
+
+        $email = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','email')
+                                ->first();
+
+        $celular = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','celular')
+                                ->first();
+
+        $cedula = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','cedula')
+                                ->first();
+
+        $expedido = Pregunta::where('formulario_id', $formulario_id)
+                                ->where('estado',1)
+                                ->where('nombre','expedido')
+                                ->first();
+
+        $componentes = Componente::all();
+
+        return view('formulario.editaFormulario')->with(compact('campania_id','formulario', 'preguntas_form', 'ap_paterno',  'ap_materno', 'nombre', 'email', 'celular', 'cedula', 'expedido', 'componentes'));
+
+    }
+
+    public function guardarEditadoFormulario(Request $request){
+        // dd( $request->all() );
+
+        // editadmos el formulario
+        $formulario_id = $request->input('formulario_id');
+
+        $formulario = Formulario::find($formulario_id);
+
+        $formulario->nombre            = $request->input('nombre_formulario');
+        $formulario->descripcion       = $request->input('descripcion_formulario');
+
+        $formulario->save();
+
+
+        // ahroa editamos las preguntas
+
+        $preguntasArray         = $request->input('nombre_pregunta');
+        $arrayComponentes       = $request->input('componente_tipo');
+        $formulario_id          = $request->input('formulario_id');
+
+        $idPreguntas = array_keys($preguntasArray);
+
+        $cantIdString = 0;
+         
+        foreach($idPreguntas as $pre){
+
+            $pregunta = Pregunta::find($pre);
+
+            if(is_string($pre)){
+
+                $idPregunta = trim($pre,"'");
+
+                $pregunta = Pregunta::find($idPregunta);
+
+                $pregunta->nombre = $preguntasArray[$pre];
+
+                $pregunta->save();
+
+                if($pregunta->componente_id == 3  || $pregunta->componente_id == 4){
+                    
+                    echo "<b>".$pregunta->id."</b><br>";
+                    
+                    // dd("si");
+                }else{
+                    // dd("no");
+                }
+
+                $cantIdString++;
+
+                echo "si ".$pre."<br>";
+
+            }else{
+                $cantExistentes = $cantIdString;
+
+                // CREAMOS LA PREGUNTA POR QUE ES NUEVA
+                $pregunta =  new Pregunta();
+
+                // dd($preguntasArray);
+
+                $pregunta->nombre           = $preguntasArray[$pre];
+
+                $componente = Componente::where('nombre', $arrayComponentes[$cantExistentes])->first();
+
+                $pregunta->componente_id    = $componente->id;
+                $pregunta->formulario_id    = $formulario_id;
+                $pregunta->estado = 0;
+
+                $pregunta->save();
+
+                if($componente->id == 3 || $componente->id == 4){
+
+                    if($componente->id == 3){
+
+                        $componenteEnviado = "select_".$cantExistentes;
+                        
+                    }else{
+                        $componenteEnviado = "checkbox_".$cantExistentes;
+                    }
+
+                    $arrayEnviados = $request->input($componenteEnviado);
+
+                    foreach($arrayEnviados as $aEnv){
+
+                        $valorcombo = new ValorCombo();
+
+                        $valorcombo->formulario_id      =   $formulario_id;
+                        $valorcombo->pregunta_id        =   $pregunta->id;
+                        $valorcombo->valor              =   $aEnv;
+
+                        $valorcombo->save();
+
+                    }
+
+                    // $valorcombo
+
+                }   
+
+                $cantExistentes++;
+            }
+
+
+        }
+
 
     }
     /**

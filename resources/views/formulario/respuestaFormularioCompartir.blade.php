@@ -229,19 +229,31 @@
                         <form action="{{ url('Formulario/guardarRespuestaFormulario') }}" method="post" target="_target">
                             @csrf
                             <div class="row">
-                            <div class="col-md-12">
-                                <div class="title">
-                                    <div class="borderColor"></div>
-                                    <h1>
-                                    <div>
-                                        <h2>{{ $formulario->nombre }}</h2>
-                                        <p style="padding: 2px"></p>
-                                        <hr>
-                                        <h6>{{ $formulario->descripcion }}</h6>
+                                <div class="col-md-12">
+                                    <div class="title">
+                                        <center>
+                                            <div style="max-height:200px;">
+                                                <img src='{{ asset("imagenesFormulario/$formulario->imagen") }}' alt="Aqui la imagen">
+                                            </div>
+                                        </center>
                                     </div>
-                                    </h1>
                                 </div>
                             </div>
+                            <p></p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="title">
+                                        <div class="borderColor"></div>
+                                        <h1>
+                                        <div>
+                                            <h2>{{ $formulario->nombre }}</h2>
+                                            <p style="padding: 2px"></p>
+                                            <hr>
+                                            <h6>{{ $formulario->descripcion }}</h6>
+                                        </div>
+                                        </h1>
+                                    </div>
+                                </div>
                             </div>
 
                             <input type="hidden" value="{{ $campania_id }}" name="campania_id">
