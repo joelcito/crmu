@@ -21,4 +21,20 @@ class Formulario extends Model
         'estado',
         'deleted_at',
     ];
+
+    public static function componente($nombre){
+        
+        $componete = Componente::where('nombre', $nombre)->first();
+
+        return $componete;
+
+    }
+
+    public static function valorCombos($pregunta){
+        
+        $vloresCombos  = ValorCombo::where('pregunta_id', $pregunta)->get();
+
+        return $vloresCombos;
+
+    }
 }

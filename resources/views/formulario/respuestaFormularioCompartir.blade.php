@@ -307,7 +307,7 @@
                                 </div>
                             </div>
                             
-                            @foreach ( $preguntas_form as $p)
+                            @foreach ( $preguntas_form as $keyFrom => $p)
                             <br>
                             <div class="row">
                                 <div class="col-md-12">
@@ -349,8 +349,8 @@
                                                 @else
 
                                                 @foreach ($valores as $key => $v)
-                                                    <label for="vehicle_{{ $key }}"> {{ $v->valor }}</label>
-                                                    <input type="checkbox" name="respuestas[{{ $p->id }}][]" id="vehicle_{{ $key }}" name="vehicle1" value="{{ $v->valor }}"><br>
+                                                    <label for="vehicle_{{ $key }}_{{ $keyFrom }}"> {{ $v->valor }}</label>
+                                                    <input type="checkbox" name="respuestas[{{ $p->id }}][]" id="vehicle_{{ $key }}_{{ $keyFrom }}" name="vehicle1" value="{{ $v->valor }}"><br>
                                                 @endforeach
                                                 {{-- <input type="text" name="pregunta_ids[]" value="{{ $p->id }}"> --}}
 

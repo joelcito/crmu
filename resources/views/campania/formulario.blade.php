@@ -178,6 +178,19 @@
         .listaul{
             list-style-type: circle;
         }
+        
+        /* para el boton de subir file */
+        .subir{
+            padding: 5px 10px;
+            background: #f55d3e;
+            color:#fff;
+            border:0px solid #fff;
+        }
+        
+        .subir:hover{
+            color:#fff;
+            background: #f7cb15;
+        }
 
     </style>
 @endsection
@@ -196,14 +209,32 @@
                             <div class="col-md-3"></div>
                             <div class="col-md-6">
                                 <div class="row">
-                                    <div class="col-md-8 border">
-                                        <input type='file' id="imgInp" name="img-formulario"/>
-                                        <br>
-                                        <small>Imagen permitida de 720 px de ancho y 150 px de alto</small>
+                                    <div class="col-md-4">
                                     </div>
-                                    <div class="col-md-4 border ">
-                                        <label for="">Color</label>
-                                        <input type="color" class="form-control" id="color-form" name="color-form" value="#673ab7" onchange="cambiaColor()">
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-md-6 border">
+                                                <center>
+                                                    <label for="file-upload" class="subir">
+                                                        <i class="fas fa-cloud-upload-alt"></i> Subir archivo
+                                                    </label>
+            
+                                                    <input id="file-upload" type="file" style='display: none;' name="img-formulario" accept="image/*"/>
+                                                    <br>
+                                                    <small class="text-success">(720px X 150px Max.)</small>
+                                                    <div id="info">
+            
+                                                    </div>
+                                                </center>
+                                            </div>
+                                            <div class="col-md-6 border">
+
+                                                <label for="">Color</label>
+                                                <input type="color" class="form-control" id="color-form" name="color-form" value="#673ab7" onchange="cambiaColor()">
+                                                
+                                            </div>
+                                        </div>
+                                        <br>
                                     </div>
                                 </div>
                             </div>
@@ -220,23 +251,26 @@
                                             <img id="image-previw" src="{{ asset('blanco.jpg') }}" alt="">
                                         </div>
                                     </center>
+                                    <div style="display: none; position: absolute; margin-top:-50px;" id="bnt-elimina-img">
+                                        <button type="button" class="btn btn-icon-only btn-rounded btn-danger mb-0 p-1" onclick="quitaImgFormulario()"><i class="fa fa-close"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <br>
                         <div class="row">
-                        <div class="col-md-12">
-                            <div class="title">
-                                <div class="borderColor"></div>
-                                <h1>
-                                <div>
-                                    <input type="text" name="nombre_formulario" id="nombre_formulario" class="boredes-cajas" placeholder="TITULO DEL FORMULARIO"/>
-                                    <p style="padding: 2px"></p>
-                                    <textarea class="boredes-cajas" name="descripcion_formulario" id="descripcion_formulario" cols="30" rows="2" placeholder="DESCRIPCION DEL FORMULARIO" ></textarea>
+                            <div class="col-md-12">
+                                <div class="title">
+                                    <div class="borderColor"></div>
+                                    <h1>
+                                    <div>
+                                        <input type="text" name="nombre_formulario" id="nombre_formulario" class="boredes-cajas" placeholder="TITULO DEL FORMULARIO"/>
+                                        <p style="padding: 2px"></p>
+                                        <textarea class="boredes-cajas" name="descripcion_formulario" id="descripcion_formulario" cols="30" rows="2" placeholder="DESCRIPCION DEL FORMULARIO" ></textarea>
+                                    </div>
+                                    </h1>
                                 </div>
-                                </h1>
                             </div>
-                        </div>
                         </div>
                         <input type="hidden" value="{{ $campania_id }}" name="campania_id">
                         <input type="hidden" value="#673ab7" name="color_formulario" id="color_formulario">
@@ -639,6 +673,7 @@
         $(".borderColor").css("background", $('#color-form').val());
     }
 
+
     // PARA SUBIR LA IMAGEN Y PREVISULIR ESE RATO
     function readImage (input) {
         if (input.files && input.files[0]) {
@@ -650,10 +685,28 @@
         }
     }
 
-    $("#imgInp").change(function () {
+    $("#file-upload").change(function () {
+
+        // par cambiar el estilo del boton file
+        var pdrs = document.getElementById('file-upload').files[0].name;
+        document.getElementById('info').innerHTML = pdrs;
+
+
         // Código a ejecutar cuando se detecta un cambio de archivO
         readImage(this);
+        $('#bnt-elimina-img').toggle('show');
 
     });
+
+    function quitaImgFormulario(){
+        
+        var ruta = "{{ url('blanco.jpg') }}";
+
+        $('#image-previw').attr('src', ruta); // Renderizamos la imagen
+        $('#bnt-elimina-img').toggle('show');
+        $('#file-upload').val('');
+        $('#info').text('');
+
+    }
     </script>
 @endsection

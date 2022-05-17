@@ -211,6 +211,18 @@
                   <form action="{{ url('Formulario/guardarRespuestaFormulario') }}" method="post" target="_target">
                     @csrf
                     <div class="row">
+                        <div class="col-md-12">
+                            <div class="title">
+                                <center>
+                                    <div style="max-height:200px;">
+                                        <img src='{{ asset("imagenesFormulario/$formulario->imagen") }}' alt="Aqui la imagen">
+                                    </div>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                    <p></p>
+                    <div class="row">
                       <div class="col-md-12">
                         <div class="title">
                             <div class="borderColor"></div>
@@ -277,7 +289,7 @@
                         </div>
                     </div>
                     
-                    @foreach ( $preguntas_form as $p)
+                    @foreach ( $preguntas_form as $keyFomr => $p)
                     <br>
                       <div class="row">
                           <div class="col-md-12">
@@ -319,8 +331,8 @@
                                         @else
 
                                           @foreach ($valores as $key => $v)
-                                            <label for="vehicle_{{ $key }}"> {{ $v->valor }}</label>
-                                            <input type="checkbox" name="respuestas[{{ $p->id }}][]" id="vehicle_{{ $key }}" name="vehicle1" value="{{ $v->valor }}"><br>
+                                            <label for="vehicle_{{ $key }}_{{ $keyFomr }}"> {{ $v->valor }}</label>
+                                            <input type="checkbox" name="respuestas[{{ $p->id }}][]" id="vehicle_{{ $key }}_{{ $keyFomr }}" name="vehicle1" value="{{ $v->valor }}"><br>
                                           @endforeach
                                           {{-- <input type="text" name="pregunta_ids[]" value="{{ $p->id }}"> --}}
 

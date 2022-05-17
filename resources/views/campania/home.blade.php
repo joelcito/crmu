@@ -407,9 +407,12 @@
                                 <div class="row">
                                   {{-- <p style="padding-top:50px;"></p> --}}
                                   <div class="col-md-2">
-                                    <button class="btn btn-icon-only btn-rounded btn-outline-warning mb-0 p-1" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-edit"></i></button>
+                                    <a href="{{ url('Formulario/respuestaFormulario', [$f->campania_id, $f->formulario_id]) }}" class="btn btn-icon-only btn-rounded btn-outline-info mb-0 p-2" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-eye"></i></a>
                                   </div>
-                                  <div class="col-md-10" style="margin-top:-10px">
+                                  <div class="col-md-2">
+                                    <button class="btn btn-icon-only btn-rounded btn-outline-warning mb-0 p-0" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-edit"></i></button>
+                                  </div>
+                                  <div class="col-md-8" style="margin-top:-10px;">
                                     <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{ $key }}" aria-expanded="false" aria-controls="collapseOne">
                                       {{ $f->formulario->nombre }}
                                       <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
@@ -655,6 +658,43 @@
         <ul class="list-group">
 
           <div id="listadoEgreso">
+
+            <table>
+
+              @foreach ( $egresos as $egre )
+                @php
+                  $comprobante = App\Models\Comprobante::where('presupuesto_id',$egre->id)->first();
+                @endphp
+                <tr>
+                  <td>
+                    <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
+                      <div class="d-flex">
+                        <div class="d-flex align-items-center">
+                          <button onclick="editEgreso('{{ $egre->id }}', '{{ $egre->gasto_id }}', '{{ $egre->egreso }}', '{{ $egre->descripcion }}', '{{ ($comprobante)? $comprobante->nro_comprobante: '' }}', '{{ ($comprobante)? $comprobante->id : '0' }}')" class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_more</i></button>
+                          <div class="d-flex flex-column">
+                            <h6 class="mb-1 text-dark text-sm">{{ $egre->gasto->nombre }}</h6>
+                            <span class="text-xs">
+                              @php
+                                $fechaHoraEs = $utilidades->fechaHoraCastellano($egre->fecha);
+      
+                                echo $fechaHoraEs;
+                              @endphp
+                            </span>
+                          </div>
+                        </div>
+                        <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold ms-auto">
+                          {{$egre->egreso}} Bs.
+                        </div>
+                      </div>
+                      <hr class="horizontal dark mt-3 mb-2" />
+                    </li>
+                  </td>
+                </tr>  
+              @endforeach
+              
+            </table>
+            <hr><br>
+
             @foreach ($egresos as $egre)
             @php
               $comprobante = App\Models\Comprobante::where('presupuesto_id',$egre->id)->first();
@@ -681,6 +721,7 @@
                 <hr class="horizontal dark mt-3 mb-2" />
               </li>
             @endforeach
+
           </div>
           {{-- <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
             <div class="d-flex">

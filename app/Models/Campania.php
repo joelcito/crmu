@@ -26,6 +26,14 @@ class Campania extends Model
         'deleted_at',
     ];
 
+
+    public static function listado(){
+        
+        $campania = Campania::orderBy('id', 'desc')->get();
+
+        return $campania;
+    }
+
     public static function ingresos($campania_id){
         
         $ingresos = Presupuesto::where('campania_id',$campania_id)
@@ -82,6 +90,7 @@ class Campania extends Model
             return 0;
 
         }
+
     }
 
     public static function totalIngresoEgreso($campania_id, $tipo){
@@ -102,6 +111,7 @@ class Campania extends Model
             return 0;
 
         }
+        
     }
 
     public static function cantPersonasRegistradas($campania_id){

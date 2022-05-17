@@ -32,7 +32,7 @@ class CampaniaController extends Controller
 
         if($request->ajax()){
 
-            $campanias = Campania::all();
+            $campanias = Campania::listado();
 
             return view('campania.ajaxListado')->with(compact('campanias'));
 

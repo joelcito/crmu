@@ -26,9 +26,6 @@ class FormularioController extends Controller
 
     public function guardaFormulario(Request $request){
 
-        // dd($request->all());
-        // dd($request->file('img-formulario'));
-
         $formulario = new Formulario();
 
         // $formulario->Creador_id         = Auth()::user()->id;
@@ -395,8 +392,6 @@ class FormularioController extends Controller
 
     public function editaFormulario(Request $request,  $campania_id,$formulario_id){
 
-        // dd($formulario_id);
-        
         $formulario = Formulario::find($formulario_id);
 
         $preguntas_form = Pregunta::where('formulario_id', $formulario_id)
@@ -446,24 +441,36 @@ class FormularioController extends Controller
     }
 
     public function guardarEditadoFormulario(Request $request){
-        // dd( $request->all() );
 
-        // editadmos el formulario
-        $formulario_id = $request->input('formulario_id');
+        // dd($request->all());
+
+        $formulario_id   = $request->input('formulario_id');
+        $campania_id     = $request->input('campania_id');
 
         $formulario = Formulario::find($formulario_id);
 
         $formulario->nombre            = $request->input('nombre_formulario');
         $formulario->descripcion       = $request->input('descripcion_formulario');
+        $formulario->color              = $request->input('color_formulario');
+
+        // preguntamos si mando una nueva imagen
+        if($request->has('img-formulario')){
+            
+            $archivo    = $request->file('img-formulario');
+            $direcion   = "imagenesFormulario/";
+            $nombreArchivo = date('YmdHis').".".$archivo->getClientOriginalExtension();
+            $archivo->move($direcion,$nombreArchivo);
+
+            $formulario->imagen            = $nombreArchivo;
+        }
 
         $formulario->save();
 
 
         // ahroa editamos las preguntas
-
-        $preguntasArray         = $request->input('nombre_pregunta');
-        $arrayComponentes       = $request->input('componente_tipo');
-        $formulario_id          = $request->input('formulario_id');
+        $preguntasArray             = $request->input('nombre_pregunta');
+        $arrayComponentes           = $request->input('componente_tipo');
+        $formulario_id              = $request->input('formulario_id');
 
         $idPreguntas = array_keys($preguntasArray);
 
@@ -479,30 +486,64 @@ class FormularioController extends Controller
 
                 $pregunta = Pregunta::find($idPregunta);
 
-                $pregunta->nombre = $preguntasArray[$pre];
-
-                $pregunta->save();
+                $pregunta->nombre           = $preguntasArray[$pre];
 
                 if($pregunta->componente_id == 3  || $pregunta->componente_id == 4){
                     
-                    echo "<b>".$pregunta->id."</b><br>";
-                    
-                    // dd("si");
+                    $vloresCombos  = Formulario::valorCombos($pregunta->id);
+
+                    foreach($vloresCombos as $vc){
+
+                        ValorCombo::destroy($vc->id);
+
+                    }
+
                 }else{
-                    // dd("no");
+
+
+                    echo "<b>".$pregunta->componente_id."</b><br>";
+
+
                 }
+
+                $componente = Formulario::componente($arrayComponentes[$cantIdString]);
+
+                $pregunta->componente_id    = $componente->id;
+                $pregunta->save();
+
+                
+                // AHORA PARA LOS VALORES COMBOS
+                $componente = $arrayComponentes[$cantIdString]."_".$cantIdString;
+
+                $arraryComponetesCombos = $request->input($componente);
+
+
+                if($arraryComponetesCombos){
+
+                    foreach($arraryComponetesCombos as $co){
+                        if($co){
+
+                            $valorCombos = new  ValorCombo();
+
+                            $valorCombos->formulario_id =   $formulario_id;
+                            $valorCombos->pregunta_id   =   $pregunta->id;
+                            $valorCombos->valor         =   $co;
+    
+                            $valorCombos->save();
+
+                        }
+                    }
+                }
+
 
                 $cantIdString++;
 
-                echo "si ".$pre."<br>";
-
             }else{
+
                 $cantExistentes = $cantIdString;
 
                 // CREAMOS LA PREGUNTA POR QUE ES NUEVA
                 $pregunta =  new Pregunta();
-
-                // dd($preguntasArray);
 
                 $pregunta->nombre           = $preguntasArray[$pre];
 
@@ -538,8 +579,6 @@ class FormularioController extends Controller
 
                     }
 
-                    // $valorcombo
-
                 }   
 
                 $cantExistentes++;
@@ -548,6 +587,27 @@ class FormularioController extends Controller
 
         }
 
+        
+
+        // array de eliminaciones
+        $preguntascombosEliminadas  = explode(",", $request->input('removeCombos'));
+        $preguntasEliminadas        = explode(",", $request->input('removeBlock'));
+
+        // preguntas combos eliminadas
+        foreach ($preguntascombosEliminadas as $precom){
+
+            ValorCombo::destroy($precom);
+
+        }
+
+        // ELIMINAMOS LAS PREGUNTAS ENVIADas
+        foreach($preguntasEliminadas as $pregun){
+
+            Pregunta::destroy($pregun);
+
+        }
+
+        return redirect('Formulario/respuestaFormulario/'.$campania_id."/".$formulario_id);
 
     }
     /**
