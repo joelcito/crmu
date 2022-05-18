@@ -815,7 +815,7 @@
             placeholder: "Search...",
             perPage: "{select} entries per page",
             noRows: "No entries found",
-            info: "Showing {start} to {end} of {rows} entries"
+            info: "Mostrando {start} to {end} of {rows} entries"
           },
           layout: {
             top: "{select}{search}",

@@ -92,7 +92,7 @@
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h6 class="modal-title font-weight-normal" id="exampleModalLabel">Formulario de egreso</h6>
+        <h6 class="modal-title font-weight-normal" id="exampleModalLabel">Formulario de egreso <span id="monto-actual" class="text-success">Presupuesto actual {{ $presupuesto }} Bs.</span></h6>
         <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -659,7 +659,7 @@
 
           <div id="listadoEgreso">
 
-            <table>
+            <table width="100%" id="table-egresos">
 
               @foreach ( $egresos as $egre )
                 @php
@@ -667,35 +667,41 @@
                 @endphp
                 <tr>
                   <td>
-                    <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
-                      <div class="d-flex">
-                        <div class="d-flex align-items-center">
-                          <button onclick="editEgreso('{{ $egre->id }}', '{{ $egre->gasto_id }}', '{{ $egre->egreso }}', '{{ $egre->descripcion }}', '{{ ($comprobante)? $comprobante->nro_comprobante: '' }}', '{{ ($comprobante)? $comprobante->id : '0' }}')" class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_more</i></button>
-                          <div class="d-flex flex-column">
-                            <h6 class="mb-1 text-dark text-sm">{{ $egre->gasto->nombre }}</h6>
-                            <span class="text-xs">
-                              @php
-                                $fechaHoraEs = $utilidades->fechaHoraCastellano($egre->fecha);
-      
-                                echo $fechaHoraEs;
-                              @endphp
-                            </span>
+
+                    {{-- <div id="listadoEgreso"> --}}
+
+                      <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
+                        <div class="d-flex">
+                          <div class="d-flex align-items-center">
+                            <button onclick="editEgreso('{{ $egre->id }}', '{{ $egre->gasto_id }}', '{{ $egre->egreso }}', '{{ $egre->descripcion }}', '{{ ($comprobante)? $comprobante->nro_comprobante: '' }}', '{{ ($comprobante)? $comprobante->id : '0' }}')" class="btn btn-icon-only btn-rounded btn-outline-warning mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">edit</i></button>
+                            <div class="d-flex flex-column">
+                              <h6 class="mb-1 text-dark text-sm">{{ $egre->gasto->nombre }}</h6>
+                              <span class="text-xs">
+                                @php
+                                  $fechaHoraEs = $utilidades->fechaHoraCastellano($egre->fecha);
+        
+                                  echo $fechaHoraEs;
+                                @endphp
+                              </span>
+                            </div>
+                          </div>
+                          <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold ms-auto">
+                            {{$egre->egreso}} Bs.
                           </div>
                         </div>
-                        <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold ms-auto">
-                          {{$egre->egreso}} Bs.
-                        </div>
-                      </div>
-                      <hr class="horizontal dark mt-3 mb-2" />
-                    </li>
+                        <hr class="horizontal dark mt-3 mb-2" />
+                      </li>
+
+                    {{-- </div> --}}
+                    
                   </td>
                 </tr>  
               @endforeach
-              
             </table>
+
             <hr><br>
 
-            @foreach ($egresos as $egre)
+            {{-- @foreach ($egresos as $egre)
             @php
               $comprobante = App\Models\Comprobante::where('presupuesto_id',$egre->id)->first();
             @endphp
@@ -720,9 +726,12 @@
                 </div>
                 <hr class="horizontal dark mt-3 mb-2" />
               </li>
-            @endforeach
+            @endforeach --}}
 
           </div>
+
+
+
           {{-- <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
             <div class="d-flex">
               <div class="d-flex align-items-center">
@@ -1064,6 +1073,15 @@
 
       // lista de clientes asignados a un vendedor
       ajaxListadoClientesAsignados();
+
+
+      var dataTableSearch = new simpleDatatables.DataTable("#table-egresos", {
+
+          searchable: false,
+          fixedHeight: false,
+          perPage: 5,
+
+      });
 
     });
 
@@ -1445,6 +1463,8 @@
     }
 
     function nuevoEgreso(){
+
+      // $('#monto-actual').text('Presupuesto actual 500 Bs');
       
       $('#modalNuevoEgreso').modal('show');
       $('#presupuesto_id').val(0);
@@ -1482,8 +1502,11 @@
               dataType: 'json',
               success: function(data) {
 
+                console.log(data.lista);
+
                 $('#listadoEgreso').html(data.lista);
                 $('#presupuestoActualCampania').text(data.presupuesto);
+                $('#monto-actual').text('Presupuesto actual '+data.presupuesto+' Bs');
 
                 Swal.fire({
                   title: 'Correcto',

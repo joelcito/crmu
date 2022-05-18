@@ -48,6 +48,7 @@ class Campania extends Model
         
         $egresos = Presupuesto::where('campania_id',$campania_id)
                                 ->where('tipo',"Egreso")
+                                ->orderBy('id', 'desc')
                                 ->get();
 
         return $egresos;

@@ -417,7 +417,7 @@ class CampaniaController extends Controller
             $presupuesto->save();
 
 
-            $egresso = Campania::egresos($campania_id);
+            $egresos = Campania::egresos($campania_id);
 
 
             // PROCEDEMOS AL SUBIDO DE ARCHIVO Y MODIFICACION DE DATOS DE LA BASE DE DATOS 
@@ -454,42 +454,45 @@ class CampaniaController extends Controller
 
             $utilidades = new Utilidades();
 
-            foreach ($egresso as $egre){
+            // foreach ($egresos as $egre){
 
-                $comprobante = Comprobante::where('presupuesto_id', $egre->id)->first();
+            //     $comprobante = Comprobante::where('presupuesto_id', $egre->id)->first();
 
-                if($comprobante){
-                    $numComprobante = $comprobante->nro_comprobante; 
-                    $idComprobante = $comprobante->id;
-                }else{
-                    $numComprobante = '""'; 
-                    $idComprobante = 0;
-                }
+            //     if($comprobante){
+            //         $numComprobante = $comprobante->nro_comprobante; 
+            //         $idComprobante = $comprobante->id;
+            //     }else{
+            //         $numComprobante = '""'; 
+            //         $idComprobante = 0;
+            //     }
                 
-                $fechaHoraEs = $utilidades->fechaHoraCastellano($egre->fecha);
+            //     $fechaHoraEs = $utilidades->fechaHoraCastellano($egre->fecha);
                 
-                $lista = $lista."
-                                <li class='list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg'>
-                                    <div class='d-flex'>
-                                    <div class='d-flex align-items-center'>
-                                        <button onclick='editEgreso($egre->id, $egre->gasto_id, $egre->egreso,".'"'.$egre->descripcion.'"'.",$numComprobante, $idComprobante)' class='btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center'><i class='material-icons text-lg'>expand_more</i></button>
-                                        <div class='d-flex flex-column'>
-                                        <h6 class='mb-1 text-dark text-sm'>".$egre->gasto->nombre."</h6>
-                                        <span class='text-xs'>
-                                        $fechaHoraEs
-                                        </span>
-                                        </div>
-                                    </div>
-                                    <div class='d-flex align-items-center text-danger text-gradient text-sm font-weight-bold ms-auto'>
-                                        $egre->egreso Bs.
-                                    </div>
-                                    </div>
-                                    <hr class='horizontal dark mt-3 mb-2' />
-                                </li>
-                                ";
-            }
+            //     $lista = $lista."
+            //                     <li class='list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg'>
+            //                         <div class='d-flex'>
+            //                         <div class='d-flex align-items-center'>
+            //                             <button onclick='editEgreso($egre->id, $egre->gasto_id, $egre->egreso,".'"'.$egre->descripcion.'"'.",$numComprobante, $idComprobante)' class='btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center'><i class='material-icons text-lg'>edit</i></button>
+            //                             <div class='d-flex flex-column'>
+            //                             <h6 class='mb-1 text-dark text-sm'>".$egre->gasto->nombre."</h6>
+            //                             <span class='text-xs'>
+            //                             $fechaHoraEs
+            //                             </span>
+            //                             </div>
+            //                         </div>
+            //                         <div class='d-flex align-items-center text-danger text-gradient text-sm font-weight-bold ms-auto'>
+            //                             $egre->egreso Bs.
+            //                         </div>
+            //                         </div>
+            //                         <hr class='horizontal dark mt-3 mb-2' />
+            //                     </li>
+            //                     ";
+            // }
 
-            $html['lista'] = $lista;
+            // $html['lista'] = $lista;
+
+            // $html['lista'] = view('campania.ajaxListadoEgreso')->with(compact('egresos'));
+            $html['lista'] = view('campania.ajaxListadoEgreso', compact('egresos'))->render();
 
             $presupuestoActual = Campania::presupuestoActual($campania_id);
 
