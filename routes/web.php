@@ -35,6 +35,7 @@ Route::post('Campania/tramsferirOportunidadVendedor', 'CampaniaController@tramsf
 Route::post('Campania/guardaIngreso', 'CampaniaController@guardaIngreso');
 Route::post('Campania/guardaEgreso', 'CampaniaController@guardaEgreso');
 Route::get('Campania/balanceGeneral/{campania_id}', 'CampaniaController@balanceGeneral');
+Route::get('Campania/estadistica/{campania_id}/{formulario_id}', 'CampaniaController@estadistica');
 
 // FORMULARIO
 Route::post('Formulario/guardaFormulario', 'FormularioController@guardaFormulario');

@@ -264,7 +264,6 @@
   <div class="col-xl-8 col-lg-7">
     <div class="row">
 
-
       <div class="col-sm-3">
         <div class="card">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -406,13 +405,17 @@
                               <h6 class="accordion-header" id="headingOne">
                                 <div class="row">
                                   {{-- <p style="padding-top:50px;"></p> --}}
-                                  <div class="col-md-2">
-                                    <a href="{{ url('Formulario/respuestaFormulario', [$f->campania_id, $f->formulario_id]) }}" class="btn btn-icon-only btn-rounded btn-outline-info mb-0 p-2" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-eye"></i></a>
+                                  <div class="col-md-1">
+                                    <a href="{{ url('Formulario/respuestaFormulario', [$f->campania_id, $f->formulario_id]) }}" class="btn btn-sm btn-icon-only btn-rounded btn-outline-info mb-0 p-0" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-eye"></i></a>
                                   </div>
-                                  <div class="col-md-2">
-                                    <button class="btn btn-icon-only btn-rounded btn-outline-warning mb-0 p-0" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-edit"></i></button>
+                                  <div class="col-md-1">
+                                    <button class="btn btn-sm btn-icon-only btn-rounded btn-outline-warning mb-0 p-0" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-edit"></i></button>
                                   </div>
-                                  <div class="col-md-8" style="margin-top:-10px;">
+                                  <div class="col-md-1">
+                                    <a href="{{ url('Campania/estadistica', [$f->campania_id, $f->formulario_id]) }}" class="btn btn-sm btn-icon-only btn-rounded btn-outline-dark mb-0 p-0" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-list"></i></a>
+                                  </div>
+
+                                  <div class="col-md-9" style="margin-top:-10px;">
                                     <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{ $key }}" aria-expanded="false" aria-controls="collapseOne">
                                       {{ $f->formulario->nombre }}
                                       <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>

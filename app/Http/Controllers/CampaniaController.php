@@ -452,7 +452,7 @@ class CampaniaController extends Controller
 
             $lista = '';
 
-            $utilidades = new Utilidades();
+            // $utilidades = new Utilidades();
 
             // foreach ($egresos as $egre){
 
@@ -524,6 +524,14 @@ class CampaniaController extends Controller
         $egresos = Campania::egresos($campania_id);
 
         return view('campania.balanceGeneral')->with(compact('presupuesto', 'gastosTotales', 'totalIngreso', 'totalEgreso', 'ingresos' ,'egresos'));
+    }
+
+    public function estadistica(Request $request, $campania_id, $formulario_id){
+
+        $preguntas = Campania::preguntasCombo($formulario_id);
+        
+
+        return  view('campania.estadistica')->with(compact('preguntas'));
     }
 
     /**

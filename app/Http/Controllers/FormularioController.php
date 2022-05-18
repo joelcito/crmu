@@ -264,6 +264,8 @@ class FormularioController extends Controller
 
     public function guardarRespuestaFormulario(Request $request){
 
+        // dd($request->all());
+
         // creando la persona
         $persona = new Persona();
 
@@ -292,41 +294,77 @@ class FormularioController extends Controller
 
         foreach ($respuestas as $key => $r){
 
-            echo $key."<br>";
+            // echo $key."<br>";
 
             $respuesta = new Respuesta();
 
             $respuesta->pregunta_id = $key;
             $respuesta->oportunidad_id = $oportunidad->id;
 
+            // sacamos para saber que pregunta es (combo o normal)
+            $pregunta = Pregunta::find($key);
+
             if(count($r) > 1){
-                
-                $respuesta->respuesta = json_encode($r);
+
+                $arryCombos = array();
+
+                foreach($r as $idCom){
+
+                    $valorCombo = ValorCombo::find($idCom);
+
+                    array_push($arryCombos, $valorCombo->valor);
+
+                }
+
+                $respuesta->respuesta = json_encode($arryCombos);
+                // $respuesta->respuesta = json_encode($r);
 
             }else{
 
-                $respuesta->respuesta = $r[0];
+                if($pregunta->componente_id == 3 || $pregunta->componente_id == 4){
+
+                    $valorCombo = ValorCombo::find($r[0]);
+                    $respuesta->respuesta = $valorCombo->valor;
+
+                }else{
+
+                    $respuesta->respuesta = $r[0];
+
+                }
 
             }
 
-            $respuesta->save();   
+            $respuesta->save(); 
 
-            if(count($r) > 1){
+            if($pregunta->componente_id == 3 || $pregunta->componente_id == 4){
+
+
+                // if(count($r) > 1){
 
                 $respuestasCombos = $r;
 
                 foreach($respuestasCombos as $cr){
 
-                    $comres  =  new RespuestaCombo();
+                    $valorCombo = ValorCombo::find($cr);
 
-                    $comres->respuesta      = $cr;
-                    $comres->respuesta_id   = $respuesta->id;
+                    if($valorCombo){
 
-                    $comres->save();
+
+                        $comres  =  new RespuestaCombo();
+
+                        // $comres->respuesta      = $cr;
+                        $comres->respuesta          = $valorCombo->valor;
+                        $comres->respuesta_id       = $respuesta->id;
+                        $comres->valor_combo_id     = $valorCombo->id;
+
+                        $comres->save();
+                    }
+
 
                 }
+
+                // }
             }
-            
 
         }
 

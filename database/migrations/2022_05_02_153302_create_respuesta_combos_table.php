@@ -23,6 +23,11 @@ class CreateRespuestaCombosTable extends Migration
             $table->foreign('eliminador_id')->references('id')->on('users');
             $table->unsignedBigInteger('respuesta_id')->nullable();
             $table->foreign('respuesta_id')->references('id')->on('respuestas');
+
+            // para las respuestas combos
+            $table->unsignedBigInteger('valor_combo_id')->nullable();
+            $table->foreign('valor_combo_id')->references('id')->on('valor_combos');
+
             $table->text('respuesta')->nullable();
             $table->string('estado')->nullable();
             $table->datetime('deleted_at')->nullable();

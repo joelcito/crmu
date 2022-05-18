@@ -256,8 +256,8 @@
                                 </div>
                             </div>
 
-                            <input type="hidden" value="{{ $campania_id }}" name="campania_id">
-                            <input type="hidden" value="{{ $formulario->id }}" name="formulario_id">
+                            <input type="text" value="{{ $campania_id }}" name="campania_id">
+                            <input type="text" value="{{ $formulario->id }}" name="formulario_id">
                             <br>
                             <div class="row">
                                 <div class="col-md-4">
@@ -323,48 +323,32 @@
 
                                                 @if ($p->componente_id == 3)
 
-                                                {{-- <input type="radio" id="html" name="fav_language" value="HTML">
-                                                  <label for="html">HTML</label><br>
-                                                  <input type="radio" id="css" name="fav_language" value="CSS">
-                                                  <label for="css">CSS</label><br>
-                                                  <input type="radio" id="javascript" name="fav_language" value="JavaScript">
-                                                  <label for="javascript">JavaScript</label> --}}
-
                                                 <div class="input-group input-group-static mb-4">
-                                                    {{-- <label for="exampleFormControlSelect1" class="ms-0">Example select</label> --}}
                                                     <select  name="respuestas[{{ $p->id }}][]" class="form-control" id="exampleFormControlSelect1">
                                                         @foreach ( $valores as $v)
-                                                            <option value="{{ $v->valor }}">{{ $v->valor }}</option>
+                                                            {{-- <option value="{{ $v->valor }}">{{ $v->valor }}</option> --}}
+                                                            <option value="{{ $v->id }}">{{ $v->valor }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
-
-                                                {{-- <select name="respuestas[{{ $p->id }}][]" id="" class="form-control">
-                                                    @foreach ( $valores as $v)
-                                                    <option value="{{ $v->valor }}">{{ $v->valor }}</option>
-                                                    @endforeach
-                                                </select>  --}}
-                                                {{-- <input type="text" name="pregunta_ids[]" value="{{ $p->id }}"> --}}    
                                                 
                                                 @else
 
                                                 @foreach ($valores as $key => $v)
                                                     <label for="vehicle_{{ $key }}_{{ $keyFrom }}"> {{ $v->valor }}</label>
-                                                    <input type="checkbox" name="respuestas[{{ $p->id }}][]" id="vehicle_{{ $key }}_{{ $keyFrom }}" name="vehicle1" value="{{ $v->valor }}"><br>
+                                                    {{-- <input type="checkbox" name="respuestas[{{ $p->id }}][]" id="vehicle_{{ $key }}_{{ $keyFrom }}" name="vehicle1" value="{{ $v->valor }}"><br> --}}
+                                                    <input type="checkbox" name="respuestas[{{ $p->id }}][]" id="vehicle_{{ $key }}_{{ $keyFrom }}" name="vehicle1" value="{{ $v->id }}"><br>
                                                 @endforeach
-                                                {{-- <input type="text" name="pregunta_ids[]" value="{{ $p->id }}"> --}}
 
                                                 @endif
 
                                             @elseif ($p->componente_id == 2)
 
                                             <textarea name="respuestas[{{ $p->id }}][]" id="" cols="30" rows="2" placeholder="Tu respuesta.." class="boredes-cajas"></textarea>
-                                            {{-- <input type="text" name="pregunta_ids[]" value="{{ $p->id }}"> --}}
 
                                             @else
 
                                             <input style="padding:20px" name="respuestas[{{ $p->id }}][]" type="text" class="boredes-cajas" placeholder="Tu respuesta..">
-                                            {{-- <input type="text" name="pregunta_ids[]" value="{{ $p->id }}"> --}}
 
                                             @endif
                                         </div>                                      

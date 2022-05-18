@@ -22,4 +22,12 @@ class RespuestaCombo extends Model
         'estado',
         'deleted_at',
     ];
+
+    public static function cantidadRespuesta($combo_id){
+
+        $cant = RespuestaCombo::where('valor_combo_id',$combo_id)->count();
+
+        return $cant;
+
+    }
 }

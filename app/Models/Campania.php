@@ -127,5 +127,21 @@ class Campania extends Model
             return 0;
         }
     }
+
+    public static function preguntasCombo($formulario_id){
+
+        $preguntas = Pregunta::where('formulario_id', $formulario_id)
+                            ->whereIn('componente_id',[3,4])
+                            ->get();
+
+        return $preguntas;
+
+    }
+
+    public function valoresCombo(){
+
+        return $this->hasMany('App\Models\ValorCombo');
+        
+    }
     
 }
