@@ -143,5 +143,22 @@ class Campania extends Model
         return $this->hasMany('App\Models\ValorCombo');
         
     }
+
+    public static function preguntasFormulario($formulario_id){
+
+        $preguntas = Pregunta::where('formulario_id', $formulario_id)
+                            ->where('estado',0)
+                            ->get();
+
+        return $preguntas;
+    }
+
+    public static function oportunidades($formulario_id){
+
+        $oportunidades = Oportunidad::where('formulario_id',$formulario_id)
+                                        ->get();
+
+        return $oportunidades;
+    }
     
 }

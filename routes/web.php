@@ -36,6 +36,8 @@ Route::post('Campania/guardaIngreso', 'CampaniaController@guardaIngreso');
 Route::post('Campania/guardaEgreso', 'CampaniaController@guardaEgreso');
 Route::get('Campania/balanceGeneral/{campania_id}', 'CampaniaController@balanceGeneral');
 Route::get('Campania/estadistica/{campania_id}/{formulario_id}', 'CampaniaController@estadistica');
+Route::get('Campania/respuestaExcel/{campania_id}/{formulario_id}', 'CampaniaController@respuestaExcel');
+// Route::post('Campania/respuestaExcel', 'CampaniaController@respuestaExcel');
 
 // FORMULARIO
 Route::post('Formulario/guardaFormulario', 'FormularioController@guardaFormulario');

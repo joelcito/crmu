@@ -256,8 +256,8 @@
                                 </div>
                             </div>
 
-                            <input type="text" value="{{ $campania_id }}" name="campania_id">
-                            <input type="text" value="{{ $formulario->id }}" name="formulario_id">
+                            <input type="hidden" value="{{ $campania_id }}" name="campania_id">
+                            <input type="hidden" value="{{ $formulario->id }}" name="formulario_id">
                             <br>
                             <div class="row">
                                 <div class="col-md-4">

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Gasto;
 use App\Models\Campania;
 use App\Models\Vendedor;
+use App\Models\Respuesta;
 use App\Models\Asignacion;
+use App\Models\Formulario;
 use App\Models\Comprobante;
 use App\Models\Oportunidad;
 use App\Models\Presupuesto;
@@ -15,7 +17,11 @@ use App\librerias\Utilidades;
 use GuzzleHttp\Handler\Proxy;
 use App\Models\FormularioCampania;
 use Illuminate\Support\Facades\Redis;
+
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 class CampaniaController extends Controller
 {
@@ -528,10 +534,160 @@ class CampaniaController extends Controller
 
     public function estadistica(Request $request, $campania_id, $formulario_id){
 
-        $preguntas = Campania::preguntasCombo($formulario_id);
-        
+        $preguntas  = Campania::preguntasCombo($formulario_id);
 
-        return  view('campania.estadistica')->with(compact('preguntas'));
+        $campania   = Campania::find($campania_id);
+        $formulario =  Formulario::find($formulario_id);
+
+        $preguntas = Campania::preguntasFormulario($formulario_id);
+
+        $oportunidades = Campania::oportunidades($formulario_id);
+
+        return  view('campania.estadistica')->with(compact('preguntas', 'campania', 'formulario', 'preguntas', 'oportunidades'));
+    }
+
+    // public function respuestaExcel(Request $request){
+    public function respuestaExcel(Request $request, $campania_id, $formulario_id){
+
+        $formulario = Formulario::find($formulario_id);
+
+        $campania = Campania::find($campania_id);
+        $preguntas = Campania::preguntasFormulario($formulario_id);
+        $oportunidades = Campania::oportunidades($formulario_id);
+
+
+
+
+
+        // generacion del excel
+        $fileName = str_replace(" ", '_',$formulario->nombre).'.xlsx';
+
+        $libro = new Spreadsheet();
+
+        $hoja = $libro->getActiveSheet();
+        
+        $hoja->setCellValue('A1', 'REPORTE DE PREGUNTAS');
+        $hoja->setCellValue('A2', 'NOMBRE');
+
+        $inicio = 66;
+
+        $valor = chr($inicio);
+
+        foreach ($preguntas as $pre){
+
+            $valor = chr($inicio);
+
+            $hoja->setCellValue($valor."2", $pre->nombre);
+
+            $inicio++;
+
+        }
+
+        $contadorIni = 3; 
+
+        foreach($oportunidades as $opor){
+
+            $hoja->setCellValue("A$contadorIni", $opor->persona->nombres." ".$opor->persona->apellido_paterno." ".$opor->persona->apellido_materno);
+
+
+            $respuestas = Respuesta::where('oportunidad_id',$opor->id)->get();
+
+            $iniRes = 66;
+
+            foreach($respuestas as $res){
+
+                $valor = chr($iniRes);
+
+                $hoja->setCellValue("$valor$contadorIni", $res->respuesta);
+
+                $iniRes++;
+
+            }
+
+            $contadorIni++;
+
+
+        }
+
+        // $hoja->setCellValue('B2', 'KCB');
+        // $hoja->setCellValue('C2', 'NOMBRE');
+        // $hoja->setCellValue('D2', 'CHIP');
+        // $hoja->setCellValue('E2', 'RAZA');
+        // $hoja->setCellValue('F2', 'PROPIETARIO');
+        // $hoja->setCellValue('G2', 'DEPARTAMENTO');
+
+        $libro->getActiveSheet()->mergeCells('A1:G1');
+
+        $contador = 3;
+
+        // foreach($ejemplares as $key => $eje){
+            
+        //     $hoja->setCellValue("A$contador", $eje->id);
+        //     $hoja->setCellValue("B$contador", $eje->kcb);
+        //     $hoja->setCellValue("C$contador", $eje->nombre_completo);
+        //     $hoja->setCellValue("D$contador", $eje->chip);
+        //     $hoja->setCellValue("E$contador", ($eje->raza)? $eje->raza->nombre : '');
+        //     $hoja->setCellValue("F$contador", ($eje->propietario)? $eje->propietario->name: '');
+        //     $hoja->setCellValue("G$contador", $eje->departamento);
+
+        //     $contador++;
+        // }
+
+        // $fuenteNegritaTitulo = array(
+        // 'font'  => array(
+        //     'bold'  => true,
+        //     // 'color' => array('rgb' => 'FF0000'),
+        //     'size'  => 20,
+        //     // 'name'  => 'Verdana'
+        // ));
+
+        // $libro->getActiveSheet()->getStyle("A1")->applyFromArray($fuenteNegritaTitulo);
+
+        // $estilobor = $contador-1;
+
+        // $libro->getActiveSheet()->getStyle("A2:G$estilobor")->applyFromArray(
+        //     array(
+        //         'borders' => array(
+        //             'allBorders' => array(
+        //                 'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+        //                 'color' => array('argb' => '000000')
+        //             )
+        //         )
+        //     )
+        // );
+
+        // $fuenteNegrita = array(
+        // 'font'  => array(
+        //     'bold'  => true,
+        // ));
+
+        // $libro->getActiveSheet()->getColumnDimension('C')->setWidth(50);
+        // $libro->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+        // $libro->getActiveSheet()->getColumnDimension('E')->setWidth(70);
+        // $libro->getActiveSheet()->getColumnDimension('F')->setWidth(50);
+        // $libro->getActiveSheet()->getColumnDimension('G')->setWidth(17);
+
+
+        // $libro->getActiveSheet()->getStyle('A2:G2')->applyFromArray($fuenteNegrita);
+
+        // $style = array(
+        //     'alignment' => array(
+        //         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+        //         'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+        //     )
+        // );
+
+        // $hoja->getStyle("A1")->applyFromArray($style);
+        // $hoja->getStyle("A2:G2")->applyFromArray($style);
+
+        // exportamos el excel
+        $writer = new Xlsx($libro);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="'. urlencode($fileName).'"');
+
+        // // $writer->save('hola.xlsx');
+        $writer->save('php://output');
     }
 
     /**

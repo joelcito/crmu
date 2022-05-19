@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('metadatos')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+@endsection
+
 @section('css')
     <style>
         .async-hide {
@@ -415,6 +419,126 @@
     
     @endwhile
 
+    <br>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    
+
+                    <div class="row">
+                    <div class="col-12">
+                    <div class="card">
+
+                    <div class="card-header pb-0">
+                    <div class="d-lg-flex">
+                        <div>
+                            <h5 class="mb-0">Listado de Respuestas</h5>
+                            {{-- <p class="text-sm mb-0">
+                            A lightweight, extendable, dependency-free javascript HTML table plugin.
+                            </p> --}}
+                        </div>
+                    <div class="ms-auto my-auto mt-lg-0 mt-4">
+                        <div class="ms-auto my-auto">
+                            {{-- <a href="./new-product.html" class="btn bg-gradient-primary btn-sm mb-0" target="_blank">+&nbsp; New Product</a>
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-0" data-bs-toggle="modal" data-bs-target="#import">
+                                Import
+                            </button> --}}
+                                <div class="modal fade" id="import" tabindex="-1" aria-hidden="true">
+                                    <div class="modal-dialog mt-lg-10">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="ModalLabel">Import CSV</h5>
+                                            <i class="material-icons ms-3">file_upload</i>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>You can browse your computer for a file.</p>
+                                            <div class="input-group input-group-dynamic mb-3">
+                                            <label class="form-label">Browse file...</label>
+                                            <input type="email" class="form-control" onfocus="focused(this)" onfocusout="defocused(this)">
+                                            </div>
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="importCheck" checked="">
+                                            <label class="custom-control-label" for="importCheck">I accept the terms and conditions</label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn bg-gradient-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn bg-gradient-primary btn-sm">Upload</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {{-- <button class="btn btn-outline-primary btn-sm export mb-0 mt-sm-0 mt-1" data-type="csv" type="button" name="button">Export</button> --}}
+                            <button class="btn btn-outline-success btn-sm export mb-0 mt-sm-0 mt-1" onclick="exportarExecel()" type="button" name="button"><i class="fa fa-file-excel"></i> Export</button>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    <div class="card-body px-0 pb-0">
+                    <div class="table-responsive">
+
+                    <table class="table table-flush" id="products-list">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>NOMBRE</th>
+
+                                @foreach ($preguntas as $pre)
+
+                                    <th>{{ $pre->nombre }}</th>
+
+                                @endforeach
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($oportunidades as $opor)
+                                <tr>
+                                    <td>{{ $opor->persona->nombres." ".$opor->persona->apellido_paterno." ".$opor->persona->apellido_materno }}</td>
+
+                                    @php
+
+                                        $respuestas = App\Models\Respuesta::where('oportunidad_id',$opor->id)->get();
+
+                                    @endphp
+
+                                    @foreach ( $respuestas as $res)
+                                        <td>{{ $res->respuesta }}</td>
+                                    @endforeach
+
+                                </tr>
+                            @empty
+                                
+                            @endforelse
+                        </tbody>
+                        {{-- <tfoot>
+                            <tr>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>SKU</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot> --}}
+                    </table>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- @foreach ( as )
         
     @endforeach --}}
@@ -734,864 +858,206 @@
 @stop
 
 @section('js')
-    <script>
-        // Line chart
-        // var ctx1 = document.getElementById("line-chart").getContext("2d");
+<script src="{{ asset('assets/js/plugins/datatables.js') }}"></script>
+<script>
 
-        // new Chart(ctx1, {
-        // type: "line",
-        // data: {
-        //     labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        //     datasets: [{
-        //         label: "Organic Search",
-        //         tension: 0.4,
-        //         borderWidth: 0,
-        //         pointRadius: 2,
-        //         pointBackgroundColor: "#e91e63",
-        //         borderColor: "#e91e63",
-        //         borderWidth: 3,
-        //         backgroundColor: "transparent",
-        //         data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-        //         maxBarThickness: 6
-        //     },
-        //     {
-        //         label: "Referral",
-        //         tension: 0.4,
-        //         borderWidth: 0,
-        //         pointRadius: 2,
-        //         pointBackgroundColor: "#3A416F",
-        //         borderColor: "#3A416F",
-        //         borderWidth: 3,
-        //         backgroundColor: "transparent",
-        //         data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
-        //         maxBarThickness: 6
-        //     },
-        //     {
-        //         label: "Direct",
-        //         tension: 0.4,
-        //         borderWidth: 0,
-        //         pointRadius: 2,
-        //         pointBackgroundColor: "#03A9F4",
-        //         borderColor: "#03A9F4",
-        //         borderWidth: 3,
-        //         backgroundColor: "transparent",
-        //         data: [40, 80, 70, 90, 30, 90, 140, 130, 200],
-        //         maxBarThickness: 6
-        //     },
-        //     ],
-        // },
-        // options: {
-        //     responsive: true,
-        //     maintainAspectRatio: false,
-        //     plugins: {
-        //     legend: {
-        //         display: false,
-        //     }
-        //     },
-        //     interaction: {
-        //     intersect: false,
-        //     mode: 'index',
-        //     },
-        //     scales: {
-        //     y: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: true,
-        //         drawOnChartArea: true,
-        //         drawTicks: false,
-        //         borderDash: [5, 5],
-        //         color: '#c1c4ce5c'
-        //         },
-        //         ticks: {
-        //         display: true,
-        //         padding: 10,
-        //         color: '#b2b9bf',
-        //         font: {
-        //             size: 14,
-        //             weight: 300,
-        //             family: "Roboto",
-        //             style: 'normal',
-        //             lineHeight: 2
-        //         },
-        //         }
-        //     },
-        //     x: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: true,
-        //         drawOnChartArea: true,
-        //         drawTicks: true,
-        //         borderDash: [5, 5],
-        //         color: '#c1c4ce5c'
-        //         },
-        //         ticks: {
-        //         display: true,
-        //         color: '#b2b9bf',
-        //         padding: 10,
-        //         font: {
-        //             size: 14,
-        //             weight: 300,
-        //             family: "Roboto",
-        //             style: 'normal',
-        //             lineHeight: 2
-        //         },
-        //         }
-        //     },
-        //     },
-        // },
-        // });
+    $( document ).ready(function() {
 
-        // Line chart with gradient
-        // var ctx2 = document.getElementById("line-chart-gradient").getContext("2d");
-
-        // new Chart(ctx2, {
-        // type: "line",
-        // data: {
-        //     labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        //     datasets: [{
-        //         label: "Mobile apps",
-        //         tension: 0.4,
-        //         borderWidth: 0,
-        //         pointRadius: 0,
-        //         borderColor: "#e91e63",
-        //         borderWidth: 3,
-        //         backgroundColor: "transparent",
-        //         fill: true,
-        //         data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-        //         maxBarThickness: 6
-
-        //     },
-        //     {
-        //         label: "Websites",
-        //         tension: 0.4,
-        //         borderWidth: 0,
-        //         pointRadius: 0,
-        //         borderColor: "#3A416F",
-        //         borderWidth: 3,
-        //         backgroundColor: "transparent",
-        //         fill: true,
-        //         data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
-        //         maxBarThickness: 6
-        //     },
-        //     ],
-        // },
-        // options: {
-        //     responsive: true,
-        //     maintainAspectRatio: false,
-        //     plugins: {
-        //     legend: {
-        //         display: false,
-        //     }
-        //     },
-        //     interaction: {
-        //     intersect: false,
-        //     mode: 'index',
-        //     },
-        //     scales: {
-        //     y: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: true,
-        //         drawOnChartArea: true,
-        //         drawTicks: false,
-        //         borderDash: [5, 5],
-        //         color: '#c1c4ce5c'
-        //         },
-        //         ticks: {
-        //         display: true,
-        //         padding: 10,
-        //         color: '#b2b9bf',
-        //         font: {
-        //             size: 14,
-        //             weight: 300,
-        //             family: "Roboto",
-        //             style: 'normal',
-        //             lineHeight: 2
-        //         },
-        //         }
-        //     },
-        //     x: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: false,
-        //         drawOnChartArea: false,
-        //         drawTicks: false,
-        //         borderDash: [5, 5],
-        //         color: '#c1c4ce5c'
-        //         },
-        //         ticks: {
-        //         display: true,
-        //         color: '#b2b9bf',
-        //         padding: 10,
-        //         font: {
-        //             size: 14,
-        //             weight: 300,
-        //             family: "Roboto",
-        //             style: 'normal',
-        //             lineHeight: 2
-        //         },
-        //         }
-        //     },
-        //     },
-        // },
-        // });
-        @php
-        
-            $cantidadPreguntasScript = count($preguntas);
-
-            $contadorScript = 0;
-
-
-            for($i = 0; $i < $cantidadPreguntasScript; $i++){
-
-                // dd($preguntas);
-
-                $array = json_encode($preguntas[$i]->valoresCombo);
-
-                $arrayItem = array();
-                $arrayCantItem = array();
-
-                // para los valores de los labesl 
-                foreach($preguntas[$i]->valoresCombo as $valorCom){
-
-                    array_push($arrayItem, $valorCom->valor);
-
-                }
-
-                $labes = json_encode($arrayItem);
-
-                // para los valores de las cantidades
-                foreach($preguntas[$i]->valoresCombo as $valorCom){
-
-                    $RespuestaCombo = App\Models\RespuestaCombo::cantidadRespuesta($valorCom->id);
-
-                    array_push($arrayCantItem, $RespuestaCombo);
-
-                }
-                $cantidades = json_encode($arrayCantItem);
-
-
-                echo "
-                    var ctx3 = document.getElementById('doughnut-chart_$i').getContext('2d');
-
-                    new Chart(ctx3, {
-                    type: 'doughnut',
-                    data: {
-                        // labels: ['Creative Tim', 'Github', 'Bootsnipp', 'Dev.to', 'Codeinwp'],
-                        labels: $labes,
-                        datasets: [{
-                        label: 'Projects',
-                        weight: 9,
-                        cutout: 60,
-                        tension: 0.9,
-                        pointRadius: 2,
-                        borderWidth: 2,
-                        backgroundColor: ['#03A9F4', '#3A416F', '#fb8c00', '#a8b8d8', '#e91e63', '#EECFBB', '#EEE7BB', '#B8F369', '#69F36D', '#69F3CE', '#69D4F3', '#6991F3', '#8869F3', '#DE69F3'],
-                        // data: [15, 20, 12, 60, 20],
-                        data: $cantidades,
-                        fill: false
-                        }],
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                        legend: {
-                            display: false,
-                        }
-                        },
-                        interaction: {
-                        intersect: false,
-                        mode: 'index',
-                        },
-                        scales: {
-                        y: {
-                            grid: {
-                            drawBorder: false,
-                            display: false,
-                            drawOnChartArea: false,
-                            drawTicks: false,
-                            },
-                            ticks: {
-                            display: false
-                            }
-                        },
-                        x: {
-                            grid: {
-                            drawBorder: false,
-                            display: false,
-                            drawOnChartArea: false,
-                            drawTicks: false,
-                            },
-                            ticks: {
-                            display: false,
-                            }
-                        },
-                        },
-                    },
-                    });
-                ";
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-        @endphp
+        });
+
+    });
+    
+
+    @php
+    
+        $cantidadPreguntasScript = count($preguntas);
+
+        $contadorScript = 0;
 
 
-        // este es el original
+        for($i = 0; $i < $cantidadPreguntasScript; $i++){
 
-        // Doughnut chart
-        // var ctx3 = document.getElementById("doughnut-chart").getContext("2d");
+            // dd($preguntas);
 
-        // new Chart(ctx3, {
-        // type: "doughnut",
-        // data: {
-        //     labels: ['Creative Tim', 'Github', 'Bootsnipp', 'Dev.to', 'Codeinwp'],
-        //     datasets: [{
-        //     label: "Projects",
-        //     weight: 9,
-        //     cutout: 60,
-        //     tension: 0.9,
-        //     pointRadius: 2,
-        //     borderWidth: 2,
-        //     backgroundColor: ['#03A9F4', '#3A416F', '#fb8c00', '#a8b8d8', '#e91e63'],
-        //     data: [15, 20, 12, 60, 20],
-        //     fill: false
-        //     }],
-        // },
-        // options: {
-        //     responsive: true,
-        //     maintainAspectRatio: false,
-        //     plugins: {
-        //     legend: {
-        //         display: false,
-        //     }
-        //     },
-        //     interaction: {
-        //     intersect: false,
-        //     mode: 'index',
-        //     },
-        //     scales: {
-        //     y: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: false,
-        //         drawOnChartArea: false,
-        //         drawTicks: false,
-        //         },
-        //         ticks: {
-        //         display: false
-        //         }
-        //     },
-        //     x: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: false,
-        //         drawOnChartArea: false,
-        //         drawTicks: false,
-        //         },
-        //         ticks: {
-        //         display: false,
-        //         }
-        //     },
-        //     },
-        // },
-        // });
+            $array = json_encode($preguntas[$i]->valoresCombo);
 
+            $arrayItem = array();
+            $arrayCantItem = array();
 
+            // para los valores de los labesl 
+            foreach($preguntas[$i]->valoresCombo as $valorCom){
 
+                array_push($arrayItem, $valorCom->valor);
 
+            }
 
+            $labes = json_encode($arrayItem);
 
+            // para los valores de las cantidades
+            foreach($preguntas[$i]->valoresCombo as $valorCom){
 
+                $RespuestaCombo = App\Models\RespuestaCombo::cantidadRespuesta($valorCom->id);
 
-        // Pie chart
-        // var ctx4 = document.getElementById("pie-chart").getContext("2d");
+                array_push($arrayCantItem, $RespuestaCombo);
 
-        // new Chart(ctx4, {
-        // type: "pie",
-        // data: {
-        //     labels: ['Facebook', 'Direct', 'Organic', 'Referral'],
-        //     datasets: [{
-        //     label: "Projects",
-        //     weight: 9,
-        //     cutout: 0,
-        //     tension: 0.9,
-        //     pointRadius: 2,
-        //     borderWidth: 2,
-        //     backgroundColor: ['#03A9F4', '#e91e63', '#3A416F', '#a8b8d8'],
-        //     data: [15, 20, 12, 60],
-        //     fill: false
-        //     }],
-        // },
-        // options: {
-        //     responsive: true,
-        //     maintainAspectRatio: false,
-        //     plugins: {
-        //     legend: {
-        //         display: false,
-        //     }
-        //     },
-        //     interaction: {
-        //     intersect: false,
-        //     mode: 'index',
-        //     },
-        //     scales: {
-        //     y: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: false,
-        //         drawOnChartArea: false,
-        //         drawTicks: false,
-        //         },
-        //         ticks: {
-        //         display: false
-        //         }
-        //     },
-        //     x: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: false,
-        //         drawOnChartArea: false,
-        //         drawTicks: false,
-        //         },
-        //         ticks: {
-        //         display: false,
-        //         }
-        //     },
-        //     },
-        // },
-        // });
+            }
+            $cantidades = json_encode($arrayCantItem);
 
-        // Bar chart
-        // var ctx5 = document.getElementById("bar-chart").getContext("2d");
+            echo "
+                var ctx3 = document.getElementById('doughnut-chart_$i').getContext('2d');
 
-        // new Chart(ctx5, {
-        // type: "bar",
-        // data: {
-        //     labels: ['16-20', '21-25', '26-30', '31-36', '36-42', '42+'],
-        //     datasets: [{
-        //     label: "Sales by age",
-        //     weight: 5,
-        //     borderWidth: 0,
-        //     borderRadius: 4,
-        //     backgroundColor: '#3A416F',
-        //     data: [15, 20, 12, 60, 20, 15],
-        //     fill: false,
-        //     maxBarThickness: 35
-        //     }],
-        // },
-        // options: {
-        //     responsive: true,
-        //     maintainAspectRatio: false,
-        //     plugins: {
-        //     legend: {
-        //         display: false,
-        //     }
-        //     },
-        //     scales: {
-        //     y: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: true,
-        //         drawOnChartArea: true,
-        //         drawTicks: false,
-        //         borderDash: [5, 5],
-        //         color: '#c1c4ce5c'
-        //         },
-        //         ticks: {
-        //         display: true,
-        //         padding: 10,
-        //         color: '#9ca2b7',
-        //         font: {
-        //             size: 14,
-        //             weight: 300,
-        //             family: "Roboto",
-        //             style: 'normal',
-        //             lineHeight: 2
-        //         },
-        //         }
-        //     },
-        //     x: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: false,
-        //         drawOnChartArea: true,
-        //         drawTicks: true,
-        //         color: '#c1c4ce5c'
-        //         },
-        //         ticks: {
-        //         display: true,
-        //         color: '#9ca2b7',
-        //         padding: 10,
-        //         font: {
-        //             size: 14,
-        //             weight: 300,
-        //             family: "Roboto",
-        //             style: 'normal',
-        //             lineHeight: 2
-        //         },
-        //         }
-        //     },
-        //     },
-        // },
-        // });
-
-        // Bar chart horizontal
-        // var ctx6 = document.getElementById("bar-chart-horizontal").getContext("2d");
-
-        // new Chart(ctx6, {
-        // type: "bar",
-        // data: {
-        //     labels: ['16-20', '21-25', '26-30', '31-36', '36-42', '42+'],
-        //     datasets: [{
-        //     label: "Sales by age",
-        //     weight: 5,
-        //     borderWidth: 0,
-        //     borderRadius: 4,
-        //     backgroundColor: '#3A416F',
-        //     data: [15, 20, 12, 60, 20, 15],
-        //     fill: false
-        //     }],
-        // },
-        // options: {
-        //     indexAxis: 'y',
-        //     responsive: true,
-        //     maintainAspectRatio: false,
-        //     plugins: {
-        //     legend: {
-        //         display: false,
-        //     }
-        //     },
-        //     scales: {
-        //     y: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: true,
-        //         drawOnChartArea: true,
-        //         drawTicks: false,
-        //         borderDash: [5, 5],
-        //         color: '#c1c4ce5c'
-        //         },
-        //         ticks: {
-        //         display: true,
-        //         padding: 10,
-        //         color: '#9ca2b7',
-        //         font: {
-        //             size: 14,
-        //             weight: 300,
-        //             family: "Roboto",
-        //             style: 'normal',
-        //             lineHeight: 2
-        //         },
-        //         }
-        //     },
-        //     x: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: false,
-        //         drawOnChartArea: true,
-        //         drawTicks: true,
-        //         color: '#c1c4ce5c'
-        //         },
-        //         ticks: {
-        //         display: true,
-        //         color: '#9ca2b7',
-        //         padding: 10,
-        //         font: {
-        //             size: 14,
-        //             weight: 300,
-        //             family: "Roboto",
-        //             style: 'normal',
-        //             lineHeight: 2
-        //         },
-        //         }
-        //     },
-        //     },
-        // },
-        // });
-
-        // Mixed chart
-        // var ctx7 = document.getElementById("mixed-chart").getContext("2d");
-
-        // new Chart(ctx7, {
-        // data: {
-        //     labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        //     datasets: [{
-        //         type: "bar",
-        //         label: "Organic Search",
-        //         weight: 5,
-        //         tension: 0.4,
-        //         borderWidth: 0,
-        //         pointBackgroundColor: "#3A416F",
-        //         borderColor: "#3A416F",
-        //         backgroundColor: '#3A416F',
-        //         borderRadius: 4,
-        //         borderSkipped: false,
-        //         data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-        //         maxBarThickness: 10,
-        //     },
-        //     {
-        //         type: "line",
-        //         label: "Referral",
-        //         tension: 0.4,
-        //         borderWidth: 0,
-        //         pointRadius: 0,
-        //         pointBackgroundColor: "#e91e63",
-        //         borderColor: "#e91e63",
-        //         borderWidth: 3,
-        //         backgroundColor: "transparent",
-        //         data: [30, 90, 40, 140, 290, 290, 340, 230, 400],
-        //         fill: true,
-        //     }
-        //     ],
-        // },
-        // options: {
-        //     responsive: true,
-        //     maintainAspectRatio: false,
-        //     plugins: {
-        //     legend: {
-        //         display: false,
-        //     }
-        //     },
-        //     interaction: {
-        //     intersect: false,
-        //     mode: 'index',
-        //     },
-        //     scales: {
-        //     y: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: true,
-        //         drawOnChartArea: true,
-        //         drawTicks: false,
-        //         borderDash: [5, 5],
-        //         color: '#c1c4ce5c'
-        //         },
-        //         ticks: {
-        //         display: true,
-        //         padding: 10,
-        //         color: '#b2b9bf',
-        //         font: {
-        //             size: 14,
-        //             weight: 300,
-        //             family: "Roboto",
-        //             style: 'normal',
-        //             lineHeight: 2
-        //         },
-        //         }
-        //     },
-        //     x: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: true,
-        //         drawOnChartArea: true,
-        //         drawTicks: true,
-        //         borderDash: [5, 5],
-        //         color: '#c1c4ce5c'
-        //         },
-        //         ticks: {
-        //         display: true,
-        //         color: '#b2b9bf',
-        //         padding: 10,
-        //         font: {
-        //             size: 14,
-        //             weight: 300,
-        //             family: "Roboto",
-        //             style: 'normal',
-        //             lineHeight: 2
-        //         },
-        //         }
-        //     },
-        //     },
-        // },
-        // });
-
-        // Bubble chart
-        // var ctx8 = document.getElementById("bubble-chart").getContext("2d");
-
-        // new Chart(ctx8, {
-        // type: "bubble",
-        // data: {
-        //     labels: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90'],
-        //     datasets: [{
-        //         label: 'Dataset 1',
-        //         data: [{
-        //         x: 100,
-        //         y: 0,
-        //         r: 10
-        //         }, {
-        //         x: 60,
-        //         y: 30,
-        //         r: 20
-        //         }, {
-        //         x: 40,
-        //         y: 350,
-        //         r: 10
-        //         }, {
-        //         x: 80,
-        //         y: 80,
-        //         r: 10
-        //         }, {
-        //         x: 20,
-        //         y: 30,
-        //         r: 15
-        //         }, {
-        //         x: 0,
-        //         y: 100,
-        //         r: 5
-        //         }],
-        //         backgroundColor: '#e91e63',
-        //     },
-        //     {
-        //         label: 'Dataset 2',
-        //         data: [{
-        //         x: 70,
-        //         y: 40,
-        //         r: 10
-        //         }, {
-        //         x: 30,
-        //         y: 60,
-        //         r: 20
-        //         }, {
-        //         x: 10,
-        //         y: 300,
-        //         r: 25
-        //         }, {
-        //         x: 60,
-        //         y: 200,
-        //         r: 10
-        //         }, {
-        //         x: 50,
-        //         y: 300,
-        //         r: 15
-        //         }, {
-        //         x: 20,
-        //         y: 350,
-        //         r: 5
-        //         }],
-        //         backgroundColor: '#3A416F',
-        //     }
-        //     ]
-        // },
-        // options: {
-        //     responsive: true,
-        //     plugins: {
-        //     legend: {
-        //         display: false
-        //     }
-        //     },
-        //     scales: {
-        //     y: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: true,
-        //         drawOnChartArea: true,
-        //         drawTicks: false,
-        //         borderDash: [5, 5],
-        //         color: '#c1c4ce5c'
-        //         },
-        //         ticks: {
-        //         display: true,
-        //         padding: 10,
-        //         color: '#b2b9bf',
-        //         font: {
-        //             size: 14,
-        //             weight: 300,
-        //             family: "Roboto",
-        //             style: 'normal',
-        //             lineHeight: 2
-        //         },
-        //         }
-        //     },
-        //     x: {
-        //         grid: {
-        //         drawBorder: false,
-        //         display: true,
-        //         drawOnChartArea: true,
-        //         drawTicks: false,
-        //         borderDash: [5, 5],
-        //         color: '#c1c4ce5c'
-        //         },
-        //         ticks: {
-        //         display: true,
-        //         color: '#b2b9bf',
-        //         padding: 10,
-        //         font: {
-        //             size: 14,
-        //             weight: 300,
-        //             family: "Roboto",
-        //             style: 'normal',
-        //             lineHeight: 2
-        //         },
-        //         }
-        //     },
-        //     },
-        // },
-        // });
-
-        // Radar chart
-        // var ctx9 = document.getElementById("radar-chart").getContext("2d");
-
-        // new Chart(ctx9, {
-        // type: "radar",
-        // data: {
-        //     labels: ["English", "Maths", "Physics", "Chemistry", "Biology", "History"],
-        //     datasets: [{
-        //     label: "Student A",
-        //     backgroundColor: "rgba(58,65,111,0.2)",
-        //     data: [65, 75, 70, 80, 60, 80],
-        //     borderDash: [5, 5],
-        //     }, {
-        //     label: "Student B",
-        //     backgroundColor: "rgba(203,12,159,0.2)",
-        //     data: [54, 65, 60, 70, 70, 75]
-        //     }]
-        // },
-        // options: {
-        //     plugins: {
-        //     legend: {
-        //         display: false,
-        //     }
-        //     }
-        // }
-        // });
-
-        // Radar chart
-        // var ctx10 = document.getElementById("polar-chart").getContext("2d");
-
-        // new Chart(ctx10, {
-        // type: "polarArea",
-        // data: {
-        //     labels: [
-        //     'Red',
-        //     'Green',
-        //     'Yellow',
-        //     'Grey',
-        //     'Blue'
-        //     ],
-        //     datasets: [{
-        //     label: 'My First Dataset',
-        //     data: [11, 16, 7, 3, 14],
-        //     backgroundColor: ['#03A9F4', '#e91e63', '#3A416F', '#a8b8d8', '#4CAF50'],
-        //     }]
-        // },
-        // options: {
-        //     plugins: {
-        //     legend: {
-        //         display: false,
-        //     }
-        //     }
-        // }
-        // });
-    </script>
-
-    <script>
-        var win = navigator.platform.indexOf('Win') > -1;
-        if (win && document.querySelector('#sidenav-scrollbar')) {
-        var options = {
-            damping: '0.5'
+                new Chart(ctx3, {
+                type: 'doughnut',
+                data: {
+                    // labels: ['Creative Tim', 'Github', 'Bootsnipp', 'Dev.to', 'Codeinwp'],
+                    labels: $labes,
+                    datasets: [{
+                    label: 'Projects',
+                    weight: 9,
+                    cutout: 60,
+                    tension: 0.9,
+                    pointRadius: 2,
+                    borderWidth: 2,
+                    backgroundColor: ['#03A9F4', '#3A416F', '#fb8c00', '#a8b8d8', '#e91e63', '#EECFBB', '#EEE7BB', '#B8F369', '#69F36D', '#69F3CE', '#69D4F3', '#6991F3', '#8869F3', '#DE69F3'],
+                    // data: [15, 20, 12, 60, 20],
+                    data: $cantidades,
+                    fill: false
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                    legend: {
+                        display: false,
+                    }
+                    },
+                    interaction: {
+                    intersect: false,
+                    mode: 'index',
+                    },
+                    scales: {
+                    y: {
+                        grid: {
+                        drawBorder: false,
+                        display: false,
+                        drawOnChartArea: false,
+                        drawTicks: false,
+                        },
+                        ticks: {
+                        display: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                        drawBorder: false,
+                        display: false,
+                        drawOnChartArea: false,
+                        drawTicks: false,
+                        },
+                        ticks: {
+                        display: false,
+                        }
+                    },
+                    },
+                },
+                });
+            ";
         }
-        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-        }
-    </script>
+    @endphp
+
+    if (document.getElementById('products-list')) {
+        const dataTableSearch = new simpleDatatables.DataTable("#products-list", {
+            searchable: true,
+            fixedHeight: false,
+            perPage: 5
+        });
+
+        document.querySelectorAll(".export").forEach(function(el) {
+            el.addEventListener("click", function(e) {
+            var type = el.dataset.type;
+
+            var data = {
+                type: type,
+                filename: "material-" + type,
+            };
+
+            if (type === "csv") {
+                data.columnDelimiter = "|";
+            }
+
+            dataTableSearch.export(data);
+            });
+        });
+    };
+
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+    var options = {
+        damping: '0.5'
+    }
+    Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+
+    // function exportarExecel(){
+        
+    //     $.ajax({
+    //         // url: "{{ url('Campania/guardaIngreso', [$campania->id,$formulario->id]) }}",
+    //         url: "{{ url('Campania/respuestaExcel') }}",
+    //         // data: datosFormulario,
+    //         data: {
+    //             campania: {{ $campania->id }},
+    //             formulario: {{ $formulario->id }}
+    //         },
+
+    //         type: 'POST',
+    //         dataType: 'json',
+    //         success: function(data) {
+
+    //         },
+    //         error: function(error){
+
+    //         },
+    //         beforeSend: function () {
+
+    //         }
+    //     });
+    // }
+
+    function exportarExecel(){
+        
+        window.location.href = "{{ url('Campania/respuestaExcel', [$campania->id,$formulario->id]) }}"
+        
+        // $.ajax({
+
+        //     url: "{{ url('Campania/respuestaExcel', [$campania->id,$formulario->id]) }}",
+
+        //     // url: "{{ url('Campania/respuestaExcel') }}",
+        //     // data: datosFormulario,
+        //     // data: {
+        //     //     campania: {{ $campania->id }},
+        //     //     formulario: {{ $formulario->id }}
+        //     // },
+
+        //     type: 'GET',
+        //     // type: 'POST',
+        //     dataType: 'json',
+        //     success: function(data) {
+
+        //     },
+        //     error: function(error){
+
+        //     },
+        //     beforeSend: function () {
+
+        //     }
+        // });
+    }
+</script>
 @endsection
 
 
