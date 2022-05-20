@@ -480,8 +480,6 @@ class FormularioController extends Controller
 
     public function guardarEditadoFormulario(Request $request){
 
-        // dd($request->all());
-
         $formulario_id   = $request->input('formulario_id');
         $campania_id     = $request->input('campania_id');
 
@@ -530,7 +528,11 @@ class FormularioController extends Controller
                     
                     $vloresCombos  = Formulario::valorCombos($pregunta->id);
 
+                    $arrayValorCombosAntiguo = array();
+
                     foreach($vloresCombos as $vc){
+
+                        array_push($arrayValorCombosAntiguo,$vc->id);
 
                         ValorCombo::destroy($vc->id);
 
@@ -538,9 +540,7 @@ class FormularioController extends Controller
 
                 }else{
 
-
                     echo "<b>".$pregunta->componente_id."</b><br>";
-
 
                 }
 
@@ -558,7 +558,10 @@ class FormularioController extends Controller
 
                 if($arraryComponetesCombos){
 
+                    $arrayValorCombosNuevos = array();
+
                     foreach($arraryComponetesCombos as $co){
+
                         if($co){
 
                             $valorCombos = new  ValorCombo();
@@ -569,7 +572,24 @@ class FormularioController extends Controller
     
                             $valorCombos->save();
 
+                            array_push($arrayValorCombosNuevos, $valorCombos->id);
+
                         }
+                    }
+
+                    // ahroa hacemos los cambios en las respuestas combos ya respondidas
+
+                    foreach ($arrayValorCombosAntiguo as $keyArrayCombos => $vc){
+
+                        $respuesCombo = Formulario::respuestasCombos($vc);
+
+                        foreach ($respuesCombo as $resCom){
+
+                            $resCom->valor_combo_id = $arrayValorCombosNuevos[$keyArrayCombos];
+                            $resCom->save();
+
+                        }
+
                     }
                 }
 
@@ -648,6 +668,16 @@ class FormularioController extends Controller
         return redirect('Formulario/respuestaFormulario/'.$campania_id."/".$formulario_id);
 
     }
+
+    public function validaValorCombo(Request $request){
+
+        $combo_id = $request->input('combo');
+
+        $data['cantidad'] = Formulario::cantidadRespondidas($combo_id);
+
+        return json_encode($data);
+    }
+    
     /**
      * Display a listing of the resource.
      *

@@ -37,4 +37,21 @@ class Formulario extends Model
         return $vloresCombos;
 
     }
+
+    public static function respuestasCombos($valorCombo_id){
+
+        $respustasCombos = RespuestaCombo::where('valor_combo_id', $valorCombo_id)
+                                        ->get();
+
+        return $respustasCombos;
+    }
+
+    public static function cantidadRespondidas($valorCombo_id){
+
+        $cantrespuestas = RespuestaCombo::where('valor_combo_id',$valorCombo_id)
+                                        ->count();
+
+        return $cantrespuestas;
+
+    }
 }

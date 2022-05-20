@@ -16,8 +16,16 @@ class Respuesta extends Model
         'creador_id',
         'modificador_id',
         'eliminador_id',
+        'pregunta_id',
+        'oportunidad_id',
         'respuesta',
         'estado',
         'deleted_at',
     ];
+
+    public function pregunta(){
+
+        return $this->belongsTo('App\Models\Pregunta', 'pregunta_id');
+
+    }
 }

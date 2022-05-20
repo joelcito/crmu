@@ -86,7 +86,6 @@
     </style>
 @endsection
 
-
 @section('content')
 
     <div class="row">
@@ -413,7 +412,9 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             @if ($key != 0)
+
                                                                 <button type="button" class="btn btn-outline-danger btn-circle btn-sm" onclick="deleteBlock({{ $key }}, {{ $p->id }})"><i class="fa fa-trash-o"></i></button>
+
                                                             @endif
                                                         </div>
                                                         <div class="col-md-6">
@@ -512,27 +513,63 @@
 
     function removeItem(listid, li, combo) {
 
-        if(combo != 0){
+        $.ajax({
 
-            arrayRemoveCombo.push(combo)
+            url: "{{ url('Formulario/validaValorCombo') }}",
+            data:{
+                combo: combo
+            },
+            type: 'POST',
+            dataType: 'json',
 
-        }
+            success: function(data) {
 
-        Swal.fire({
-            title: 'Esta seguro de eliminar la opcion?',
-            text: "Se perdera la pregunta!",
-            icon: 'warning',
-            showCancelButton: true,
-            // confirmButtonColor: '#3085d6',
-            // cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, Eliminar!'
-        }).then((result) => {
+                if(data.cantidad > 0){
 
-            if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'No se puede Completar!',
+                        text: "La opcion ya tiene respuestas!",
+                        icon: 'error',
+                        timer: 1500
+                    })
 
-                listid.removeChild(li);
+                }else{
+
+                    if(combo != 0){
+
+                        arrayRemoveCombo.push(combo)
+
+                    }
+
+                    Swal.fire({
+                        title: 'Esta seguro de eliminar la opcion?',
+                        text: "Se perdera la pregunta!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        // confirmButtonColor: '#3085d6',
+                        // cancelButtonColor: '#d33',
+                        confirmButtonText: 'Si, Eliminar!'
+                    }).then((result) => {
+
+                        if (result.isConfirmed) {
+
+                            listid.removeChild(li);
+                        }
+                    })
+                }
+
+            },
+            error: function(error){
+
+                console.log(error);
+                
             }
-        })
+
+        });
+
+        
+
+       
 
     }
 

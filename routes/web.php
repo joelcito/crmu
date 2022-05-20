@@ -48,6 +48,9 @@ Route::post('Formulario/guardarRespuestaFormulario', 'FormularioController@guard
 Route::get('Formulario/respuestaFormularioCompartir/{campania_id}/{formulario_id}/{red_social}', 'FormularioController@respuestaFormularioCompartir');
 Route::get('Formulario/editaFormulario/{campania_id}/{formulario_id}', 'FormularioController@editaFormulario');
 Route::post('Formulario/guardarEditadoFormulario', 'FormularioController@guardarEditadoFormulario');
+Route::post('Formulario/validaValorCombo', 'FormularioController@validaValorCombo');
+                
+
 
 // VENDEDORES
 Route::get('Vendedor/listado', 'VendedorController@listado');

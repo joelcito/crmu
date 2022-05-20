@@ -1466,8 +1466,6 @@
     }
 
     function nuevoEgreso(){
-
-      // $('#monto-actual').text('Presupuesto actual 500 Bs');
       
       $('#modalNuevoEgreso').modal('show');
       $('#presupuesto_id').val(0);

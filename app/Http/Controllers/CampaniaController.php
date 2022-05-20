@@ -539,11 +539,11 @@ class CampaniaController extends Controller
         $campania   = Campania::find($campania_id);
         $formulario =  Formulario::find($formulario_id);
 
-        $preguntas = Campania::preguntasFormulario($formulario_id);
+        $preguntasFormulario = Campania::preguntasFormulario($formulario_id);
 
         $oportunidades = Campania::oportunidades($formulario_id);
 
-        return  view('campania.estadistica')->with(compact('preguntas', 'campania', 'formulario', 'preguntas', 'oportunidades'));
+        return  view('campania.estadistica')->with(compact('preguntas', 'campania', 'formulario', 'preguntasFormulario', 'oportunidades'));
     }
 
     // public function respuestaExcel(Request $request){
@@ -554,10 +554,6 @@ class CampaniaController extends Controller
         $campania = Campania::find($campania_id);
         $preguntas = Campania::preguntasFormulario($formulario_id);
         $oportunidades = Campania::oportunidades($formulario_id);
-
-
-
-
 
         // generacion del excel
         $fileName = str_replace(" ", '_',$formulario->nombre).'.xlsx';
@@ -596,11 +592,15 @@ class CampaniaController extends Controller
 
             foreach($respuestas as $res){
 
-                $valor = chr($iniRes);
+                if($res->pregunta){
 
-                $hoja->setCellValue("$valor$contadorIni", $res->respuesta);
+                    $valor = chr($iniRes);
 
-                $iniRes++;
+                    $hoja->setCellValue("$valor$contadorIni", $res->respuesta);
+    
+                    $iniRes++;
+
+                }
 
             }
 
@@ -609,29 +609,9 @@ class CampaniaController extends Controller
 
         }
 
-        // $hoja->setCellValue('B2', 'KCB');
-        // $hoja->setCellValue('C2', 'NOMBRE');
-        // $hoja->setCellValue('D2', 'CHIP');
-        // $hoja->setCellValue('E2', 'RAZA');
-        // $hoja->setCellValue('F2', 'PROPIETARIO');
-        // $hoja->setCellValue('G2', 'DEPARTAMENTO');
+        $letraFin = chr($iniRes-1);
 
-        $libro->getActiveSheet()->mergeCells('A1:G1');
-
-        $contador = 3;
-
-        // foreach($ejemplares as $key => $eje){
-            
-        //     $hoja->setCellValue("A$contador", $eje->id);
-        //     $hoja->setCellValue("B$contador", $eje->kcb);
-        //     $hoja->setCellValue("C$contador", $eje->nombre_completo);
-        //     $hoja->setCellValue("D$contador", $eje->chip);
-        //     $hoja->setCellValue("E$contador", ($eje->raza)? $eje->raza->nombre : '');
-        //     $hoja->setCellValue("F$contador", ($eje->propietario)? $eje->propietario->name: '');
-        //     $hoja->setCellValue("G$contador", $eje->departamento);
-
-        //     $contador++;
-        // }
+        $libro->getActiveSheet()->mergeCells("A1:".$letraFin."1");
 
         // $fuenteNegritaTitulo = array(
         // 'font'  => array(
@@ -667,18 +647,31 @@ class CampaniaController extends Controller
         // $libro->getActiveSheet()->getColumnDimension('F')->setWidth(50);
         // $libro->getActiveSheet()->getColumnDimension('G')->setWidth(17);
 
+        
+        $inicio = 65;
+        $cantidadPeguntas = count($preguntas);
 
+        for ($i = 1 ; $i <= ($cantidadPeguntas+1) ; $i++){
+            
+            $valor = chr($inicio);
+
+            $libro->getActiveSheet()->getColumnDimension("$valor")->setWidth(35);
+
+            $inicio++;
+
+        }
         // $libro->getActiveSheet()->getStyle('A2:G2')->applyFromArray($fuenteNegrita);
 
-        // $style = array(
-        //     'alignment' => array(
-        //         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-        //         'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
-        //     )
-        // );
+        $style = array(
+            'alignment' => array(
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            )
+        );
 
         // $hoja->getStyle("A1")->applyFromArray($style);
-        // $hoja->getStyle("A2:G2")->applyFromArray($style);
+        $hoja->getStyle("A1")->applyFromArray($style);
+        $hoja->getStyle("A2:".$letraFin."2")->applyFromArray($style);
 
         // exportamos el excel
         $writer = new Xlsx($libro);
