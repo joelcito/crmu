@@ -85,3 +85,7 @@ Route::get('EstadoFinal/listado', 'EstadoFinalController@listado');
 // ASIGNACIONES
 Route::get('Asignacion/listado', 'AsignacionController@listado');
 
+
+// AGENDAS
+Route::get('Agenda/listado', 'AgendaController@listado');
+

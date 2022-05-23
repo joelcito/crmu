@@ -5,7 +5,7 @@
 @endsection
 
 @section('css')
-{{-- <link id="pagestyle" href="{{ asset('assets/css/material-dashboard.min.css?v=3.0.3') }}" rel="stylesheet" /> --}}
+
 <style>
   .mi-boton {
     position: sticky;
@@ -259,6 +259,90 @@
 </div>
 
 
+<!-- Modal NUEVO EVENTO-->
+<div class="modal fade" id="modalNuevoEvento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Formulario de Evento</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <form action="" id="formulario_ingreso">
+                <input type="text" name="evento_id" id="evento_id" value="0">
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="input-group input-group-outline mb-4 focusable">
+                      <label class="form-label">Nombre del Evento</label>
+                      <input type="text" name="nombre_evento" id="nombre_evento" class="form-control">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="input-group input-group-outline mb-4 focusable">
+                      <label class="form-label">Fecha Inicio</label>
+                      <input type="datetime-local" name="fecha_ini" id="fecha_ini" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group input-group-outline mb-4 focusable">
+                      <label class="form-label">Fecha Fin</label>
+                      <input type="datetime-local" name="fecha_fin" id="fecha_fin" class="form-control">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="input-group input-group-outline mb-4">
+                      <select name="tipo_agenda" id="tipo_agenda" class="form-control">
+                        <option value="">holas 1</option>
+                        <option value="">holas 2</option>
+                        <option value="">holas 3</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="input-group input-group-outline mb-4">
+                      <textarea name="descripcion_agenda" id="descripcion_agenda" cols="60" rows="5" class="form-control" placeholder="Descripcion"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="row">
+          <div class="col-md-4">
+            <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+          <div class="col-md-4">
+            <button type="button" class="btn bg-gradient-success" onclick="guardaEvent()">Guardar</button>
+          </div>
+          <div class="col-md-4">
+            <button type="button" class="btn bg-gradient-danger" onclick="eliminarEvent()">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <div class="row mt-5">
   <div class="col-xl-8 col-lg-7">
@@ -340,8 +424,8 @@
           </div>
         </div>
       </div>
-
     </div>
+
     <div class="row mt-4">
       <div class="col-12">
         <div class="card widget-calendar h-100">
@@ -359,6 +443,7 @@
         </div>
       </div>
     </div>
+
   </div>
   <div class="col-xl-4 col-lg-5 mt-lg-0 mt-4">
     <div class="row">
@@ -1034,566 +1119,925 @@
         },
       },
     });
+
 </script>
-
 <script>
-    $( document ).ready(function() {
 
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  $( document ).ready(function() {
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $("#busca_vendedor").on('keyup', function(){
+
+      console.log($('#busca_vendedor').val());
+      var vendedor = $('#busca_vendedor').val();
+
+      $.ajax({
+          url: "{{ url('Campania/ajaxBuscaVendedor') }}",
+          data: {
+              vendedor:vendedor
+          },
+          type: 'POST',
+          success: function(data) {
+
+              $('#lista-vendedores').html(data);
+
+          },
+          error: function(error){
+
           }
       });
 
-      $("#busca_vendedor").on('keyup', function(){
+    }).keyup();
 
-        console.log($('#busca_vendedor').val());
-        var vendedor = $('#busca_vendedor').val();
+    // lista las oportuniades recientes
+    ajaxListadoOportunidades();
 
-        $.ajax({
-            url: "{{ url('Campania/ajaxBuscaVendedor') }}",
-            data: {
-                vendedor:vendedor
-            },
-            type: 'POST',
-            success: function(data) {
+    // lista las vendedores disponibles
+    ajaxListadoVendedores();
 
-                $('#lista-vendedores').html(data);
-
-            },
-            error: function(error){
-
-            }
-        });
-
-      }).keyup();
-
-      // lista las oportuniades recientes
-      ajaxListadoOportunidades();
-
-      // lista las vendedores disponibles
-      ajaxListadoVendedores();
-
-      // lista de clientes asignados a un vendedor
-      ajaxListadoClientesAsignados();
+    // lista de clientes asignados a un vendedor
+    ajaxListadoClientesAsignados();
 
 
-      var dataTableSearch = new simpleDatatables.DataTable("#table-egresos", {
+    var dataTableSearch = new simpleDatatables.DataTable("#table-egresos", {
 
-          searchable: false,
-          fixedHeight: false,
-          perPage: 5,
-
-      });
+        searchable: false,
+        fixedHeight: false,
+        perPage: 5,
 
     });
 
-    var win = navigator.platform.indexOf('Win') > -1;
+    // LISTADO DE AGENDAS
+    listadoEventos();
 
-    if (win && document.querySelector('#sidenav-scrollbar')) {
-        var options = {
-        damping: '0.5'
-        }
-        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-    }
+  });
 
-    function guardaVendedor(vendedor, nombre){
+  var win = navigator.platform.indexOf('Win') > -1;
 
-      var html = "<button class='btn btn-success btn-lg w-100'  onclick='buscarVendedor()'>"+nombre+"</button>";
-
-      $('#vendedor_id').val(vendedor);
-
-      $('#bloque-cambiar').html(html);
-
-      $('#bloque-buscar').toggle('show');
-
-      $('#bloque-buscador-lista').toggle('hide');
-
-      setTimeout(function(){
-        $('#lista-vendedores').toggle('hide');
-      }, 500);
-
-    }
-
-    function buscarVendedor(){
-
-      $('#vendedor_id').val(0);
-
-      $('#bloque-buscar').toggle('show');
-      // $('#bloque-cambiar').toggle('hide');
-      $('#lista-vendedores').html('');
-      $('#lista-vendedores').toggle('show');
-      
-    }
-
-    function asignacion(oportunidad){
-      // console.log(oportunidad);
-      var vendedor = $('#vendedor_id').val();
-
-      if(vendedor != 0){
-
-
-        $.ajax({
-            url: "{{ url('Campania/asignacionVendedorCampania') }}",
-            data: {
-                oportunidad:oportunidad,
-                vendedor:vendedor
-            },
-            type: 'POST',
-            success: function(data) {
-              ajaxListadoOportunidades();
-              ajaxListadoVendedores();
-            },
-            error: function(error){
-
-            }
-        });
-
-      }else{
-
-        Swal.fire({
-          icon: 'error',
-          title: 'No se pudo completar',
-          text: 'Debe elegir primero un vendedor',
-          // footer: '<a href="">Why do I have this issue?</a>'
-        })
-
+  if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+      damping: '0.5'
       }
-    }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+  }
 
-    function ajaxListadoOportunidades(){
-      
+  function guardaVendedor(vendedor, nombre){
+
+    var html = "<button class='btn btn-success btn-lg w-100'  onclick='buscarVendedor()'>"+nombre+"</button>";
+
+    $('#vendedor_id').val(vendedor);
+
+    $('#bloque-cambiar').html(html);
+
+    $('#bloque-buscar').toggle('show');
+
+    $('#bloque-buscador-lista').toggle('hide');
+
+    setTimeout(function(){
+      $('#lista-vendedores').toggle('hide');
+    }, 500);
+
+  }
+
+  function buscarVendedor(){
+
+    $('#vendedor_id').val(0);
+
+    $('#bloque-buscar').toggle('show');
+    // $('#bloque-cambiar').toggle('hide');
+    $('#lista-vendedores').html('');
+    $('#lista-vendedores').toggle('show');
+    
+  }
+
+  function asignacion(oportunidad){
+    // console.log(oportunidad);
+    var vendedor = $('#vendedor_id').val();
+
+    if(vendedor != 0){
+
+
       $.ajax({
-          url: "{{ url('Campania/ajaxListadoOportunidades') }}",
+          url: "{{ url('Campania/asignacionVendedorCampania') }}",
           data: {
-              campania:{{ $campania_id }}
+              oportunidad:oportunidad,
+              vendedor:vendedor
           },
           type: 'POST',
           success: function(data) {
-
-              // $('#lista-vendedores').html(data);
-              $('#tabla-oportunidades-show').html(data);
-
+            ajaxListadoOportunidades();
+            ajaxListadoVendedores();
           },
           error: function(error){
 
           }
       });
 
-    }
-
-    function ajaxListadoVendedores(){
-      
-      $.ajax({
-          url: "{{ url('Campania/ajaxListadoVendedores') }}",
-          data: {
-              campania:{{ $campania_id }}
-          },
-          type: 'POST',
-          success: function(data) {
-
-              // $('#lista-vendedores').html(data);
-              $('#tabla-vendedores-show').html(data);
-
-          },
-          error: function(error){
-
-          }
-      });
-
-    }
-
-    function asignarOportunidades(){
+    }else{
 
       Swal.fire({
-        title: 'Esta seguro de realizar la asignación?',
-        text: "No podrás revertir esto.!",
-        icon: 'warning',
-        showCancelButton: true,
-        // confirmButtonColor: '#3085d6',
-        // cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, asignar!'
-
-      }).then((result) => {
-        if (result.isConfirmed) {
-          if ($('#navbarFixed').prop('checked')) {
-            if( $('#navbarMinimize').prop('checked')){
-              var desminuir = 2;
-            }else{
-              var desminuir = 1;
-            }
-            if (($('input[type=checkbox]:checked').length-desminuir) != 0) {
-              var datos = $('#formulario-asignacion').serialize();
-
-              $.ajax({
-                url: "{{ url('Campania/asignacionVendedorCampania') }}",
-                data: datos,
-                type: 'POST',
-                success: function(data) {
-
-                  Swal.fire({
-                    title: 'Correcto',
-                    text: "Se realizo la asignacion!",
-                    icon: 'success',
-                    timer: 800
-                  })
-
-                  ajaxListadoOportunidades();
-                  ajaxListadoVendedores();
-                  ajaxListadoClientesAsignados();
-
-                },
-                  error: function(error){
-                    
-                  }
-              });
-            }
-            else{
-              Swal.fire({
-                  title: 'Alerta!',
-                  text: "Debe seleccionar al menos una oportunidad!",
-                  icon: 'warning',
-                })
-            }
-          }
-        }
-
+        icon: 'error',
+        title: 'No se pudo completar',
+        text: 'Debe elegir primero un vendedor',
+        // footer: '<a href="">Why do I have this issue?</a>'
       })
 
-      
     }
+  }
 
-    function ajaxListadoClientesAsignados(){
+  function ajaxListadoOportunidades(){
+    
+    $.ajax({
+        url: "{{ url('Campania/ajaxListadoOportunidades') }}",
+        data: {
+            campania:{{ $campania_id }}
+        },
+        type: 'POST',
+        success: function(data) {
 
-      $.ajax({
-          url: "{{ url('Campania/ajaxListadoClientesAsignados') }}",
-          data: {
-              campania:{{ $campania_id }}
-          },
-          type: 'POST',
-          success: function(data) {
+            // $('#lista-vendedores').html(data);
+            $('#tabla-oportunidades-show').html(data);
 
-              $('#tabla_listado_clientes_asignados').html(data);
+        },
+        error: function(error){
 
-          },
-          error: function(error){
+        }
+    });
 
+  }
+
+  function ajaxListadoVendedores(){
+    
+    $.ajax({
+        url: "{{ url('Campania/ajaxListadoVendedores') }}",
+        data: {
+            campania:{{ $campania_id }}
+        },
+        type: 'POST',
+        success: function(data) {
+
+            // $('#lista-vendedores').html(data);
+            $('#tabla-vendedores-show').html(data);
+
+        },
+        error: function(error){
+
+        }
+    });
+
+  }
+
+  function asignarOportunidades(){
+
+    Swal.fire({
+      title: 'Esta seguro de realizar la asignación?',
+      text: "No podrás revertir esto.!",
+      icon: 'warning',
+      showCancelButton: true,
+      // confirmButtonColor: '#3085d6',
+      // cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, asignar!'
+
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if ($('#navbarFixed').prop('checked')) {
+          if( $('#navbarMinimize').prop('checked')){
+            var desminuir = 2;
+          }else{
+            var desminuir = 1;
           }
-      });
-      
-    }
+          if (($('input[type=checkbox]:checked').length-desminuir) != 0) {
+            var datos = $('#formulario-asignacion').serialize();
 
-    function abreModaltramsferencia(asignacion, nombre, oportunidad) {
-
-      $('#persona_asignacion').text(nombre)
-
-      $('#asignacion_tramsferencia_id').val(asignacion);
-      $('#oportunidad_tramsferencia_id').val(oportunidad);
-      
-      $('#modatramsferenciaAsignacion').modal('show');
-
-
-      $.ajax({
-
-          url: "{{ url('Campania/ajaxListadoSeguimientos') }}",
-          data: {
-
-            asignacion: asignacion,
-            oportunidad:oportunidad
-
-          },
-          type: 'POST',
-          success: function(data) {
-
-            $('#asignaciones-listado').html(data);
-
-          },
-          error: function(error){
-
-          }
-
-      });
-
-    }
-
-    function ajaxDetalleOportunidad(){  
-
-      $.ajax({
-          url: "{{ url('Campania/ajaxListadoVendedores') }}",
-          data: {
-              campania:{{ $campania_id }}
-          },
-          type: 'POST',
-          success: function(data) {
-
-              $('#tabla-vendedores-show').html(data);
-
-          },
-          error: function(error){
-
-          }
-      });
-
-    }
-
-    function ajaxListadoVendedorTramsferencia(){
-
-      $.ajax({
-          url: "{{ url('Campania/ajaxListadoVendedorTramsferencia') }}",
-          type: 'POST',
-          success: function(data) {
-
-              $('#tabla-ajax-reasignarVendedor').html(data);
-              $('#listado-vendedores-reasignar').toggle('show');
-
-          },
-          error: function(error){
-
-          }
-      });
-
-
-
-    }
-
-    function reasignarVendedor(){
-
-      Swal.fire({
-        title: 'Esta seguro de hacer la tramsferencia?',
-        text: "No se podra revertir!",
-        icon: 'warning',
-        showCancelButton: true,
-        // confirmButtonColor: '#3085d6',
-        // cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, Tramsferir!'
-      }).then((result) => {
-
-        if (result.isConfirmed) {
-
-          var ven= $("input[name='listaVendedorReasignacion']:checked").val();
-          var  asignacion = $('#asignacion_tramsferencia_id').val();
-          var oportunidad = $('#oportunidad_tramsferencia_id').val();
-
-          $.ajax({
-              url: "{{ url('Campania/tramsferirOportunidadVendedor') }}",
-              data: {
-                  vendedor:ven,
-                  asignacion:asignacion,
-                  oportunidad:oportunidad
-              },
+            $.ajax({
+              url: "{{ url('Campania/asignacionVendedorCampania') }}",
+              data: datos,
               type: 'POST',
               success: function(data) {
 
                 Swal.fire({
                   title: 'Correcto',
-                  text: "Se realizo la tramsferencia!",
+                  text: "Se realizo la asignacion!",
                   icon: 'success',
                   timer: 800
                 })
 
-                ajaxListadoVendedorTramsferencia();
                 ajaxListadoOportunidades();
                 ajaxListadoVendedores();
                 ajaxListadoClientesAsignados();
 
-                $('#modatramsferenciaAsignacion').modal('hide');
-
               },
-              error: function(error){
-
-              }
-          });
+                error: function(error){
+                  
+                }
+            });
+          }
+          else{
+            Swal.fire({
+                title: 'Alerta!',
+                text: "Debe seleccionar al menos una oportunidad!",
+                icon: 'warning',
+              })
+          }
         }
-      })
+      }
 
-    }
+    })
 
-    function nuevoIngreso(){
-
-      $('#modalNuevoIngreso').modal('show');
-
-      $('#monto_ingreso').val('');
-      $('#descripcion_ingreso').val('');
-
-    }
-
-    function guardarIngreso(){
     
-      Swal.fire({
-        title: 'Esta seguro ingresar el monto?',
-        text: "No se podra revertir!",
-        icon: 'warning',
-        showCancelButton: true,
-        // confirmButtonColor: '#3085d6',
-        // cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, Ingresar!'
-      }).then((result) => {
+  }
 
-        if (result.isConfirmed) {
+  function ajaxListadoClientesAsignados(){
 
-          var datosFormulario = $('#formulario_ingreso').serialize();
+    $.ajax({
+        url: "{{ url('Campania/ajaxListadoClientesAsignados') }}",
+        data: {
+            campania:{{ $campania_id }}
+        },
+        type: 'POST',
+        success: function(data) {
 
+            $('#tabla_listado_clientes_asignados').html(data);
 
-          $.ajax({
-              url: "{{ url('Campania/guardaIngreso') }}",
-              data: datosFormulario,
-              type: 'POST',
-              dataType: 'json',
-              success: function(data) {
-                
-                console.log(data);
+        },
+        error: function(error){
 
-                $('#listadoIngresos').html(data.lista);
-                $('#presupuestoActualCampania').text(data.presupuesto);
-
-                Swal.fire({
-                  title: 'Correcto',
-                  text: "Se guardo el ingreso!",
-                  icon: 'success',
-                  timer: 800
-                })
-
-                $('#modalNuevoIngreso').modal('hide');
-
-              },
-              error: function(error){
-
-              }
-          });
         }
-      })
+    });
     
-    }
+  }
 
-    function nuevoEgreso(){
-      
-      $('#modalNuevoEgreso').modal('show');
-      $('#presupuesto_id').val(0);
+  function abreModaltramsferencia(asignacion, nombre, oportunidad) {
 
-      $('#formulario_egreso')[0].reset();
-      $("#div_gasto_egreso, #div_descripcion_egreso, #div_comprobante_egreso").removeClass("is-focused");
+    $('#persona_asignacion').text(nombre)
 
-    }
+    $('#asignacion_tramsferencia_id').val(asignacion);
+    $('#oportunidad_tramsferencia_id').val(oportunidad);
+    
+    $('#modatramsferenciaAsignacion').modal('show');
 
-    function guardarEgreso(){
-      Swal.fire({
-        title: 'Esta seguro guardar el egreso?',
-        text: "No se podra revertir!",
-        icon: 'warning',
-        showCancelButton: true,
-        // confirmButtonColor: '#3085d6',
-        // cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, Ingresar!'
-      }).then((result) => {
 
-        if (result.isConfirmed) {
+    $.ajax({
 
-          // var datosFormulario = $('#formulario_egreso').serialize();
-          // console.log(datosFormulario);
+        url: "{{ url('Campania/ajaxListadoSeguimientos') }}",
+        data: {
 
-          var formulario = new FormData($('#formulario_egreso')[0]);
+          asignacion: asignacion,
+          oportunidad:oportunidad
 
-          $.ajax({
-              url: "{{ url('Campania/guardaEgreso') }}",
-              // data:datosFormulario,
-              data:formulario,
-              processData: false,
-              contentType: false, 
-              type: 'POST',
-              dataType: 'json',
-              success: function(data) {
+        },
+        type: 'POST',
+        success: function(data) {
 
-                console.log(data.lista);
+          $('#asignaciones-listado').html(data);
 
-                $('#listadoEgreso').html(data.lista);
-                $('#presupuestoActualCampania').text(data.presupuesto);
-                $('#monto-actual').text('Presupuesto actual '+data.presupuesto+' Bs');
+        },
+        error: function(error){
 
-                Swal.fire({
-                  title: 'Correcto',
-                  text: "Se guardo el Egreso!",
-                  icon: 'success',
-                  timer: 800
-                })
-
-                $('#modalNuevoEgreso').modal('hide');
-
-              },
-              error: function(error){
-                console.log(error);
-              }
-          });
         }
-      })
-    }
 
-    function editEgreso(presupuesto, gasto, monto, descripcion, nro_comprobante, comprobante){
+    });
 
-      $('#presupuesto_id').val(presupuesto);
-      $('#gasto_egreso').val(gasto);
-      $('#monto_egreso').val(monto);
-      $('#descripcion_egreso').val(descripcion);
-      $('#nro_comprobante').val(nro_comprobante);
-      $('#comprobante_id').val(comprobante)
+  }
 
-      $("#div_gasto_egreso, #div_descripcion_egreso, #div_comprobante_egreso").addClass("is-focused");
+  function ajaxDetalleOportunidad(){  
+
+    $.ajax({
+        url: "{{ url('Campania/ajaxListadoVendedores') }}",
+        data: {
+            campania:{{ $campania_id }}
+        },
+        type: 'POST',
+        success: function(data) {
+
+            $('#tabla-vendedores-show').html(data);
+
+        },
+        error: function(error){
+
+        }
+    });
+
+  }
+
+  function ajaxListadoVendedorTramsferencia(){
+
+    $.ajax({
+        url: "{{ url('Campania/ajaxListadoVendedorTramsferencia') }}",
+        type: 'POST',
+        success: function(data) {
+
+            $('#tabla-ajax-reasignarVendedor').html(data);
+            $('#listado-vendedores-reasignar').toggle('show');
+
+        },
+        error: function(error){
+
+        }
+    });
+
+
+
+  }
+
+  function reasignarVendedor(){
+
+    Swal.fire({
+      title: 'Esta seguro de hacer la tramsferencia?',
+      text: "No se podra revertir!",
+      icon: 'warning',
+      showCancelButton: true,
+      // confirmButtonColor: '#3085d6',
+      // cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Tramsferir!'
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+
+        var ven= $("input[name='listaVendedorReasignacion']:checked").val();
+        var  asignacion = $('#asignacion_tramsferencia_id').val();
+        var oportunidad = $('#oportunidad_tramsferencia_id').val();
+
+        $.ajax({
+            url: "{{ url('Campania/tramsferirOportunidadVendedor') }}",
+            data: {
+                vendedor:ven,
+                asignacion:asignacion,
+                oportunidad:oportunidad
+            },
+            type: 'POST',
+            success: function(data) {
+
+              Swal.fire({
+                title: 'Correcto',
+                text: "Se realizo la tramsferencia!",
+                icon: 'success',
+                timer: 800
+              })
+
+              ajaxListadoVendedorTramsferencia();
+              ajaxListadoOportunidades();
+              ajaxListadoVendedores();
+              ajaxListadoClientesAsignados();
+
+              $('#modatramsferenciaAsignacion').modal('hide');
+
+            },
+            error: function(error){
+
+            }
+        });
+      }
+    })
+
+  }
+
+  function nuevoIngreso(){
+
+    $('#modalNuevoIngreso').modal('show');
+
+    $('#monto_ingreso').val('');
+    $('#descripcion_ingreso').val('');
+
+  }
+
+  function guardarIngreso(){
+  
+    Swal.fire({
+      title: 'Esta seguro ingresar el monto?',
+      text: "No se podra revertir!",
+      icon: 'warning',
+      showCancelButton: true,
+      // confirmButtonColor: '#3085d6',
+      // cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Ingresar!'
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+
+        var datosFormulario = $('#formulario_ingreso').serialize();
+
+
+        $.ajax({
+            url: "{{ url('Campania/guardaIngreso') }}",
+            data: datosFormulario,
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+              
+              console.log(data);
+
+              $('#listadoIngresos').html(data.lista);
+              $('#presupuestoActualCampania').text(data.presupuesto);
+
+              Swal.fire({
+                title: 'Correcto',
+                text: "Se guardo el ingreso!",
+                icon: 'success',
+                timer: 800
+              })
+
+              $('#modalNuevoIngreso').modal('hide');
+
+            },
+            error: function(error){
+
+            }
+        });
+      }
+    })
+  
+  }
+
+  function nuevoEgreso(){
+    
+    $('#modalNuevoEgreso').modal('show');
+    $('#presupuesto_id').val(0);
+
+    $('#formulario_egreso')[0].reset();
+    $("#div_gasto_egreso, #div_descripcion_egreso, #div_comprobante_egreso").removeClass("is-focused");
+
+  }
+
+  function guardarEgreso(){
+    Swal.fire({
+      title: 'Esta seguro guardar el egreso?',
+      text: "No se podra revertir!",
+      icon: 'warning',
+      showCancelButton: true,
+      // confirmButtonColor: '#3085d6',
+      // cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Ingresar!'
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+
+        // var datosFormulario = $('#formulario_egreso').serialize();
+        // console.log(datosFormulario);
+
+        var formulario = new FormData($('#formulario_egreso')[0]);
+
+        $.ajax({
+            url: "{{ url('Campania/guardaEgreso') }}",
+            // data:datosFormulario,
+            data:formulario,
+            processData: false,
+            contentType: false, 
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+
+              console.log(data.lista);
+
+              $('#listadoEgreso').html(data.lista);
+              $('#presupuestoActualCampania').text(data.presupuesto);
+              $('#monto-actual').text('Presupuesto actual '+data.presupuesto+' Bs');
+
+              Swal.fire({
+                title: 'Correcto',
+                text: "Se guardo el Egreso!",
+                icon: 'success',
+                timer: 800
+              })
+
+              $('#modalNuevoEgreso').modal('hide');
+
+            },
+            error: function(error){
+              console.log(error);
+            }
+        });
+      }
+    })
+  }
+
+  function editEgreso(presupuesto, gasto, monto, descripcion, nro_comprobante, comprobante){
+
+    $('#presupuesto_id').val(presupuesto);
+    $('#gasto_egreso').val(gasto);
+    $('#monto_egreso').val(monto);
+    $('#descripcion_egreso').val(descripcion);
+    $('#nro_comprobante').val(nro_comprobante);
+    $('#comprobante_id').val(comprobante)
+
+    $("#div_gasto_egreso, #div_descripcion_egreso, #div_comprobante_egreso").addClass("is-focused");
+    
+    $('#modalNuevoEgreso').modal('show');
+
+  }
+
+  function copyToClipboard(red, formulario) {
+
+    var redsocial = "";
+    if(red == "fb"){redsocial = "Facebook";}else if(red == "wa"){redsocial = "Whatsapp";}else if(red == "ig"){redsocial = "Instagram";}else if(red == "tw"){redsocial = "twitter";}
+
+    var elemento = "#urlFormulario_"+red+"_"+formulario;
+    
+    var $temp = $("<input>")
+    $("body").append($temp);
+    $temp.val($(elemento).text()).select();
+    console.log($temp);
+    document.execCommand("copy");
+    $temp.remove();
+
+    Swal.fire({
+      title: 'Correcto',
+      text: "Se copio el link de "+redsocial+"!",
+      icon: 'success',
+      timer: 1000
+    })
+  }
+
+  function copyToIframe(red, formulario){
+
+    
+    var redsocial = "";
+    if(red == "fb"){redsocial = "Facebook";}else if(red == "wa"){redsocial = "Whatsapp";}else if(red == "ig"){redsocial = "Instagram";}else if(red == "tw"){redsocial = "twitter";}
+
+    var elemento = "#iframeFormulario_"+red+"_"+formulario;
+
+    var $temp = $("<input>")
+    $("body").append($temp);
+    $temp.val($(elemento).text()).select();
+    console.log($temp);
+    console.log($temp);
+    document.execCommand("copy");
+    $temp.remove();
+
+    Swal.fire({
+      title: 'Correcto',
+      text: "Se copio el iframe de "+redsocial+"!",
+      icon: 'success',
+      timer: 1000
+    })
+
+  }
+
+  function editaFormulario(formulario){
+
+    window.location.href = "{{ url('Formulario/editaFormulario') }}/"+{{ $campania_id }}+"/"+formulario;
+
+  }
+
+  //
+  // Widget Calendar
+  //
+
+  if (document.querySelector('[data-toggle="widget-calendar"]')) {
+
+    var calendarEl = document.querySelector('[data-toggle="widget-calendar"]');
+    var today = new Date();
+    var mYear = today.getFullYear();
+    var weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var mDay = weekday[today.getDay()];
+  
+    var m = today.getMonth();
+    var d = today.getDate();
+
+    document.getElementsByClassName('widget-calendar-year')[0].innerHTML = mYear;
+    document.getElementsByClassName('widget-calendar-day')[0].innerHTML = mDay;
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+
+      customButtons: {
+        myCustomButton: {
+          text: 'Nuevo Evento',
+          click: function() {
+            addEvent(calendar);
+          }
+        },
+
+        eliminar: {
+          text: 'Eliminar Evento',
+          click: function() {
+            deleteEvent();
+          }
+        },
+
+      },
       
-      $('#modalNuevoEgreso').modal('show');
+      headerToolbar: {
+        left: 'prev,next today myCustomButton eliminar',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
 
-    }
+      locales: 'es',
 
-    function copyToClipboard(red, formulario) {
+      // contentHeight: 'auto',
+      // initialView: 'dayGridMonth',
+      // selectable: true,
+      // initialDate: '2020-12-01',
+      editable: true,
+      // headerToolbar: false,
 
-      var redsocial = "";
-      if(red == "fb"){redsocial = "Facebook";}else if(red == "wa"){redsocial = "Whatsapp";}else if(red == "ig"){redsocial = "Instagram";}else if(red == "tw"){redsocial = "twitter";}
+      // events:enventos,
+      events:[],
 
-      var elemento = "#urlFormulario_"+red+"_"+formulario;
+
+      // events:"{{ url('Agenda/listado') }}",
+
+      // events: function(){
+
+      //   $.ajax({
+      //     url: "{{ url('Agenda/listado') }}",
+      //     type: 'GET',
+      //     // dataType: 'json',
+      //     success: function(data) {
+
+      //       // console.log(data)
+      //       // enventos  = data;
+      //       // enventos.push(data)
+
+      //       // console.log(enventos)
+
+
+      //       // console.log(data.agendas);
+
+      //       // enventos  = data.agendas;
+
+      //       // Swal.fire({
+      //       //   title: 'Correcto',
+      //       //   text: "Se realizo la tramsferencia!",
+      //       //   icon: 'success',
+      //       //   timer: 800
+      //       // })
+
+      //     },
+      //     error: function(error){
+
+      //     }
+      //   });
+
+
+      // },
+
+      // [
+      //   {
+      //     'id': 50,
+      //     'title': 'Evento 3',
+      //     'start': '2022-05-15',
+      //     'end': '2022-05-20',
+      //     // className: 'bg-gradient-danger',
+      //     'color': 'yellow',
+      //     'textColor': 'black',
+      //     'text': 'holas con el id 50',
+      //   },
+      //   {
+      //     id: 5,
+      //     title: 'joel flores',
+      //     start: '2022-05-02',
+      //     end: '2022-05-03',
+      //     // className: 'bg-gradient-warning',
+      //     color: 'green',
+      //     textColor: 'white',
+      //     text: 'Holas con el id 5',
+      //   },
+
+      //   {
+      //     id: 80,
+      //     title: 'Evento de prueba',
+      //     start: '2022-05-23T08:00:00',
+      //     end: '2022-05-24T13:00:00',
+      //     // className: 'bg-gradient-warning',
+      //     color: 'pink',
+      //     textColor: 'white',
+      //     text: 'Holas que paso por aqui',
+      //   },
+  
+      //   // {
+      //   //   title: 'Lunch meeting',
+      //   //   start: '2020-11-21',
+      //   //   end: '2020-11-22',
+      //   //   className: 'bg-gradient-warning'
+      //   // },
+  
+      //   // {
+      //   //   title: 'All day conference',
+      //   //   start: '2020-11-29',
+      //   //   end: '2020-11-29',
+      //   //   className: 'bg-gradient-success'
+      //   // },
+  
+      //   // {
+      //   //   title: 'Meeting with Mary',
+      //   //   start: '2020-12-01',
+      //   //   end: '2020-12-01',
+      //   //   className: 'bg-gradient-info'
+      //   // },
+  
+      //   // {
+      //   //   title: 'Winter Hackaton',
+      //   //   start: '2020-12-03',
+      //   //   end: '2020-12-03',
+      //   //   className: 'bg-gradient-danger'
+      //   // },
+  
+      //   // {
+      //   //   title: 'Digital event',
+      //   //   start: '2020-12-07',
+      //   //   end: '2020-12-09',
+      //   //   className: 'bg-gradient-warning'
+      //   // },
+  
+      //   // {
+      //   //   title: 'Marketing event',
+      //   //   start: '2020-12-10',
+      //   //   end: '2020-12-10',
+      //   //   className: 'bg-gradient-primary'
+      //   // },
+  
+      //   // {
+      //   //   title: 'Dinner with Family',
+      //   //   start: '2020-12-19',
+      //   //   end: '2020-12-19',
+      //   //   className: 'bg-gradient-danger'
+      //   // },
+  
+      //   // {
+      //   //   title: 'Black Friday',
+      //   //   start: '2020-12-23',
+      //   //   end: '2020-12-23',
+      //   //   className: 'bg-gradient-info'
+      //   // },
+  
+      //   // {
+      //   //   title: 'Cyber Week',
+      //   //   start: '2020-12-02',
+      //   //   end: '2020-12-02',
+      //   //   className: 'bg-gradient-warning'
+      //   // },
+      // ],
       
-      var $temp = $("<input>")
-      $("body").append($temp);
-      $temp.val($(elemento).text()).select();
-      console.log($temp);
-      document.execCommand("copy");
-      $temp.remove();
 
-      Swal.fire({
-        title: 'Correcto',
-        text: "Se copio el link de "+redsocial+"!",
-        icon: 'success',
-        timer: 1000
-      })
-    }
+      eventClick: function(info) {
 
-    function copyToIframe(red, formulario){
+        $('#evento_id').val(info.event.id);
+        $('#nombre_evento').val(info.event.title);
+        $('#fecha_ini').val((info.event.startStr).replace('-04:00', ''));
+        $('#fecha_fin').val((info.event.endStr).replace('-04:00', ''));
+        $('#tipo_agenda').val();
+        $('#descripcion_agenda').val(info.event.extendedProps.text);
 
+        $(".focusable").addClass("is-focused");
+
+        $('#modalNuevoEvento').modal('show');
+
+
+        console.log((info.event.startStr).replace('-04:00', ''))
+        console.log((info.event.endStr).replace('-04:00', ''))
+        console.log("-------------------------")
+
+        // $('#fecha_ini').val('2022-05-05T08:00');
+
+
+
+        console.log(info);
+        console.log("----------------------------------------------------------------");
+        console.log(info.event);
+        console.log("----------------------------------------------------------------");
+        console.log(info.event.id);
+        console.log("----------------------------------------------------------------");
+        console.log(info.event.extendedProps.text);
+
+        // info.jsEvent.preventDefault(); // don't let the browser navigate
+
+        // if (info.event.url) {
+        //   // window.open(info.event.url);
+        //   console.log("holas que haces");
+        // }
+
+      },
+
+      dateClick: function(info) {
+        var fechaIni = info.dateStr+"T08:00"
+        var fechaFin = info.dateStr+"T12:00"
+
+        $('#evento_id').val('');
+        $('#nombre_evento').val('');
+        $('#fecha_ini').val(fechaIni);
+        $('#fecha_fin').val(fechaFin);
+        $('#tipo_agenda').val();
+        $('#descripcion_agenda').val('');
+
+        // $(".focusable").removeClass("is-focused");
+        
+        $(".focusable").addClass("is-focused");
+
+
+        $('#modalNuevoEvento').modal('show');
+
+        // alert('Clicked on: ' + info.dateStr);
+        // alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+        // alert('Current view: ' + info.view.type);
+        // // change the day's background color just for fun
+
+        console.log('Clicked on: ' + info.dateStr)
+        console.log('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY)
+        console.log('Current view: ' + info.view.type)
+
+        // info.dayEl.style.backgroundColor = 'red';
+
+      }, 
+
+      eventDragStart: function(a) { 
+
+        // console.log(a.event)
+        // console.log("Drag start", a.event.startStr); 
+
+      },
+
+      eventDragStop: function(a) { 
+
+        // console.log(a.event);
+        // console.log("Drag stop", a.event.endStr); 
+
+      }, 
       
-      var redsocial = "";
-      if(red == "fb"){redsocial = "Facebook";}else if(red == "wa"){redsocial = "Whatsapp";}else if(red == "ig"){redsocial = "Instagram";}else if(red == "tw"){redsocial = "twitter";}
+      eventDrop: function(a){
 
-      var elemento = "#iframeFormulario_"+red+"_"+formulario;
+        // console.log(a.event.startStr);
+        // console.log(a.event.endStr);
 
-      var $temp = $("<input>")
-      $("body").append($temp);
-      $temp.val($(elemento).text()).select();
-      console.log($temp);
-      console.log($temp);
-      document.execCommand("copy");
-      $temp.remove();
+      }
 
-      Swal.fire({
-        title: 'Correcto',
-        text: "Se copio el iframe de "+redsocial+"!",
-        icon: 'success',
-        timer: 1000
-      })
+    });
 
-    }
+    calendar.render();
 
-    function editaFormulario(formulario){
+  }
 
-      window.location.href = "{{ url('Formulario/editaFormulario') }}/"+{{ $campania_id }}+"/"+formulario;
 
-    }
+  function addEvent(){
+
+    var events =  {
+                    id: 105,
+                    title: 'holas',
+                    start: '2022-05-11',
+                    end: '2022-05-15',
+                    color: 'orange',
+                    textColor: 'blue',
+                    text: 'Holas con el id 5',
+                  };
+
+    calendar.addEvent(events)
+  }
+
+  function deleteEvent(){
+
+    console.log(calendar)
+
+    calendar.refetchEvents();
+
+    // calendar.removeEvent(105);
+    // calendar.remove(105)
+  }
+
+  function guardaEvent(){
+
+    console.log("guardaEvent")
+
+  }
+
+  function eliminarEvent(){
+
+    console.log("eliminarEvent")
+
+  }
+
+  function listadoEventos(){
+
+    $.ajax({
+        url: "{{ url('Agenda/listado') }}",
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+
+          // console.log(data)
+
+          // var vectorPersonas = ['Elena', 'Isabel', 'Ana']; 
+          var vectorPersonas = data; 
+
+          $.each(vectorPersonas, function (ind, value) { 
+
+            // console.log('¡Hola :'+id+'!'); 
+            calendar.addEvent(value)
+
+          });
+
+        },
+        error: function(error){
+
+        }
+    });
+  }
+
+
     
 </script>
 @endsection
