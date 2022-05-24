@@ -258,7 +258,6 @@
   </div>
 </div>
 
-
 <!-- Modal NUEVO EVENTO-->
 <div class="modal fade" id="modalNuevoEvento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -273,8 +272,8 @@
         <div class="row">
           <div class="col-md-12">
             <div class="card">
-              <form action="" id="formulario_ingreso">
-                <input type="text" name="evento_id" id="evento_id" value="0">
+              <form action="" id="formulario_evento">
+                <input type="hidden" name="evento_id" id="evento_id" value="0">
 
                 <div class="row">
                   <div class="col-md-12">
@@ -302,12 +301,15 @@
 
                 <div class="row">
                   <div class="col-md-12">
-                    <div class="input-group input-group-outline mb-4">
-                      <select name="tipo_agenda" id="tipo_agenda" class="form-control">
-                        <option value="">holas 1</option>
-                        <option value="">holas 2</option>
-                        <option value="">holas 3</option>
-                      </select>
+                    <div id="tipo_agenda_selct">
+                      <div class="input-group input-group-static mb-4">
+                        <label for="tipo_agenda_id" class="ms-0">Tipo de Agenda</label>
+                        <select class="form-control" id="tipo_agenda_id" name="tipo_agenda_id" style="width:100%;">
+                            @foreach ($tipoAgendas as $ta)
+                              <option value="{{ $ta->id }}">{{ $ta->nombre }}</option>
+                            @endforeach
+                        </select>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -342,6 +344,57 @@
   </div>
 </div>
 
+<!-- Modal NUEVO TIPO AGENDA-->
+<div class="modal fade" id="modalNuevoTipoEvento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Formulario de Tipo Agenda</h5>
+        <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <form action="" id="formulario_tipo_agenda">
+                <input type="hidden" name="tipo_agenda_id" id="tipo_agenda_id" value="0">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="input-group input-group-outline mb-4 focusable">
+                      <label class="form-label">Nombre del Agenda</label>
+                      <input type="text" name="nombre_agenda" id="nombre_agenda" class="form-control">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="input-group input-group-outline mb-4 focusable">
+                      <label class="form-label">Color</label>
+                      <input type="color" name="color_agenda" id="color_agenda" class="form-control">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="input-group input-group-outline mb-4">
+                      <textarea name="descripcion_agenda" id="descripcion_agenda" cols="60" rows="5" class="form-control" placeholder="Descripcion de agenda"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn bg-gradient-success" onclick="guardaTipoAgenda()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <div class="row mt-5">
@@ -443,7 +496,6 @@
         </div>
       </div>
     </div>
-
   </div>
   <div class="col-xl-4 col-lg-5 mt-lg-0 mt-4">
     <div class="row">
@@ -460,206 +512,199 @@
             </div>
           </div>
           <div class="card-body py-3">
+
           </div>
         </div>
       </div>
       <div class="col-lg-12 col-sm-6">
         <div class="card mt-4">
           <div class="card-header pb-0 p-3">
-            <h6 class="mb-0">Formularios</h6>
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="mb-0">Tipos de Agendas</h6>
+              </div>
+              <div class="col-md-6">
+                <button class="btn btn-primary btn-sm" onclick="abreModalTipoAgenda()">Nuevo Tipo Agenda</button>
+              </div>
+            </div>
           </div>
           <div class="card-body p-3">
             <ul class="list-group">
+              <div id="lista-tipo-agendas">
 
-
-              <div class="accordion-1">
-                <div class="container">
-                  {{-- <div class="row my-5">
-                    <div class="col-md-6 mx-auto text-center">
-                      <h2>Frequently Asked Questions</h2>
-                      <p>A lot of people don’t appreciate the moment until it’s passed. I'm not trying my hardest, and I'm not trying to do </p>
-                    </div>
-                  </div> --}}
-                    
-                  <div class="row">
-                    <div class="col-md-12 mx-auto">
-                      <div class="accordion" id="accordionRental">
-                        @foreach ($formularios as $key => $f)
-                          @if ($f->formulario)
-                            <div class="accordion-item mb-3">
-                              <h6 class="accordion-header" id="headingOne">
-                                <div class="row">
-                                  {{-- <p style="padding-top:50px;"></p> --}}
-                                  <div class="col-md-1">
-                                    <a href="{{ url('Formulario/respuestaFormulario', [$f->campania_id, $f->formulario_id]) }}" class="btn btn-sm btn-icon-only btn-rounded btn-outline-info mb-0 p-0" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-eye"></i></a>
-                                  </div>
-                                  <div class="col-md-1">
-                                    <button class="btn btn-sm btn-icon-only btn-rounded btn-outline-warning mb-0 p-0" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-edit"></i></button>
-                                  </div>
-                                  <div class="col-md-1">
-                                    <a href="{{ url('Campania/estadistica', [$f->campania_id, $f->formulario_id]) }}" class="btn btn-sm btn-icon-only btn-rounded btn-outline-dark mb-0 p-0" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-list"></i></a>
-                                  </div>
-
-                                  <div class="col-md-9" style="margin-top:-10px;">
-                                    <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{ $key }}" aria-expanded="false" aria-controls="collapseOne">
-                                      {{ $f->formulario->nombre }}
-                                      <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                      <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
-                                    </button>
-                                  </div>
-                                </div>
-
-
-                              </h6>
-                              <div id="collapseOne{{ $key }}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionRental" style="">
-                                <div class="accordion-body text-sm opacity-8">
-                                            
-                                  <p style="display: none;" id="urlFormulario_fb_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"fb"]) }}</p>
-                                  <p style="display: none;" id="urlFormulario_wa_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"wa"]) }}</p>
-                                  <p style="display: none;" id="urlFormulario_ig_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"ig"]) }}</p>
-                                  <p style="display: none;" id="urlFormulario_tw_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"tw"]) }}</p>
-                                  <p style="display: none;" id="iframeFormulario_fb_{{ $f->id }}">&lt;iframe src="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"fb"]) }}" width=”100%” height=”60%” &gt;&lt;/iframe&gt;</p>
-                                  <p style="display: none;" id="iframeFormulario_wa_{{ $f->id }}">&lt;iframe src="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"wa"]) }}" width=”100%” height=”60%” &gt;&lt;/iframe&gt; </p>
-                                  <p style="display: none;" id="iframeFormulario_ig_{{ $f->id }}">&lt;iframe src="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"ig"]) }}" width=”100%” height=”60%” &gt;&lt;/iframe&gt; </p>
-                                  <p style="display: none;" id="iframeFormulario_tw_{{ $f->id }}">&lt;iframe src="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"tw"]) }}" width=”100%” height=”60%” &gt;&lt;/iframe&gt; </p>
-
-                                  <div class="d-flex align-items-center mb-2">
-                                    <div class="form-group w-100">
-                                      <div class="input-group bg-gray-200 border-radius-md">
-                                        <input class="form-control form-control-sm border-radius-md" id="url-fb" type="text" disabled value="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"fb"]) }}">
-                                        <button type="button" class="btn btn-icon-only btn-rounded btn-facebook mb-0 p-1"><i class="fa fa-facebook"></i></button>
-                                        <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-6">
-                                      <button onclick="copyToClipboard('fb', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</button>
-                                    </div>
-                                    <div class="col-md-6">
-                                      <a onclick="copyToIframe('fb', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
-                                    </div>
-                                  </div>
-                                  <hr>
-
-                                  <div class="d-flex align-items-center mb-2">
-                                    <div class="form-group w-100">
-                                      <div class="input-group bg-gray-200 border-radius-md">
-                                        <input class="form-control form-control-sm border-radius-md" id="url-wa" value="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"wa"]) }}" type="text" disabled>
-                                        <button type="button" class="btn btn-icon-only btn-rounded btn-success mb-0 p-1"><i class="fa fa-whatsapp"></i></button>
-                                        <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-6">
-                                      <a onclick="copyToClipboard('wa', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</a>
-                                    </div>
-                                    <div class="col-md-6">
-                                      <a onclick="copyToIframe('wa', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
-                                    </div>
-                                  </div>
-                                  <hr>
-
-                                  <div class="d-flex align-items-center mb-2">
-                                    <div class="form-group w-100">
-                                      <div class="input-group bg-gray-200 border-radius-md">
-                                        <input class="form-control form-control-sm border-radius-md" id="url-ig" value="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"ig"]) }}" type="text" disabled>
-                                        <button type="button" class="btn btn-icon-only btn-rounded btn-danger mb-0 p-1"><i class="fa fa-instagram"></i></button>
-                                        <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-6">
-                                      <a onclick="copyToClipboard('ig', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</a>
-                                    </div>
-                                    <div class="col-md-6">
-                                      <a onclick="copyToIframe('ig', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
-                                    </div>
-                                  </div>
-                                  <hr>
-                          
-                                  <div class="d-flex align-items-center mb-2">
-                                    <div class="form-group w-100">
-                                      <div class="input-group bg-gray-200 border-radius-md">
-                                        <input class="form-control form-control-sm border-radius-md" value="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"tw"]) }}" id="url-tw" type="text" disabled>
-                                        <button type="button" class="btn btn-icon-only btn-rounded btn-info mb-0 p-1"><i class="fa fa-twitter"></i></button>
-                                        <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-6">
-                                      <a onclick="copyToClipboard('tw', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</a>
-                                    </div>
-                                    <div class="col-md-6">
-                                      <a onclick="copyToIframe('tw', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>  
-                          @endif
-                        @endforeach
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {{-- @foreach ($formularios as $key => $f)
-                @if ($f->formulario)
+                @foreach ($tipoAgendas as $ta)
                   <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                     <div class="d-flex align-items-center">
-                      <div class="icon icon-shape icon-sm me-3 bg-gradient-dark shadow text-center">
-                        <a type="button" onclick="abreModalCopiaLink({{ $f->id }})">
-                          <i class="material-icons opacity-10">launch</i>
-                        </a>
-                        <p style="display: none;" id="urlFormulario_fb_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"fb"]) }}</p>
-                        <p style="display: none;" id="urlFormulario_wa_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"wa"]) }}</p>
-                        <p style="display: none;" id="urlFormulario_ig_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"ig"]) }}</p>
-                        <p style="display: none;" id="urlFormulario_tw_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"tw"]) }}</p>
-
-                        <div class="dropdown">
-                          <a href="#" class="btn bg-gradient-info dropdown-toggle btn-sm" data-bs-toggle="dropdown" id="navbarDropdownMenuLink2">
-                              <i class="fa-solid fa-share-nodes"></i>
-                          </a>
-                          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2" style="height: 0;">
-                              <li style="padding-bottom:2px;">
-                                    <button onclick="copiarLink('fb','{{ $f->id }}')" class="btn btn-icon-only btn-rounded btn-dark mb-0 p-1"><i class="fa fa-facebook"></i></button>
-                              </li>
-                              <li style="padding-bottom:2px;">
-                                    <button onclick="copiarLink('ig','{{ $f->id }}')" class="btn btn-icon-only btn-rounded btn-danger mb-0 p-1"><i class="fa fa-instagram"></i></button>
-                              </li>
-                              <li style="padding-bottom:2px;">
-                                    <button onclick="copiarLink('wa','{{ $f->id }}')" class="btn btn-icon-only btn-rounded btn-success mb-0 p-1"><i class="fa fa-whatsapp"></i></button>
-                              </li>
-                              <li style="padding-bottom:2px;">
-                                  <button onclick="copiarLink('tw','{{ $f->id }}')" class="btn btn-icon-only btn-rounded btn-info mb-0 p-1"><i class="fa fa-twitter"></i></button>
-                            </li>
-                          </ul>
-                        </div>
-
+                      <div class="icon icon-shape icon-sm me-3 shadow text-center">
+                        <button class="btn btn-icon-only btn-rounded mb-0 p-1" onclick="cargaEventos('{{ $ta->id }}')" style="background: {{ $ta->color }}">
+                          <i class="material-icons opacity-10">arrow_back</i>
+                        </button>
                       </div>
-                      
                       <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-dark text-sm">{{ $f->formulario->nombre }}</h6>
-                        <span class="text-xs">{{ $cantidadPersonasRespondieron }} personas resgistradas en el formulario</span>
-                        <p style="display: none;" id="urlFormulario_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$f->campania_id, $f->formulario_id,"fb"]) }}</p>
+                        <h6 class="mb-1 text-dark text-sm">{{ $ta->nombre }}</h6>
+                        <span class="text-xs">{{ $ta->descripcion }}</span>
                       </div>
                     </div>
                     <div class="d-flex">
-                      <a href="{{ url('Formulario/respuestaFormulario', [$f->campania_id, $f->formulario_id]) }}" class="btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right my-auto"><i class="ni ni-bold-right" aria-hidden="true"></i></a>
+                      <button onclick="" class="btn btn-icon-only btn-rounded btn-outline-warning mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">edit</i></button>
                     </div>
-                  </li>
-                @endif
-              @endforeach --}}
+                  </li>  
+                @endforeach
+
+              </div>
             </ul>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="col-md-6">
+
+    <div class="card mt-4">
+      <div class="card-header pb-0 p-3">
+        <h6 class="mb-0">Formularios</h6>
+      </div>
+      <div class="card-body p-3">
+        <ul class="list-group">
+          <div class="accordion-1">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-12 mx-auto">
+                  <div class="accordion" id="accordionRental">
+                    @foreach ($formularios as $key => $f)
+                      @if ($f->formulario)
+                        <div class="accordion-item mb-3">
+                          <h6 class="accordion-header" id="headingOne">
+                            <div class="row">
+                              <div class="col-md-1">
+                                <a href="{{ url('Formulario/respuestaFormulario', [$f->campania_id, $f->formulario_id]) }}" class="btn btn-sm btn-icon-only btn-rounded btn-outline-info mb-0 p-0" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-eye"></i></a>
+                              </div>
+                              <div class="col-md-1">
+                                <button class="btn btn-sm btn-icon-only btn-rounded btn-outline-warning mb-0 p-0" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-edit"></i></button>
+                              </div>
+                              <div class="col-md-1">
+                                <a href="{{ url('Campania/estadistica', [$f->campania_id, $f->formulario_id]) }}" class="btn btn-sm btn-icon-only btn-rounded btn-outline-dark mb-0 p-0" onclick="editaFormulario('{{ $f->formulario->id }}')"><i class="fa fa-list"></i></a>
+                              </div>
+
+                              <div class="col-md-9" style="margin-top:-10px;">
+                                <button class="accordion-button border-bottom font-weight-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne{{ $key }}" aria-expanded="false" aria-controls="collapseOne">
+                                  {{ $f->formulario->nombre }}
+                                  <i class="collapse-close fa fa-plus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                                  <i class="collapse-open fa fa-minus text-xs pt-1 position-absolute end-0 me-3" aria-hidden="true"></i>
+                                </button>
+                              </div>
+                            </div>
+
+
+                          </h6>
+                          <div id="collapseOne{{ $key }}" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionRental" style="">
+                            <div class="accordion-body text-sm opacity-8">
+                                        
+                              <p style="display: none;" id="urlFormulario_fb_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"fb"]) }}</p>
+                              <p style="display: none;" id="urlFormulario_wa_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"wa"]) }}</p>
+                              <p style="display: none;" id="urlFormulario_ig_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"ig"]) }}</p>
+                              <p style="display: none;" id="urlFormulario_tw_{{ $f->id }}">{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"tw"]) }}</p>
+                              <p style="display: none;" id="iframeFormulario_fb_{{ $f->id }}">&lt;iframe src="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"fb"]) }}" width=”100%” height=”60%” &gt;&lt;/iframe&gt;</p>
+                              <p style="display: none;" id="iframeFormulario_wa_{{ $f->id }}">&lt;iframe src="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"wa"]) }}" width=”100%” height=”60%” &gt;&lt;/iframe&gt; </p>
+                              <p style="display: none;" id="iframeFormulario_ig_{{ $f->id }}">&lt;iframe src="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"ig"]) }}" width=”100%” height=”60%” &gt;&lt;/iframe&gt; </p>
+                              <p style="display: none;" id="iframeFormulario_tw_{{ $f->id }}">&lt;iframe src="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"tw"]) }}" width=”100%” height=”60%” &gt;&lt;/iframe&gt; </p>
+
+                              <div class="d-flex align-items-center mb-2">
+                                <div class="form-group w-100">
+                                  <div class="input-group bg-gray-200 border-radius-md">
+                                    <input class="form-control form-control-sm border-radius-md" id="url-fb" type="text" disabled value="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"fb"]) }}">
+                                    <button type="button" class="btn btn-icon-only btn-rounded btn-facebook mb-0 p-1"><i class="fa fa-facebook"></i></button>
+                                    <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <button onclick="copyToClipboard('fb', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</button>
+                                </div>
+                                <div class="col-md-6">
+                                  <a onclick="copyToIframe('fb', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
+                                </div>
+                              </div>
+                              <hr>
+
+                              <div class="d-flex align-items-center mb-2">
+                                <div class="form-group w-100">
+                                  <div class="input-group bg-gray-200 border-radius-md">
+                                    <input class="form-control form-control-sm border-radius-md" id="url-wa" value="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"wa"]) }}" type="text" disabled>
+                                    <button type="button" class="btn btn-icon-only btn-rounded btn-success mb-0 p-1"><i class="fa fa-whatsapp"></i></button>
+                                    <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <a onclick="copyToClipboard('wa', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</a>
+                                </div>
+                                <div class="col-md-6">
+                                  <a onclick="copyToIframe('wa', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
+                                </div>
+                              </div>
+                              <hr>
+
+                              <div class="d-flex align-items-center mb-2">
+                                <div class="form-group w-100">
+                                  <div class="input-group bg-gray-200 border-radius-md">
+                                    <input class="form-control form-control-sm border-radius-md" id="url-ig" value="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"ig"]) }}" type="text" disabled>
+                                    <button type="button" class="btn btn-icon-only btn-rounded btn-danger mb-0 p-1"><i class="fa fa-instagram"></i></button>
+                                    <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <a onclick="copyToClipboard('ig', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</a>
+                                </div>
+                                <div class="col-md-6">
+                                  <a onclick="copyToIframe('ig', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
+                                </div>
+                              </div>
+                              <hr>
+                      
+                              <div class="d-flex align-items-center mb-2">
+                                <div class="form-group w-100">
+                                  <div class="input-group bg-gray-200 border-radius-md">
+                                    <input class="form-control form-control-sm border-radius-md" value="{{ url('Formulario/respuestaFormularioCompartir', [$campania_id, $f->formulario_id,"tw"]) }}" id="url-tw" type="text" disabled>
+                                    <button type="button" class="btn btn-icon-only btn-rounded btn-info mb-0 p-1"><i class="fa fa-twitter"></i></button>
+                                    <span class="input-group-text bg-transparent" data-bs-toggle="tooltip" data-bs-placement="top" title="Referral code expires in 24 hours"><i class="material-icons text-sm me-2">timer</i></span>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <a onclick="copyToClipboard('tw', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Link</a>
+                                </div>
+                                <div class="col-md-6">
+                                  <a onclick="copyToIframe('tw', '{{ $f->id }}')" class="btn w-100 btn-sm btn-outline-secondary ms-2 px-3 mb-0">Ifreme</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>  
+                      @endif
+                    @endforeach
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-md-6">
+
   </div>
 </div>
 
@@ -788,73 +833,15 @@
             </table>
 
             <hr><br>
-
-            {{-- @foreach ($egresos as $egre)
-            @php
-              $comprobante = App\Models\Comprobante::where('presupuesto_id',$egre->id)->first();
-            @endphp
-              <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
-                <div class="d-flex">
-                  <div class="d-flex align-items-center">
-                    <button onclick="editEgreso('{{ $egre->id }}', '{{ $egre->gasto_id }}', '{{ $egre->egreso }}', '{{ $egre->descripcion }}', '{{ ($comprobante)? $comprobante->nro_comprobante: '' }}', '{{ ($comprobante)? $comprobante->id : '0' }}')" class="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_more</i></button>
-                    <div class="d-flex flex-column">
-                      <h6 class="mb-1 text-dark text-sm">{{ $egre->gasto->nombre }}</h6>
-                      <span class="text-xs">
-                        @php
-                          $fechaHoraEs = $utilidades->fechaHoraCastellano($egre->fecha);
-
-                          echo $fechaHoraEs;
-                        @endphp
-                      </span>
-                    </div>
-                  </div>
-                  <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold ms-auto">
-                    {{$egre->egreso}} Bs.
-                  </div>
-                </div>
-                <hr class="horizontal dark mt-3 mb-2" />
-              </li>
-            @endforeach --}}
-
           </div>
-
-
-
-          {{-- <li class="list-group-item border-0 justify-content-between ps-0 pb-0 border-radius-lg">
-            <div class="d-flex">
-              <div class="d-flex align-items-center">
-                <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_less</i></button>
-                <div class="d-flex flex-column">
-                  <h6 class="mb-1 text-dark text-sm">Google Ads</h6>
-                  <span class="text-xs">04 Mayo 2022, at 04:30 AM</span>
-                </div>
-              </div>
-              <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold ms-auto">
-                + $ 2,000
-              </div>
-            </div>
-            <hr class="horizontal dark mt-3 mb-2" />
-          </li> --}}
-          {{-- <li class="list-group-item border-0 justify-content-between ps-0 mb-2 border-radius-lg">
-            <div class="d-flex">
-              <div class="d-flex align-items-center">
-                <button class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">expand_less</i></button>
-                <div class="d-flex flex-column">
-                  <h6 class="mb-1 text-dark text-sm">Televisora</h6>
-                  <span class="text-xs">04 Mayo 2022, at 02:50 AM</span>
-                </div>
-              </div>
-              <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold ms-auto">
-                  + $ 1,400
-              </div>
-            </div>
-          </li> --}}
         </ul>
       </div>
     </div>
   </div>
 </div>
+
 <br>
+
 <div class="row">
   <div class="col-md-12">
     <div class="card">
@@ -887,7 +874,9 @@
     </div>
   </div>
 </div>
+
 <br>
+
 <div class="row">
   <div class="col-md-12">
         <div id="tabla_listado_clientes_asignados">
@@ -895,6 +884,7 @@
         </div>
   </div>
 </div>
+
 @stop
 
 @section('js')
@@ -1565,6 +1555,7 @@
   }
 
   function guardarEgreso(){
+
     Swal.fire({
       title: 'Esta seguro guardar el egreso?',
       text: "No se podra revertir!",
@@ -1690,6 +1681,8 @@
 
   if (document.querySelector('[data-toggle="widget-calendar"]')) {
 
+    var tipoAgendaGlobal = 0;
+
     var calendarEl = document.querySelector('[data-toggle="widget-calendar"]');
     var today = new Date();
     var mYear = today.getFullYear();
@@ -1705,24 +1698,24 @@
     var calendar = new FullCalendar.Calendar(calendarEl, {
 
       customButtons: {
-        myCustomButton: {
-          text: 'Nuevo Evento',
-          click: function() {
-            addEvent(calendar);
-          }
-        },
+        // myCustomButton: {
+        //   text: 'Nuevo Tipo Agenda',
+        //   click: function() {
+        //     abreModalTipoAgenda();
+        //   }
+        // },
 
-        eliminar: {
-          text: 'Eliminar Evento',
-          click: function() {
-            deleteEvent();
-          }
-        },
+        // eliminar: {
+        //   text: 'Eliminar Evento',
+        //   click: function() {
+        //     deleteEvent();
+        //   }
+        // },
 
       },
       
       headerToolbar: {
-        left: 'prev,next today myCustomButton eliminar',
+        left: 'prev,next today',
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay'
       },
@@ -1734,146 +1727,14 @@
       // selectable: true,
       // initialDate: '2020-12-01',
       editable: true,
+      navLinks: true, // muestra la barra de navegación
       // headerToolbar: false,
+
+
+
 
       // events:enventos,
       events:[],
-
-
-      // events:"{{ url('Agenda/listado') }}",
-
-      // events: function(){
-
-      //   $.ajax({
-      //     url: "{{ url('Agenda/listado') }}",
-      //     type: 'GET',
-      //     // dataType: 'json',
-      //     success: function(data) {
-
-      //       // console.log(data)
-      //       // enventos  = data;
-      //       // enventos.push(data)
-
-      //       // console.log(enventos)
-
-
-      //       // console.log(data.agendas);
-
-      //       // enventos  = data.agendas;
-
-      //       // Swal.fire({
-      //       //   title: 'Correcto',
-      //       //   text: "Se realizo la tramsferencia!",
-      //       //   icon: 'success',
-      //       //   timer: 800
-      //       // })
-
-      //     },
-      //     error: function(error){
-
-      //     }
-      //   });
-
-
-      // },
-
-      // [
-      //   {
-      //     'id': 50,
-      //     'title': 'Evento 3',
-      //     'start': '2022-05-15',
-      //     'end': '2022-05-20',
-      //     // className: 'bg-gradient-danger',
-      //     'color': 'yellow',
-      //     'textColor': 'black',
-      //     'text': 'holas con el id 50',
-      //   },
-      //   {
-      //     id: 5,
-      //     title: 'joel flores',
-      //     start: '2022-05-02',
-      //     end: '2022-05-03',
-      //     // className: 'bg-gradient-warning',
-      //     color: 'green',
-      //     textColor: 'white',
-      //     text: 'Holas con el id 5',
-      //   },
-
-      //   {
-      //     id: 80,
-      //     title: 'Evento de prueba',
-      //     start: '2022-05-23T08:00:00',
-      //     end: '2022-05-24T13:00:00',
-      //     // className: 'bg-gradient-warning',
-      //     color: 'pink',
-      //     textColor: 'white',
-      //     text: 'Holas que paso por aqui',
-      //   },
-  
-      //   // {
-      //   //   title: 'Lunch meeting',
-      //   //   start: '2020-11-21',
-      //   //   end: '2020-11-22',
-      //   //   className: 'bg-gradient-warning'
-      //   // },
-  
-      //   // {
-      //   //   title: 'All day conference',
-      //   //   start: '2020-11-29',
-      //   //   end: '2020-11-29',
-      //   //   className: 'bg-gradient-success'
-      //   // },
-  
-      //   // {
-      //   //   title: 'Meeting with Mary',
-      //   //   start: '2020-12-01',
-      //   //   end: '2020-12-01',
-      //   //   className: 'bg-gradient-info'
-      //   // },
-  
-      //   // {
-      //   //   title: 'Winter Hackaton',
-      //   //   start: '2020-12-03',
-      //   //   end: '2020-12-03',
-      //   //   className: 'bg-gradient-danger'
-      //   // },
-  
-      //   // {
-      //   //   title: 'Digital event',
-      //   //   start: '2020-12-07',
-      //   //   end: '2020-12-09',
-      //   //   className: 'bg-gradient-warning'
-      //   // },
-  
-      //   // {
-      //   //   title: 'Marketing event',
-      //   //   start: '2020-12-10',
-      //   //   end: '2020-12-10',
-      //   //   className: 'bg-gradient-primary'
-      //   // },
-  
-      //   // {
-      //   //   title: 'Dinner with Family',
-      //   //   start: '2020-12-19',
-      //   //   end: '2020-12-19',
-      //   //   className: 'bg-gradient-danger'
-      //   // },
-  
-      //   // {
-      //   //   title: 'Black Friday',
-      //   //   start: '2020-12-23',
-      //   //   end: '2020-12-23',
-      //   //   className: 'bg-gradient-info'
-      //   // },
-  
-      //   // {
-      //   //   title: 'Cyber Week',
-      //   //   start: '2020-12-02',
-      //   //   end: '2020-12-02',
-      //   //   className: 'bg-gradient-warning'
-      //   // },
-      // ],
-      
 
       eventClick: function(info) {
 
@@ -1881,44 +1742,44 @@
         $('#nombre_evento').val(info.event.title);
         $('#fecha_ini').val((info.event.startStr).replace('-04:00', ''));
         $('#fecha_fin').val((info.event.endStr).replace('-04:00', ''));
-        $('#tipo_agenda').val();
+        $('#tipo_agenda').val(info.event.extendedProps.tipo_agenda_id);
         $('#descripcion_agenda').val(info.event.extendedProps.text);
 
         $(".focusable").addClass("is-focused");
 
         $('#modalNuevoEvento').modal('show');
 
+        // console.log((info.event.startStr).replace('-04:00', ''))
+        // console.log((info.event.endStr).replace('-04:00', ''))
+        // console.log("-------------------------")
 
-        console.log((info.event.startStr).replace('-04:00', ''))
-        console.log((info.event.endStr).replace('-04:00', ''))
-        console.log("-------------------------")
-
-        // $('#fecha_ini').val('2022-05-05T08:00');
-
+        // // $('#fecha_ini').val('2022-05-05T08:00');
 
 
-        console.log(info);
-        console.log("----------------------------------------------------------------");
-        console.log(info.event);
-        console.log("----------------------------------------------------------------");
-        console.log(info.event.id);
-        console.log("----------------------------------------------------------------");
-        console.log(info.event.extendedProps.text);
 
-        // info.jsEvent.preventDefault(); // don't let the browser navigate
+        // // console.log(info);
+        // console.log("----------------------------------------------------------------");
+        // console.log(info.event);
+        // console.log("----------------------------------------------------------------");
+        // console.log(info.event.id);
+        // console.log("----------------------------------------------------------------");
+        // console.log(info.event.extendedProps.text);
 
-        // if (info.event.url) {
-        //   // window.open(info.event.url);
-        //   console.log("holas que haces");
-        // }
+        // // info.jsEvent.preventDefault(); // don't let the browser navigate
+
+        // // if (info.event.url) {
+        // //   // window.open(info.event.url);
+        // //   console.log("holas que haces");
+        // // }
 
       },
 
       dateClick: function(info) {
+
         var fechaIni = info.dateStr+"T08:00"
         var fechaFin = info.dateStr+"T12:00"
 
-        $('#evento_id').val('');
+        $('#evento_id').val(0);
         $('#nombre_evento').val('');
         $('#fecha_ini').val(fechaIni);
         $('#fecha_fin').val(fechaFin);
@@ -1950,9 +1811,17 @@
         // console.log(a.event)
         // console.log("Drag start", a.event.startStr); 
 
+
       },
 
       eventDragStop: function(a) { 
+
+        
+        // var inicio  = a.event.startStr;
+        // var fin     = a.event.endStr;
+        // var evento  = a.event.id;
+        
+        // guardarEventoDrop(inicio, fin, evento);
 
         // console.log(a.event);
         // console.log("Drag stop", a.event.endStr); 
@@ -1964,49 +1833,19 @@
         // console.log(a.event.startStr);
         // console.log(a.event.endStr);
 
-      }
+        var inicio  = a.event.startStr;
+        var fin     = a.event.endStr;
+        var evento  = a.event.id;
+
+
+        guardarEventoDrop(inicio, fin, evento);
+
+      },
+      
 
     });
 
     calendar.render();
-
-  }
-
-
-  function addEvent(){
-
-    var events =  {
-                    id: 105,
-                    title: 'holas',
-                    start: '2022-05-11',
-                    end: '2022-05-15',
-                    color: 'orange',
-                    textColor: 'blue',
-                    text: 'Holas con el id 5',
-                  };
-
-    calendar.addEvent(events)
-  }
-
-  function deleteEvent(){
-
-    console.log(calendar)
-
-    calendar.refetchEvents();
-
-    // calendar.removeEvent(105);
-    // calendar.remove(105)
-  }
-
-  function guardaEvent(){
-
-    console.log("guardaEvent")
-
-  }
-
-  function eliminarEvent(){
-
-    console.log("eliminarEvent")
 
   }
 
@@ -2015,17 +1854,16 @@
     $.ajax({
         url: "{{ url('Agenda/listado') }}",
         type: 'GET',
+        data:{
+          tipo_agenda : tipoAgendaGlobal
+        },
         dataType: 'json',
         success: function(data) {
 
-          // console.log(data)
-
-          // var vectorPersonas = ['Elena', 'Isabel', 'Ana']; 
           var vectorPersonas = data; 
 
           $.each(vectorPersonas, function (ind, value) { 
 
-            // console.log('¡Hola :'+id+'!'); 
             calendar.addEvent(value)
 
           });
@@ -2035,9 +1873,181 @@
 
         }
     });
+
   }
 
+  function guardaEvent(){
 
+    Swal.fire({
+      title: 'Esta seguro guardar el evento?',
+      text: "No se podra revertir!",
+      icon: 'warning',
+      showCancelButton: true,
+      // confirmButtonColor: '#3085d6',
+      // cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Ingresar!'
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+
+        var datos = $('#formulario_evento').serialize();
+
+        $.ajax({
+          url: "{{ url('Agenda/nuevoAgenda') }}",
+          type: 'POST',
+          data: datos,
+          // dataType: 'json',
+          success: function(data) {
+
+            $('#modalNuevoEvento').modal('hide');
+
+            calendar.removeAllEvents();
+            listadoEventos();
+
+          },
+          error: function(error){
+
+          }
+        });
+
+      }
+    })
+
+  }
+
+  function guardarEventoDrop(inicio, fin, evento){
+
+    Swal.fire({
+      title: 'Esta seguro de mover de fechas al evento?',
+      text: "No se podra revertir!",
+      icon: 'warning',
+      showCancelButton: true,
+      // confirmButtonColor: '#3085d6',
+      // cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Ingresar!'
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+
+        $.ajax({
+          url: "{{ url('Agenda/editaDrop') }}",
+          type: 'POST',
+          data: {
+            evento : evento,
+            fechaIni : inicio,
+            fechaFin : fin
+          },
+          // dataType: 'json',
+          success: function(data) {
+
+            $('#modalNuevoEvento').modal('hide');
+
+          },
+          error: function(error){
+
+          }
+        });
+
+      }else{
+
+        calendar.removeAllEvents();
+        listadoEventos();
+
+      }
+
+    })
+
+  }
+
+  function abreModalTipoAgenda(){
+
+    $('#modalNuevoTipoEvento').modal('show');
+
+  }
+
+  function guardaTipoAgenda(){
+
+    Swal.fire({
+      title: 'Esta seguro de guardar los datos de agenda?',
+      text: "No se podra revertir!",
+      icon: 'warning',
+      showCancelButton: true,
+      // confirmButtonColor: '#3085d6',
+      // cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, Agregar!'
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+
+        var datos = $('#formulario_tipo_agenda').serialize();
+
+        $.ajax({
+          url: "{{ url('TipoAgenda/nuevo') }}",
+          type: 'POST',
+          data: datos,
+          dataType: 'json',
+          success: function(data) {
+
+            if(data.success){
+
+              console.log(data.select)
+
+              $('#lista-tipo-agendas').html(data.lista);
+              $('#tipo_agenda_selct').html(data.select);
+              
+
+              $('#modalNuevoTipoEvento').modal('hide');
+
+              Swal.fire({
+                icon: 'success',
+                title: 'Exito!',
+                text: 'Se agrego el registro',
+                timer: 1500
+              })
+            }
+
+
+          },
+          error: function(error){
+
+          }
+        });
+
+      }
+
+    })
+  }
+
+  function cargaEventos(tipoAgenda){
+
+    tipoAgendaGlobal = tipoAgenda;
+
+    $.ajax({
+        url: "{{ url('Agenda/ajaxListado') }}",
+        type: 'POST',
+        data: {
+          tipoAgenda:tipoAgenda
+        },
+        dataType: 'json',
+        success: function(data) {
+
+          var vectorPersonas = data; 
+
+          calendar.removeAllEvents();
+
+          $.each(vectorPersonas, function (ind, value) { 
+
+            calendar.addEvent(value)
+
+          });
+
+        },
+        error: function(error){
+
+        }
+      });
+
+  }
     
 </script>
 @endsection

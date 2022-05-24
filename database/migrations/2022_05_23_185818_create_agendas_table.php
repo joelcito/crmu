@@ -23,10 +23,10 @@ class CreateAgendasTable extends Migration
             $table->foreign('eliminador_id')->references('id')->on('users');
             $table->unsignedBigInteger('tipo_agenda_id')->nullable();
             $table->foreign('tipo_agenda_id')->references('id')->on('agendas');
-            $table->string('title')->nullable();
-            $table->datetime('start')->nullable();
-            $table->datetime('end')->nullable();
-            $table->text('text')->nullable();
+            $table->string('titulo')->nullable();
+            $table->datetime('inicio')->nullable();
+            $table->datetime('fin')->nullable();
+            $table->text('texto')->nullable();
             $table->string('estado')->nullable();
             $table->datetime('deleted_at')->nullable();
             $table->timestamps();

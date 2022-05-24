@@ -49,8 +49,6 @@ Route::get('Formulario/respuestaFormularioCompartir/{campania_id}/{formulario_id
 Route::get('Formulario/editaFormulario/{campania_id}/{formulario_id}', 'FormularioController@editaFormulario');
 Route::post('Formulario/guardarEditadoFormulario', 'FormularioController@guardarEditadoFormulario');
 Route::post('Formulario/validaValorCombo', 'FormularioController@validaValorCombo');
-                
-
 
 // VENDEDORES
 Route::get('Vendedor/listado', 'VendedorController@listado');
@@ -66,10 +64,8 @@ Route::get('Persona/listado', 'PersonaController@listado');
 // MEDIO SEGUIMIENTO
 Route::get('MedioSeguimietno/listado', 'MedioSeguimientoController@listado');
 
-
 // MEDIO PUBLICITARIOS
 Route::get('MedioPublicitario/listado', 'MedioPublicitarioController@listado');
-
 
 // TIPOS DE CAMPANIA
 Route::get('TipoCampania/listado', 'TipoCampaniaController@listado');
@@ -88,4 +84,9 @@ Route::get('Asignacion/listado', 'AsignacionController@listado');
 
 // AGENDAS
 Route::get('Agenda/listado', 'AgendaController@listado');
+Route::post('Agenda/nuevoAgenda', 'AgendaController@nuevoAgenda');
+Route::post('Agenda/editaDrop', 'AgendaController@editaDrop');
+Route::post('Agenda/ajaxListado', 'AgendaController@ajaxListado');
 
+// TIPO AGENDAS
+Route::post('TipoAgenda/nuevo', 'TipoAgendaController@nuevo');

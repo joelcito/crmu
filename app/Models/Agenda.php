@@ -24,4 +24,20 @@ class Agenda extends Model
         'estado',
         'deleted_at',
     ];
+
+    public function tipoAgenda(){
+
+        return $this->belongsTo('App\Models\TipoAgenda', 'tipo_agenda_id');
+
+    }
+
+
+    public static function tiposAgendaEventos($tipoAgenda){
+
+        $eventos = Agenda::where('tipo_agenda_id', $tipoAgenda)
+                        ->get();
+
+        return $eventos;
+
+    }
 }

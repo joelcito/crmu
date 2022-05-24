@@ -127,11 +127,14 @@ class CampaniaController extends Controller
         $presupuesto = Campania::presupuestoActual($campania_id);
 
         // CANTIDAD DE PERSONAS QUE RESPONDIERON EL FORMULARIO
-
         $cantidadPersonasRespondieron = Campania::cantPersonasRegistradas($campania_id);
 
+        // TIPOSD DE EVENTOS
+        $tipoAgendas = Campania::tiposAgenda($campania_id);
+
+
         // return view('campania.home')->with(compact('formularios'));
-        return view('campania.home')->with(compact('campania_id', 'formularios', 'oportunidades', 'vendedores', 'ingresos', 'egresos', 'gastos', 'presupuesto', 'cantidadPersonasRespondieron'));
+        return view('campania.home')->with(compact('campania_id', 'formularios', 'oportunidades', 'vendedores', 'ingresos', 'egresos', 'gastos', 'presupuesto', 'cantidadPersonasRespondieron', 'tipoAgendas'));
     }
 
     public function ajaxBuscaVendedor(Request $request){

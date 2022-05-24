@@ -160,5 +160,13 @@ class Campania extends Model
 
         return $oportunidades;
     }
+
+    public static function tiposAgenda(){
+
+        $tiposAgenda = TipoAgenda::all();
+
+        return $tiposAgenda;
+
+    }
     
 }

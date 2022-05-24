@@ -155,4 +155,13 @@ class Utilidades{
 
         return $mesLiteral;
     }
+
+    function fechaFullCalendarFormat($fecha){
+        
+        $fechaRemplazado = str_replace('T', ' ',$fecha);
+        $fechaRemplazado = substr($fechaRemplazado, 0, -6);
+
+        return $fechaRemplazado;
+
+    }
 }
