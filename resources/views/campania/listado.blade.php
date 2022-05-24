@@ -136,10 +136,9 @@
     }
 
     function formulario(campania){
-
-        
         
         window.location.href = "{{ url('Campania/home') }}/"+campania;
+        
     }
 
     function abreModal(){
