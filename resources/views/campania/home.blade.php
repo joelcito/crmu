@@ -260,7 +260,7 @@
 
 <!-- Modal NUEVO EVENTO-->
 <div class="modal fade" id="modalNuevoEvento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title font-weight-normal" id="exampleModalLabel">Formulario de Evento</h5>
@@ -273,54 +273,126 @@
           <div class="col-md-12">
             <div class="card">
               <form action="" id="formulario_evento">
-                <input type="hidden" name="evento_id" id="evento_id" value="0">
+                <input type="text" name="evento_id" id="evento_id" value="0">
 
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="input-group input-group-outline mb-4 focusable">
-                      <label class="form-label">Nombre del Evento</label>
-                      <input type="text" name="nombre_evento" id="nombre_evento" class="form-control">
+                <div class="container">
+
+                  <div class="row">
+                    <label for="">Agendar para</label>
+                    <div class="col-md-6">
+  
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="vendedoreslabel" checked="" onchange="verificas(this)">
+                        <label class="form-check-label" for="vendedoreslabel">Vendedores</label>
+                      </div>                       
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="destinatarioslabel" onchange="verificas(this)">
+                        <label class="form-check-label" for="destinatarioslabel">Destinatarios</label>
+                      </div>
+                      {{-- <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onchange="verificas(this)">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Destinatarios</label>
+                      </div> --}}
+  
+                    </div>
+  
+                    <div class="col-md-6">
+  
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="todoslabel" onchange="verificas(this)">
+                        <label class="form-check-label" for="todoslabel">Todos</label>
+                      </div>                       
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="privabolabel" onchange="verificas(this)">
+                        <label class="form-check-label" for="privabolabel">Privado</label>
+                      </div>
+                      {{-- <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked="">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">Checked switch</label>
+                      </div> --}}
+  
                     </div>
                   </div>
-                </div>
 
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="input-group input-group-outline mb-4 focusable">
-                      <label class="form-label">Fecha Inicio</label>
-                      <input type="datetime-local" name="fecha_ini" id="fecha_ini" class="form-control">
-                    </div>
+                  <div class="row" style="display: none" id="bloque-privado">
+                    <label class="mt-4 form-label">Buscar Persona</label>
+                    <select class="form-control" name="personasSeleccionadas[]" id="personasSeleccionadas" multiple>
+                      @foreach ( $vendedoresAgenda as $vage)
+                        <option value="{{ $vage->id }}">{{ $vage->nombres." ".$vage->apellido_paterno." ".$vage->apellido_materno }}</option>
+                      @endforeach
+                    </select>
                   </div>
-                  <div class="col-md-6">
-                    <div class="input-group input-group-outline mb-4 focusable">
-                      <label class="form-label">Fecha Fin</label>
-                      <input type="datetime-local" name="fecha_fin" id="fecha_fin" class="form-control">
-                    </div>
-                  </div>
-                </div>
 
-                <div class="row">
-                  <div class="col-md-12">
-                    <div id="tipo_agenda_selct">
-                      <div class="input-group input-group-static mb-4">
-                        <label for="tipo_agenda_id" class="ms-0">Tipo de Agenda</label>
-                        <select class="form-control" id="tipo_agenda_id" name="tipo_agenda_id" style="width:100%;">
-                            @foreach ($tipoAgendas as $ta)
-                              <option value="{{ $ta->id }}">{{ $ta->nombre }}</option>
-                            @endforeach
-                        </select>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="input-group input-group-outline mb-4 focusable">
+                        <label class="form-label">Nombre del Evento</label>
+                        <input type="text" name="nombre_evento" id="nombre_evento" class="form-control">
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="input-group input-group-outline mb-4">
-                      <textarea name="descripcion_agenda" id="descripcion_agenda" cols="60" rows="5" class="form-control" placeholder="Descripcion"></textarea>
+                  <div class="row">
+                    <label for="">Todo el día</label>
+                    <div class="col-md-6">
+                      
+                      <div class="form-check mb-3">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="customRadio1" value="Si" onchange="verificaTodoDia(this)">
+                        <label class="custom-control-label" for="customRadio1">Si</label>
+                      </div>
+                      
+
+                    </div>
+                    <div class="col-md-6">
+
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="customRadio2" value="No" onchange="verificaTodoDia(this)">
+                        <label class="custom-control-label" for="customRadio2">No</label>
+                      </div>
+
                     </div>
                   </div>
+
+                  <div class="row" style="display: none;" id="bloque-todoDia">
+                    <div class="col-md-6">
+                      <div class="input-group input-group-outline mb-4 focusable">
+                        <label class="form-label">Fecha Inicio</label>
+                        <input type="datetime-local" name="fecha_ini" id="fecha_ini" class="form-control">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="input-group input-group-outline mb-4 focusable">
+                        <label class="form-label">Fecha Fin</label>
+                        <input type="datetime-local" name="fecha_fin" id="fecha_fin" class="form-control">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div id="tipo_agenda_selct">
+                        <div class="input-group input-group-static mb-4">
+                          <label for="tipo_agenda_id" class="ms-0">Tipo de Agenda</label>
+                          <select class="form-control" id="tipo_agenda_id" name="tipo_agenda_id" style="width:100%;">
+                              @foreach ($tipoAgendas as $ta)
+                                <option value="{{ $ta->id }}">{{ $ta->nombre }}</option>
+                              @endforeach
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="input-group input-group-outline mb-4">
+                        <textarea name="descripcion_agenda" id="descripcion_agenda" cols="60" rows="5" class="form-control" placeholder="Descripcion"></textarea>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
+
               </form>
             </div>
           </div>
@@ -532,7 +604,25 @@
             <ul class="list-group">
               <div id="lista-tipo-agendas">
 
+                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                  <div class="d-flex align-items-center">
+                    <div class="icon icon-shape icon-sm me-3 shadow text-center">
+                      <button class="btn btn-icon-only btn-rounded mb-0 p-1 bg-gradient-dark" onclick="cargaEventos('0')">
+                        <i class="material-icons opacity-10">arrow_back</i>
+                      </button>
+                    </div>
+                    <div class="d-flex flex-column">
+                      <h6 class="mb-1 text-dark text-sm">Todos</h6>
+                      <span class="text-xs">Mostrar todos los eventos</span>
+                    </div>
+                  </div>
+                  <div class="d-flex">
+                    {{-- <button onclick="" class="btn btn-icon-only btn-rounded btn-outline-warning mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">edit</i></button> --}}
+                  </div>
+                </li>
+
                 @foreach ($tipoAgendas as $ta)
+
                   <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                     <div class="d-flex align-items-center">
                       <div class="icon icon-shape icon-sm me-3 shadow text-center">
@@ -549,6 +639,7 @@
                       <button onclick="" class="btn btn-icon-only btn-rounded btn-outline-warning mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="material-icons text-lg">edit</i></button>
                     </div>
                   </li>  
+
                 @endforeach
 
               </div>
@@ -890,6 +981,8 @@
 @section('js')
 <script src="{{ asset('assets/js/plugins/datatables.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/dropzone.min.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/choices.min.js') }}"></script>
+
 <script>
     var ctx1 = document.getElementById("chart-line-1").getContext("2d");
 
@@ -1109,6 +1202,7 @@
         },
       },
     });
+    
 
 </script>
 <script>
@@ -1725,10 +1819,12 @@
       // contentHeight: 'auto',
       // initialView: 'dayGridMonth',
       // selectable: true,
-      // initialDate: '2020-12-01',
+      // initialDate: '2022-05-25',
+      // headerToolbar: false,
+
+      
       editable: true,
       navLinks: true, // muestra la barra de navegación
-      // headerToolbar: false,
 
 
 
@@ -1808,9 +1904,8 @@
 
       eventDragStart: function(a) { 
 
-        // console.log(a.event)
-        // console.log("Drag start", a.event.startStr); 
-
+        console.log(a.event)
+        console.log("Drag start", a.event.startStr); 
 
       },
 
@@ -1823,8 +1918,8 @@
         
         // guardarEventoDrop(inicio, fin, evento);
 
-        // console.log(a.event);
-        // console.log("Drag stop", a.event.endStr); 
+        console.log(a.event);
+        console.log("Drag stop", a.event.endStr); 
 
       }, 
       
@@ -1842,6 +1937,14 @@
 
       },
       
+
+      eventResize: function(info) {
+        alert(info.event.title + " end is now " + info.event.end.toISOString());
+
+        if (!confirm("is this okay?")) {
+          info.revert();
+        }
+      },
 
     });
 
@@ -2046,6 +2149,73 @@
 
         }
       });
+
+  }
+
+
+  if (document.getElementById('personasSeleccionadas')) {
+
+    var element = document.getElementById('personasSeleccionadas');
+    
+    const example = new Choices(element, {
+
+      removeItemButton: true
+
+    });
+
+    // example.setChoices(
+    //   [{
+    //       value: 'One',
+    //       label: 'Label One',
+    //       disabled: true
+    //     },
+    //     {
+    //       value: 'Two',
+    //       label: 'Label Two',
+    //       selected: true
+    //     },
+    //     {
+    //       value: 'Three',
+    //       label: 'Label Three'
+    //     },
+    //   ],
+    //   'value',
+    //   'label',
+    //   false,
+    // );
+  }
+
+  function verificas(select){
+
+    console.log(select)
+    console.log("--------------------------------");
+    console.log(select.checked)
+    console.log("--------------------------------");
+    console.log(select.id)
+
+    if(select.id == "destinatarioslabel"){
+
+      $('#bloque-privado').toggle('show');
+
+    }
+
+  }
+
+  function verificaTodoDia(radio){
+
+    console.log(radio);
+    console.log("--------------------");
+    console.log(radio.value);
+
+    if(radio.value == "No"){
+
+      $('#bloque-todoDia').toggle('show')
+
+    }else{
+
+      $('#bloque-todoDia').toggle('show')
+      
+    }
 
   }
     

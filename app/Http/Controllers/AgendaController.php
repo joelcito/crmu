@@ -58,7 +58,8 @@ class AgendaController extends Controller
 
     public function nuevoAgenda(Request $request){
 
-        // dd($request->all());
+        dd($request->all());
+        
         if($request->ajax()){
 
             $evento_id = $request->input('evento_id');
@@ -113,11 +114,19 @@ class AgendaController extends Controller
 
         $tipoAgenda = $request->input('tipoAgenda');
 
-        $eventos = Agenda::tiposAgendaEventos($tipoAgenda);
+        if($tipoAgenda == 0){
+
+            $agendas = Agenda::all();
+
+        }else{
+
+            $agendas = Agenda::tiposAgendaEventos($tipoAgenda);
+
+        }
 
         $arrayAgendas = array();
 
-        foreach ($eventos as $age){
+        foreach ($agendas as $age){
 
             $color  = $age->tipoAgenda->color;
 

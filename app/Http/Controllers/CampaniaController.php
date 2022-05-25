@@ -132,9 +132,12 @@ class CampaniaController extends Controller
         // TIPOSD DE EVENTOS
         $tipoAgendas = Campania::tiposAgenda($campania_id);
 
+        // VVENDEDORES
+        $vendedoresAgenda = Campania::vendedoresAgenda($campania_id);
+        
 
         // return view('campania.home')->with(compact('formularios'));
-        return view('campania.home')->with(compact('campania_id', 'formularios', 'oportunidades', 'vendedores', 'ingresos', 'egresos', 'gastos', 'presupuesto', 'cantidadPersonasRespondieron', 'tipoAgendas'));
+        return view('campania.home')->with(compact('campania_id', 'formularios', 'oportunidades', 'vendedores', 'ingresos', 'egresos', 'gastos', 'presupuesto', 'cantidadPersonasRespondieron', 'tipoAgendas', 'vendedoresAgenda'));
     }
 
     public function ajaxBuscaVendedor(Request $request){

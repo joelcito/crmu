@@ -126,6 +126,7 @@ class Campania extends Model
         }else{
             return 0;
         }
+
     }
 
     public static function preguntasCombo($formulario_id){
@@ -166,6 +167,16 @@ class Campania extends Model
         $tiposAgenda = TipoAgenda::all();
 
         return $tiposAgenda;
+
+    }
+
+    public static function vendedoresAgenda(){
+
+        $vendedores = Persona::WhereNotNull('vendedor_id')
+                            ->get();
+
+
+        return $vendedores;
 
     }
     

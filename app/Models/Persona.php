@@ -16,6 +16,7 @@ class Persona extends Model
         'creador_id',
         'modificador_id',
         'eliminador_id',
+        'vendedor_id',
         'nombres',
         'apellido_paterno',
         'apellido_materno',
