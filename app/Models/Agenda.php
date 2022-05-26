@@ -17,13 +17,29 @@ class Agenda extends Model
         'modificador_id',
         'eliminador_id',
         'tipo_agenda_id',
-        'title',
-        'start',
-        'end',
-        'text',
+        'titulo',
+        'inicio',
+        'fin',
+        'texto',
+        'todoDia',
+        'tipo',
+        'prioridad',
         'estado',
         'deleted_at',
     ];
+
+    
+    public static function listadoAgendasTodos($persona_id){
+
+        // $agendas = Agenda::where('tipo', "Todos")
+        //                 ->get();
+
+        $agendas = AgendaPersona::where('persona_id', $persona_id)
+                                ->get();
+
+        return $agendas;
+                        
+    }
 
     public function tipoAgenda(){
 
@@ -32,12 +48,33 @@ class Agenda extends Model
     }
 
 
-    public static function tiposAgendaEventos($tipoAgenda){
+    public static function tiposAgendaEventos($tipoAgenda, $persona_id){
 
-        $eventos = Agenda::where('tipo_agenda_id', $tipoAgenda)
+        $eventos = Agenda::select('agendas.*')
+                        ->join('agenda_personas', 'agendas.id', '=', 'agenda_personas.agenda_id')
+                        ->where('agenda_personas.persona_id', $persona_id)
+                        ->where('agendas.tipo_agenda_id', $tipoAgenda)
                         ->get();
 
         return $eventos;
 
     }
+
+    public static function personasConPerfil(){
+
+        $personas = Persona::whereNotNull('perfil_id')->get();
+
+        return $personas;
+
+    }
+
+    public static function personasVendedores(){
+        
+        $personas = Persona::where('perfil_id', 2)->get();
+
+        return $personas;
+
+    }
+
+
 }

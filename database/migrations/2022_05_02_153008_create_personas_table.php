@@ -24,6 +24,10 @@ class CreatePersonasTable extends Migration
             
             $table->unsignedBigInteger('vendedor_id')->nullable()->unique();
             $table->foreign('vendedor_id')->references('id')->on('vendedores');
+            $table->unsignedBigInteger('perfil_id')->nullable();
+            $table->foreign('perfil_id')->references('id')->on('perfiles');
+            $table->unsignedBigInteger('user_id')->nullable()->unique();
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->string('nombres')->nullable();
             $table->string('apellido_paterno')->nullable();

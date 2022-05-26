@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use App\librerias\Utilidades;
 use GuzzleHttp\Handler\Proxy;
 use App\Models\FormularioCampania;
+use App\Models\Prioridad;
 use Illuminate\Support\Facades\Redis;
 
 use Illuminate\Support\Facades\Validator;
@@ -134,10 +135,12 @@ class CampaniaController extends Controller
 
         // VVENDEDORES
         $vendedoresAgenda = Campania::vendedoresAgenda($campania_id);
-        
+
+        // PRIORIDADES 
+        $prioridades = Prioridad::all();
 
         // return view('campania.home')->with(compact('formularios'));
-        return view('campania.home')->with(compact('campania_id', 'formularios', 'oportunidades', 'vendedores', 'ingresos', 'egresos', 'gastos', 'presupuesto', 'cantidadPersonasRespondieron', 'tipoAgendas', 'vendedoresAgenda'));
+        return view('campania.home')->with(compact('campania_id', 'formularios', 'oportunidades', 'vendedores', 'ingresos', 'egresos', 'gastos', 'presupuesto', 'cantidadPersonasRespondieron', 'tipoAgendas', 'vendedoresAgenda', 'prioridades'));
     }
 
     public function ajaxBuscaVendedor(Request $request){

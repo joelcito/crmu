@@ -282,11 +282,11 @@
                     <div class="col-md-6">
   
                       <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="vendedoreslabel" checked="" onchange="verificas(this)">
+                        <input class="form-check-input" type="checkbox" id="vendedoreslabel" name="vendedores" onchange="verificas(this)">
                         <label class="form-check-label" for="vendedoreslabel">Vendedores</label>
                       </div>                       
                       <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="destinatarioslabel" onchange="verificas(this)">
+                        <input class="form-check-input" type="checkbox" id="destinatarioslabel" name="destinatarios" onchange="verificas(this)">
                         <label class="form-check-label" for="destinatarioslabel">Destinatarios</label>
                       </div>
                       {{-- <div class="form-check form-switch">
@@ -299,11 +299,11 @@
                     <div class="col-md-6">
   
                       <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="todoslabel" onchange="verificas(this)">
+                        <input class="form-check-input" type="checkbox" id="todoslabel" name="todos" onchange="verificas(this)">
                         <label class="form-check-label" for="todoslabel">Todos</label>
                       </div>                       
                       <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="privabolabel" onchange="verificas(this)">
+                        <input class="form-check-input" type="checkbox" id="privabolabel" name="privado" onchange="verificas(this)">
                         <label class="form-check-label" for="privabolabel">Privado</label>
                       </div>
                       {{-- <div class="form-check form-switch">
@@ -333,11 +333,26 @@
                   </div>
 
                   <div class="row">
+                    <div class="col-6">
+                      <div class="input-group input-group-static">
+                        <label>Fecha Inicio</label>
+                        <input class="form-control datetimepicker" type="text" data-input name="fecha_ini" id="fecha_ini" min="{{ date('Y-m-d') }}">
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="input-group input-group-static">
+                        <label>Fecha Fin</label>
+                        <input class="form-control datetimepicker" type="text" data-input name="fecha_fin" id="fecha_fin">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
                     <label for="">Todo el día</label>
                     <div class="col-md-6">
                       
                       <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="customRadio1" value="Si" onchange="verificaTodoDia(this)">
+                        <input class="form-check-input" type="radio" name="todoDia" id="customRadio1" value="Si" onchange="verificaTodoDia(this)" checked>
                         <label class="custom-control-label" for="customRadio1">Si</label>
                       </div>
                       
@@ -346,7 +361,7 @@
                     <div class="col-md-6">
 
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="customRadio2" value="No" onchange="verificaTodoDia(this)">
+                        <input class="form-check-input" type="radio" name="todoDia" id="customRadio2" value="No" onchange="verificaTodoDia(this)">
                         <label class="custom-control-label" for="customRadio2">No</label>
                       </div>
 
@@ -354,7 +369,7 @@
                   </div>
 
                   <div class="row" style="display: none;" id="bloque-todoDia">
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                       <div class="input-group input-group-outline mb-4 focusable">
                         <label class="form-label">Fecha Inicio</label>
                         <input type="datetime-local" name="fecha_ini" id="fecha_ini" class="form-control">
@@ -364,6 +379,18 @@
                       <div class="input-group input-group-outline mb-4 focusable">
                         <label class="form-label">Fecha Fin</label>
                         <input type="datetime-local" name="fecha_fin" id="fecha_fin" class="form-control">
+                      </div>
+                    </div> --}}
+                    <div class="col-md-6">
+                      <div class="input-group input-group-outline mb-4 focusable">
+                        <label class="form-label">Fecha Inicio</label>
+                        <input type="time" name="hora_ini" id="hora_ini" class="form-control" value="00:00">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="input-group input-group-outline mb-4 focusable">
+                        <label class="form-label">Fecha Inicio</label>
+                        <input type="time" name="hora_fin" id="hora_fin" class="form-control" value="23:59">
                       </div>
                     </div>
                   </div>
@@ -387,6 +414,19 @@
                     <div class="col-md-12">
                       <div class="input-group input-group-outline mb-4">
                         <textarea name="descripcion_agenda" id="descripcion_agenda" cols="60" rows="5" class="form-control" placeholder="Descripcion"></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="input-group input-group-static mb-4">
+                        <label for="tipo_agenda_id" class="ms-0">Prioridades</label>
+                          <select class="form-control" id="prioridad_id" name="prioridad_id" style="width:100%;">
+                            @foreach ($prioridades as $prio)
+                              <option value="{{ $prio->id }}">{{ $prio->nombre }}</option>
+                            @endforeach
+                          </select>
                       </div>
                     </div>
                   </div>
@@ -982,6 +1022,7 @@
 <script src="{{ asset('assets/js/plugins/datatables.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/dropzone.min.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/choices.min.js') }}"></script>
+<script src="{{ asset('assets/js/plugins/flatpickr.min.js') }}"></script>
 
 <script>
     var ctx1 = document.getElementById("chart-line-1").getContext("2d");
@@ -1853,7 +1894,7 @@
 
 
 
-        // // console.log(info);
+        // console.log(info);
         // console.log("----------------------------------------------------------------");
         // console.log(info.event);
         // console.log("----------------------------------------------------------------");
@@ -1872,33 +1913,52 @@
 
       dateClick: function(info) {
 
-        var fechaIni = info.dateStr+"T08:00"
-        var fechaFin = info.dateStr+"T12:00"
+        var actual = new Date();
 
-        $('#evento_id').val(0);
-        $('#nombre_evento').val('');
-        $('#fecha_ini').val(fechaIni);
-        $('#fecha_fin').val(fechaFin);
-        $('#tipo_agenda').val();
-        $('#descripcion_agenda').val('');
+        var fechaCalendar = sumarDias(info.date, 1);
 
-        // $(".focusable").removeClass("is-focused");
-        
-        $(".focusable").addClass("is-focused");
+        if(fechaCalendar >= actual){
+          
+          var fechaIni = info.dateStr;
+          var fechaFin = info.dateStr;
+
+          $('#evento_id').val(0);
+          $('#nombre_evento').val('');
+          $('#fecha_ini').val(fechaIni);
+          $('#fecha_fin').val(fechaFin);
+          $('#tipo_agenda').val();
+          $('#descripcion_agenda').val('');
+
+          // $(".focusable").removeClass("is-focused");
+          
+          $(".focusable").addClass("is-focused");
 
 
-        $('#modalNuevoEvento').modal('show');
+          $('#modalNuevoEvento').modal('show');
 
-        // alert('Clicked on: ' + info.dateStr);
-        // alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-        // alert('Current view: ' + info.view.type);
-        // // change the day's background color just for fun
+          // alert('Clicked on: ' + info.dateStr);
+          // alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+          // alert('Current view: ' + info.view.type);
+          // // change the day's background color just for fun
 
-        console.log('Clicked on: ' + info.dateStr)
-        console.log('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY)
-        console.log('Current view: ' + info.view.type)
+          console.log('Clicked on: ' + info.dateStr)
+          console.log('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY)
+          console.log('Current view: ' + info.view.type)
 
-        // info.dayEl.style.backgroundColor = 'red';
+          // info.dayEl.style.backgroundColor = 'red';
+          
+          $("#vendedoreslabel").prop('checked', false);
+          $("#destinatarioslabel").prop('checked', false);
+          $("#todoslabel").prop('checked', false);
+          $("#privabolabel").prop('checked', false);
+
+        }
+        else{
+
+          // alert("Esto no es posible amigo");}
+          console.log("no es posible")
+
+        }
 
       }, 
 
@@ -2125,6 +2185,8 @@
 
     tipoAgendaGlobal = tipoAgenda;
 
+    console.log(tipoAgendaGlobal);
+
     $.ajax({
         url: "{{ url('Agenda/ajaxListado') }}",
         type: 'POST',
@@ -2183,6 +2245,7 @@
     //   'label',
     //   false,
     // );
+
   }
 
   function verificas(select){
@@ -2196,6 +2259,27 @@
     if(select.id == "destinatarioslabel"){
 
       $('#bloque-privado').toggle('show');
+      
+      $("#vendedoreslabel").prop('checked', false);
+      $("#todoslabel").prop('checked', false);
+      $("#privabolabel").prop('checked', false);
+
+    }else if(select.id == "privabolabel"){
+
+      $("#vendedoreslabel").prop('checked', false);
+      $("#todoslabel").prop('checked', false);
+      $("#destinatarioslabel").prop('checked', false);
+
+    }else if(select.id == "todoslabel"){
+
+      $("#vendedoreslabel").prop('checked', true);
+      $("#privabolabel").prop('checked', true);
+
+    }else if(select.id == "vendedoreslabel"){
+
+      $("#destinatarioslabel").prop('checked', false);
+      $("#todoslabel").prop('checked', false);
+      $("#privabolabel").prop('checked', false);
 
     }
 
@@ -2203,20 +2287,52 @@
 
   function verificaTodoDia(radio){
 
-    console.log(radio);
-    console.log("--------------------");
-    console.log(radio.value);
+    $('#bloque-todoDia').toggle('show')
 
-    if(radio.value == "No"){
+  }
 
-      $('#bloque-todoDia').toggle('show')
+  if (document.querySelector('.datetimepicker')) {
 
-    }else{
+    $(".datetimepicker").flatpickr({
+      // locale: "es",
+      // dateFormat: "d/m/Y",
+      minDate: "today",
 
-      $('#bloque-todoDia').toggle('show')
-      
-    }
+      locale: {
+        firstDayOfWeek: 1,
+        weekdays: {
+          shorthand: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+          longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],         
+        }, 
+        months: {
+          shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Оct', 'Nov', 'Dic'],
+          longhand: ['Enero', 'Febreo', 'Мarzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        },
+      },
+      onChange: function(selectedDates, dateStr, instance) {
+        console.log("se guardo");
+        console.log(this);
+        console.log(selectedDates+"/"+dateStr)
+        console.log("--------------------------------")
+        console.log(dateStr)
 
+        $('#fecha_fin').flatpickr({
+
+          minDate: dateStr,
+
+        });
+
+        $('#fecha_fin').val(dateStr);
+      },
+
+    })
+
+    // console.log($(".datetimepicker").flatpickr());
+  }
+
+  function sumarDias(fecha, dias){
+    fecha.setDate(fecha.getDate() + dias);
+    return fecha;
   }
     
 </script>
