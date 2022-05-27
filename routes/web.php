@@ -45,6 +45,8 @@ Route::get('Formulario/listado', 'FormularioController@listado');
 Route::get('Formulario/formulario/{campania_id}', 'FormularioController@formulario');
 Route::get('Formulario/respuestaFormulario/{campania_id}/{formulario_id}', 'FormularioController@respuestaFormulario');
 Route::post('Formulario/guardarRespuestaFormulario', 'FormularioController@guardarRespuestaFormulario');
+Route::post('Formulario/verificaPersona', 'FormularioController@verificaPersona');
+// Route::post('Formulario/guardarRespuestaFormulario/{red_social}', 'FormularioController@guardarRespuestaFormulario');
 Route::get('Formulario/respuestaFormularioCompartir/{campania_id}/{formulario_id}/{red_social}', 'FormularioController@respuestaFormularioCompartir');
 Route::get('Formulario/editaFormulario/{campania_id}/{formulario_id}', 'FormularioController@editaFormulario');
 Route::post('Formulario/guardarEditadoFormulario', 'FormularioController@guardarEditadoFormulario');

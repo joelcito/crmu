@@ -12,6 +12,7 @@ use App\Models\Oportunidad;
 use Illuminate\Http\Request;
 use App\Models\RespuestaCombo;
 use App\Models\FormularioCampania;
+use App\Models\RedSocial;
 
 class FormularioController extends Controller
 {
@@ -264,111 +265,137 @@ class FormularioController extends Controller
 
     public function guardarRespuestaFormulario(Request $request){
 
-        // dd($request->all());
+        $red_social = $request->input('red_social');
 
-        // creando la persona
-        $persona = new Persona();
+        $red_socialBuscado = RedSocial::red_sociales_busca_abreviacion($red_social);
 
-        $persona->apellido_paterno   = $request->input('apellido_paterno');
-        $persona->apellido_materno   = $request->input('apellido_materno');
-        $persona->nombres            = $request->input('nombre');
-        $persona->email              = $request->input('email');
-        $persona->celular            = $request->input('celular');
-        $persona->cedula             = $request->input('cedula');
-        $persona->expedido           = $request->input('expedido');
+        if($red_socialBuscado){
 
-        $persona->save();
+            $persona_id = $request->input('persona_id');
 
-        // creando la oportunidad
-        $oportunidad = new Oportunidad();
+            if($persona_id == 0){
 
-        $oportunidad->formulario_id     = $request->input('formulario_id');
-        $oportunidad->campania_id       = $request->input('campania_id');
-        $oportunidad->persona_id        = $persona->id;
-        
-        $oportunidad->save();
+                $persona = new Persona();
+
+                $persona->apellido_paterno   = $request->input('apellido_paterno');
+                $persona->apellido_materno   = $request->input('apellido_materno');
+                $persona->nombres            = $request->input('nombre');
+                $persona->email              = $request->input('email');
+                $persona->celular            = $request->input('celular');
+                $persona->cedula             = $request->input('cedula');
+                $persona->expedido           = $request->input('expedido');
+    
+                $persona->save();
+
+                $persona_id = $persona->id;
+
+            }
+
+            // $persona = new Persona();
+
+            // $persona->apellido_paterno   = $request->input('apellido_paterno');
+            // $persona->apellido_materno   = $request->input('apellido_materno');
+            // $persona->nombres            = $request->input('nombre');
+            // $persona->email              = $request->input('email');
+            // $persona->celular            = $request->input('celular');
+            // $persona->cedula             = $request->input('cedula');
+            // $persona->expedido           = $request->input('expedido');
+
+            // $persona->save();
+
+            // creando la oportunidad
+            $oportunidad = new Oportunidad();
+
+            $oportunidad->formulario_id     = $request->input('formulario_id');
+            $oportunidad->campania_id       = $request->input('campania_id');
+            // $oportunidad->persona_id        = $persona->id;
+            $oportunidad->persona_id        = $persona_id;
+            $oportunidad->red_social_id     = $red_socialBuscado->id;
+            
+            $oportunidad->save();
 
 
-        // guardamos las respustas
-        $respuestas  = $request->input('respuestas');
+            // guardamos las respustas
+            $respuestas  = $request->input('respuestas');
 
-        foreach ($respuestas as $key => $r){
+            foreach ($respuestas as $key => $r){
 
-            // echo $key."<br>";
+                // echo $key."<br>";
 
-            $respuesta = new Respuesta();
+                $respuesta = new Respuesta();
 
-            $respuesta->pregunta_id = $key;
-            $respuesta->oportunidad_id = $oportunidad->id;
+                $respuesta->pregunta_id = $key;
+                $respuesta->oportunidad_id = $oportunidad->id;
 
-            // sacamos para saber que pregunta es (combo o normal)
-            $pregunta = Pregunta::find($key);
+                // sacamos para saber que pregunta es (combo o normal)
+                $pregunta = Pregunta::find($key);
 
-            if(count($r) > 1){
+                if(count($r) > 1){
 
-                $arryCombos = array();
+                    $arryCombos = array();
 
-                foreach($r as $idCom){
+                    foreach($r as $idCom){
 
-                    $valorCombo = ValorCombo::find($idCom);
+                        $valorCombo = ValorCombo::find($idCom);
 
-                    array_push($arryCombos, $valorCombo->valor);
+                        array_push($arryCombos, $valorCombo->valor);
 
-                }
+                    }
 
-                $respuesta->respuesta = json_encode($arryCombos);
-                // $respuesta->respuesta = json_encode($r);
-
-            }else{
-
-                if($pregunta->componente_id == 3 || $pregunta->componente_id == 4){
-
-                    $valorCombo = ValorCombo::find($r[0]);
-                    $respuesta->respuesta = $valorCombo->valor;
+                    $respuesta->respuesta = json_encode($arryCombos);
+                    // $respuesta->respuesta = json_encode($r);
 
                 }else{
 
-                    $respuesta->respuesta = $r[0];
+                    if($pregunta->componente_id == 3 || $pregunta->componente_id == 4){
 
-                }
+                        $valorCombo = ValorCombo::find($r[0]);
+                        $respuesta->respuesta = $valorCombo->valor;
 
-            }
+                    }else{
 
-            $respuesta->save(); 
+                        $respuesta->respuesta = $r[0];
 
-            if($pregunta->componente_id == 3 || $pregunta->componente_id == 4){
-
-
-                // if(count($r) > 1){
-
-                $respuestasCombos = $r;
-
-                foreach($respuestasCombos as $cr){
-
-                    $valorCombo = ValorCombo::find($cr);
-
-                    if($valorCombo){
-
-
-                        $comres  =  new RespuestaCombo();
-
-                        // $comres->respuesta      = $cr;
-                        $comres->respuesta          = $valorCombo->valor;
-                        $comres->respuesta_id       = $respuesta->id;
-                        $comres->valor_combo_id     = $valorCombo->id;
-
-                        $comres->save();
                     }
 
-
                 }
 
-                // }
+                $respuesta->save(); 
+
+                if($pregunta->componente_id == 3 || $pregunta->componente_id == 4){
+
+                    $respuestasCombos = $r;
+
+                    foreach($respuestasCombos as $cr){
+
+                        $valorCombo = ValorCombo::find($cr);
+
+                        if($valorCombo){
+
+
+                            $comres  =  new RespuestaCombo();
+
+                            // $comres->respuesta      = $cr;
+                            $comres->respuesta          = $valorCombo->valor;
+                            $comres->respuesta_id       = $respuesta->id;
+                            $comres->valor_combo_id     = $valorCombo->id;
+
+                            $comres->save();
+                        }
+
+
+                    }
+
+                    // }
+                }
+
             }
 
-        }
+        }else{
 
-        // dd($request->all());
+            return view("errors.error404");
+
+        }
 
     }
 
@@ -382,7 +409,6 @@ class FormularioController extends Controller
                                         ->where('estado', 0)
                                         ->get();
 
-                                        
             $ap_paterno = Pregunta::where('formulario_id', $formulario_id)
                                     ->where('estado',1)
                                     ->where('nombre','ap_paterno')
@@ -418,7 +444,8 @@ class FormularioController extends Controller
                                     ->where('nombre','expedido')
                                     ->first();
 
-            return view("formulario.respuestaFormularioCompartir")->with(compact('campania_id','formulario', 'preguntas_form', 'ap_paterno',  'ap_materno', 'nombre', 'email', 'celular', 'cedula', 'expedido'));
+            return view("formulario.respuestaFormularioCompartir")->with(compact('campania_id','formulario', 'preguntas_form', 'ap_paterno',  'ap_materno', 'nombre', 'email', 'celular', 'cedula', 'expedido', 'red_social'));
+            // return view("formulario.respuestaFormularioCompartir")->with(compact('campania_id','formulario', 'preguntas_form', 'ap_paterno',  'ap_materno', 'nombre', 'email', 'celular', 'cedula', 'expedido'));
 
         }else{
 
@@ -578,19 +605,23 @@ class FormularioController extends Controller
                     }
 
                     // ahroa hacemos los cambios en las respuestas combos ya respondidas
+                    if(isset($arrayValorCombosAntiguo)){
 
-                    foreach ($arrayValorCombosAntiguo as $keyArrayCombos => $vc){
+                        foreach ($arrayValorCombosAntiguo as $keyArrayCombos => $vc){
 
-                        $respuesCombo = Formulario::respuestasCombos($vc);
-
-                        foreach ($respuesCombo as $resCom){
-
-                            $resCom->valor_combo_id = $arrayValorCombosNuevos[$keyArrayCombos];
-                            $resCom->save();
-
+                            $respuesCombo = Formulario::respuestasCombos($vc);
+    
+                            foreach ($respuesCombo as $resCom){
+    
+                                $resCom->valor_combo_id = $arrayValorCombosNuevos[$keyArrayCombos];
+                                $resCom->save();
+    
+                            }
+    
                         }
 
                     }
+                    
                 }
 
 
@@ -676,6 +707,29 @@ class FormularioController extends Controller
         $data['cantidad'] = Formulario::cantidadRespondidas($combo_id);
 
         return json_encode($data);
+    }
+
+    public function verificaPersona(Request $request){
+
+        // dd($request->all());
+        $email = $request->input('email');
+
+        $persona = Formulario::buscaPersonaEmail($email);
+
+        // if(count($persona) == 0){ //en est caso cuanddo es get()
+        if($persona){ //esto es para firts()
+
+            $data['respuesta'] = 'success';
+            $data['persona'] = $persona;
+
+        }else{
+
+            $data['respuesta'] = 'error';
+
+        }
+        
+        return $data;
+
     }
     
     /**

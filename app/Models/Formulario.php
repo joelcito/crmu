@@ -54,4 +54,16 @@ class Formulario extends Model
         return $cantrespuestas;
 
     }
+
+    public static function buscaPersonaEmail($email){
+
+        $persona = Persona::where('email',$email)
+                            ->first();
+                            // ->get();
+
+        return $persona;
+
+    }
+
+    
 }

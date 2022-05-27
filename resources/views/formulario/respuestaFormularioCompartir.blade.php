@@ -225,8 +225,10 @@
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
                     <div class="card">
+                        {{-- @dd($red_social) --}}
                         <div class="card-body">
                         <form action="{{ url('Formulario/guardarRespuestaFormulario') }}" method="post" target="_target">
+                        {{-- <form action="{{ url('Formulario/guardarRespuestaFormulario',[$red_social]) }}" method="post" target="_target"> --}}
                             @csrf
                             <div class="row">
                                 <div class="col-md-12">
@@ -258,51 +260,60 @@
 
                             <input type="hidden" value="{{ $campania_id }}" name="campania_id">
                             <input type="hidden" value="{{ $formulario->id }}" name="formulario_id">
-                            <br>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="title">
-                                        <h6 style="padding:10px">Apellido Paterno <b class="text-danger">{{ ($ap_paterno->requerido == 1)? '*' : ''}}</b></h6>
-                                        <input style="padding:10px" name="apellido_paterno" {{ ($ap_paterno->requerido == 1)? 'required' : ''}} type="text" class="boredes-cajas" placeholder="Tu respuesta..">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="title">
-                                        <h6 style="padding:10px">Apellido Materno <b class="text-danger">{{ ($ap_materno->requerido == 1)? '*' : ''}}</b></h6>
-                                        <input style="padding:10px" name="apellido_materno" type="text"  {{ ($ap_materno->requerido == 1)? 'required' : ''}} class="boredes-cajas" placeholder="Tu respuesta..">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="title">
-                                        <h6 style="padding:10px">Nombre Completo <b class="text-danger">{{ ($nombre->requerido == 1)? '*' : ''}}</b></h6>
-                                        <input style="padding:10px" name="nombre" type="text" {{ ($nombre->requerido == 1)? 'required' : ''}}  class="boredes-cajas" placeholder="Tu respuesta..">
-                                    </div>
-                                </div>
-                            </div>
+                            <input type="hidden" value="{{ $red_social }}" name="red_social">
+                            <input type="text" value="0" name="persona_id" id="persona_id">
+
                             <br>
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="title">
                                         <h6 style="padding:10px">Email <b class="text-danger">{{ ($email->requerido == 1)? '*' : ''}}</b></h6>
+                                        <input style="padding:10px" name="email" id="email" {{ ($email->requerido == 1)? 'required' : ''}}  type="text" class="boredes-cajas" placeholder="Tu respuesta.." onfocusout="verificaPersona()">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="title">
+                                        <h6 style="padding:10px">Apellido Paterno <b class="text-danger">{{ ($ap_paterno->requerido == 1)? '*' : ''}}</b></h6>
+                                        <input style="padding:10px" name="apellido_paterno" id="apellido_paterno" {{ ($ap_paterno->requerido == 1)? 'required' : ''}} type="text" class="boredes-cajas" placeholder="Tu respuesta..">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="title">
+                                        <h6 style="padding:10px">Apellido Materno <b class="text-danger">{{ ($ap_materno->requerido == 1)? '*' : ''}}</b></h6>
+                                        <input style="padding:10px" name="apellido_materno" id="apellido_materno" type="text"  {{ ($ap_materno->requerido == 1)? 'required' : ''}} class="boredes-cajas" placeholder="Tu respuesta..">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="title">
+                                        <h6 style="padding:10px">Nombre Completo <b class="text-danger">{{ ($nombre->requerido == 1)? '*' : ''}}</b></h6>
+                                        <input style="padding:10px" name="nombre" id="nombre" type="text" {{ ($nombre->requerido == 1)? 'required' : ''}}  class="boredes-cajas" placeholder="Tu respuesta..">
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                {{-- <div class="col-md-3">
+                                    <div class="title">
+                                        <h6 style="padding:10px">Email <b class="text-danger">{{ ($email->requerido == 1)? '*' : ''}}</b></h6>
                                         <input style="padding:10px" name="email" {{ ($email->requerido == 1)? 'required' : ''}}  type="text" class="boredes-cajas" placeholder="Tu respuesta..">
                                     </div>
-                                </div>
-                                <div class="col-md-3">
+                                </div> --}}
+                                <div class="col-md-4">
                                     <div class="title">
                                         <h6 style="padding:10px">Celular <b class="text-danger">{{ ($celular->requerido == 1)? '*' : ''}}</b></h6>
-                                        <input style="padding:10px" name="celular" {{ ($celular->requerido == 1)? 'required' : ''}} type="text" class="boredes-cajas" placeholder="Tu respuesta..">
+                                        <input style="padding:10px" name="celular" id="celular" {{ ($celular->requerido == 1)? 'required' : ''}} type="text" class="boredes-cajas" placeholder="Tu respuesta..">
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="title">
                                         <h6 style="padding:10px">Cedula <b class="text-danger">{{ ($cedula->requerido == 1)? '*' : ''}}</b></h6>
-                                        <input style="padding:10px" name="cedula" {{ ($cedula->requerido == 1)? 'required' : ''}} type="text" class="boredes-cajas" placeholder="Tu respuesta..">
+                                        <input style="padding:10px" name="cedula" id="cedula" {{ ($cedula->requerido == 1)? 'required' : ''}} type="text" class="boredes-cajas" placeholder="Tu respuesta..">
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
                                     <div class="title">
                                         <h6 style="padding:10px">Expedido <b class="text-danger">{{ ($expedido->requerido == 1)? '*' : ''}}</b></h6>
-                                        <input style="padding:10px" name="expedido" {{ ($expedido->requerido == 1)? 'required' : ''}}  type="text" class="boredes-cajas" placeholder="Tu respuesta..">
+                                        <input style="padding:10px" name="expedido" id="expedido" {{ ($expedido->requerido == 1)? 'required' : ''}}  type="text" class="boredes-cajas" placeholder="Tu respuesta..">
                                     </div>
                                 </div>
                             </div>
@@ -542,6 +553,49 @@
         console.log(li.id);
 
         listid.removeChild(li);
+    }
+
+    function verificaPersona(){
+
+        var email = $('#email').val();
+
+        $.ajax({
+            url: "{{ url('Formulario/verificaPersona') }}",
+            data: {
+                email: email
+            },
+            type: 'POST',
+            typeData: 'json',
+            success: function(data) {
+
+                if(data.respuesta === 'success'){
+
+                    $('#persona_id').val(data.persona.id);
+                    $('#apellido_paterno').val(data.persona.apellido_paterno);
+                    $('#apellido_materno').val(data.persona.apellido_materno);
+                    $('#nombre').val(data.persona.nombres);
+                    $('#celular').val(data.persona.celular);
+                    $('#cedula').val(data.persona.cedula);
+                    $('#expedido').val(data.persona.expedido);
+
+                }else{
+
+                    $('#persona_id').val(0);
+                    $('#apellido_paterno').val('');
+                    $('#apellido_materno').val('');
+                    $('#nombre').val('');
+                    $('#celular').val('');
+                    $('#cedula').val('');
+                    $('#expedido').val('');
+
+                }
+
+            },
+            error: function(error){
+
+            }
+        });
+
     }
 
     var cantaddBlock = 2;

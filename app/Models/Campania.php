@@ -179,5 +179,43 @@ class Campania extends Model
         return $vendedores;
 
     }
+
+    public static function redesSocialesNombre(){
+
+        $resdesSociales = RedSocial::select('nombre')
+                                ->get();
+
+        $arrayRedesSociales = array();
+
+        foreach ($resdesSociales as $rs){
+
+            array_push($arrayRedesSociales, $rs->nombre);
+
+        }
+
+        return $arrayRedesSociales;
+
+    }
+
+    public static function canRedSocial($campania_id, $formulario_id){
+
+        $cantidadRedSociales = Oportunidad::select(DB::raw("count(oportunidades.red_social_id) as cantRS"),"red_sociales.nombre", "red_sociales.id")
+                                            ->join('red_sociales','oportunidades.red_social_id','=', 'red_sociales.id')
+                                            ->where('oportunidades.formulario_id', $formulario_id)
+                                            ->where('oportunidades.campania_id', $campania_id)
+                                            ->groupBy('oportunidades.red_social_id')
+                                            ->get();    
+
+        $arrayCantRedesSociales = array();
+
+        foreach ($cantidadRedSociales as $rs){
+
+            array_push($arrayCantRedesSociales, $rs->cantRS);
+
+        }
+
+        return $arrayCantRedesSociales;
+
+    }
     
 }

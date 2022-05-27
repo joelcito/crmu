@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Gasto;
 use App\Models\Campania;
 use App\Models\Vendedor;
+use App\Models\Prioridad;
+use App\Models\RedSocial;
 use App\Models\Respuesta;
 use App\Models\Asignacion;
 use App\Models\Formulario;
@@ -16,9 +18,8 @@ use Illuminate\Http\Request;
 use App\librerias\Utilidades;
 use GuzzleHttp\Handler\Proxy;
 use App\Models\FormularioCampania;
-use App\Models\Prioridad;
-use Illuminate\Support\Facades\Redis;
 
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -139,8 +140,11 @@ class CampaniaController extends Controller
         // PRIORIDADES 
         $prioridades = Prioridad::all();
 
+        // SACAMOS TODAS LAS REDES SOCIALES
+        $redSociales = RedSocial::all();
+
         // return view('campania.home')->with(compact('formularios'));
-        return view('campania.home')->with(compact('campania_id', 'formularios', 'oportunidades', 'vendedores', 'ingresos', 'egresos', 'gastos', 'presupuesto', 'cantidadPersonasRespondieron', 'tipoAgendas', 'vendedoresAgenda', 'prioridades'));
+        return view('campania.home')->with(compact('campania_id', 'formularios', 'oportunidades', 'vendedores', 'ingresos', 'egresos', 'gastos', 'presupuesto', 'cantidadPersonasRespondieron', 'tipoAgendas', 'vendedoresAgenda', 'prioridades','redSociales'));
     }
 
     public function ajaxBuscaVendedor(Request $request){
@@ -543,6 +547,8 @@ class CampaniaController extends Controller
 
     public function estadistica(Request $request, $campania_id, $formulario_id){
 
+        // dd($request->all());
+
         $preguntas  = Campania::preguntasCombo($formulario_id);
 
         $campania   = Campania::find($campania_id);
@@ -552,10 +558,16 @@ class CampaniaController extends Controller
 
         $oportunidades = Campania::oportunidades($formulario_id);
 
-        return  view('campania.estadistica')->with(compact('preguntas', 'campania', 'formulario', 'preguntasFormulario', 'oportunidades'));
+        // DEVOLVEREMOS EL JSON DE LAS REDES SOCIALES
+        $redesSociales = Campania::redesSocialesNombre();
+        
+        // DEVOLVELMENOS UN JSON LA CANTIDAD DE DE REDES SOCILLES DE CADA FORMULARIO
+        $canRedSocial = Campania::canRedSocial($campania_id, $formulario_id);
+
+
+        return  view('campania.estadistica')->with(compact('preguntas', 'campania', 'formulario', 'preguntasFormulario', 'oportunidades', 'redesSociales', 'canRedSocial'));
     }
 
-    // public function respuestaExcel(Request $request){
     public function respuestaExcel(Request $request, $campania_id, $formulario_id){
 
         $formulario = Formulario::find($formulario_id);
