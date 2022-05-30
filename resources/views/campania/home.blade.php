@@ -273,7 +273,7 @@
           <div class="col-md-12">
             <div class="card">
               <form action="" id="formulario_evento">
-                <input type="text" name="evento_id" id="evento_id" value="0">
+                <input type="hidden" name="evento_id" id="evento_id" value="0">
 
                 <div class="container">
 

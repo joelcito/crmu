@@ -18,8 +18,8 @@ class AgendaController extends Controller
             $tipoAgenda = $request->input('tipo_agenda');
 
             // $persona_id = 19;
-            // $persona_id = 20;
-            $persona_id = 21;
+            $persona_id = 20;
+            // $persona_id = 21;
 
             if($tipoAgenda == 0){
 
