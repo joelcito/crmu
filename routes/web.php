@@ -1,6 +1,10 @@
 <?php
 
+use App\Models\User;
+use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +17,65 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    // return view('welcome');
-    return view('home');
+
+// Route::get('/', function () {
+
+
+//     // dd(Auth::user());
+
+//     // config(['app.client_id' => "holas"]);
+
+//     // // dd(session('user'));
+//     // dd(config('app.client_id'));
+//     // // dd(Session::all());
+//     // // Session::get('user');
+
+//     // // return view('welcome');
+//     return view('home');
+// });
+    
+
+// PANTALLA DE INIIO
+Route::get('/{id}/{token}', function($id, $token) {
+
+    // dd(user());
+    // dd("holas");
+
+
+    dd($id, $token);
+
+    // $vasr = AsscessPersonalToken::all();
+
+    // dd($token);
+    // dd($token);
+    // Route::get('/{user}/{password}', function($user, $password) {
+
+    // dd($user);
+    
+    // $email = $user;
+
+    // $password = $password;
+
+    // $user = User::where('email',$email)->first();
+
+    // if($user && Hash::check($password,$user->password)){
+
+    //     // $request->session()->put('user', $user);
+    //     session()->put('user', $user);
+
+    // }else{
+
+    //     return redirect('https://udelosandes.com/siac_desarrollo/control_panel_administrador');
+
+    // }
+
+    return redirect('/home');
+
 });
+
+
+
+Route::get('/home', 'HomeController@home');
 
 
 // CAMPANIA

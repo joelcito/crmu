@@ -16,7 +16,7 @@
         <li class="nav-item mb-2 mt-0">
           <a data-bs-toggle="collapse" href="#ProfileNav" class="nav-link text-white" aria-controls="ProfileNav" role="button" aria-expanded="false">
             <img src="{{ asset('assets/img/team-3.jpg') }}" class="avatar">
-            <span class="nav-link-text ms-2 ps-1">Brooklyn Alice</span>
+            <span class="nav-link-text ms-2 ps-1">{{ session('user')->name }}</span>
           </a>
           <div class="collapse" id="ProfileNav" style="">
             <ul class="nav ">

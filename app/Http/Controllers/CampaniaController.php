@@ -19,6 +19,7 @@ use App\librerias\Utilidades;
 use GuzzleHttp\Handler\Proxy;
 use App\Models\FormularioCampania;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -30,6 +31,9 @@ class CampaniaController extends Controller
 
 
     public function listado(Request $request){
+
+        dd($request->session()->pull('user'));
+        // dd(Auth::user());
 
         return view('campania.listado');
 
