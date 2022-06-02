@@ -41,8 +41,24 @@ Route::get('/{id}/{token}', function($id, $token) {
     // dd(user());
     // dd("holas");
 
+    $token = $id."|".$token;
 
-    dd($id, $token);
+    $user = User::where('token_access',$token)->first();
+
+    if($user){
+
+        session()->put('user', $user);
+
+    }else{
+
+        $ruta = env('ROUTE_LOGEO')."control_panel_administrador";
+
+        return redirect($ruta);
+
+    }
+
+
+    // dd($id, $token);
 
     // $vasr = AsscessPersonalToken::all();
 

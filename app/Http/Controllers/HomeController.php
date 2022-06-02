@@ -28,8 +28,10 @@ class HomeController extends Controller
             return view('home');
 
         }else{
+            
+            $ruta = env('ROUTE_LOGEO')."control_panel_administrador";
 
-            return redirect('https://udelosandes.com/siac_desarrollo/control_panel_administrador');
+            return redirect($ruta);
 
         }
 

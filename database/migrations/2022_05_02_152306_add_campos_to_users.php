@@ -16,7 +16,7 @@ class AddCamposToUsers extends Migration
         Schema::table('users', function (Blueprint $table) {
 
             $table->datetime('deleted_at')->nullable()->after('remember_token');
-            $table->datetime('token_access')->nullable()->after('remember_token');
+            $table->text('token_access')->nullable()->after('remember_token');
         });
     }
 

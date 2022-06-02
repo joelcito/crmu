@@ -54,28 +54,9 @@ class UserController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        // auth()->login($user);
-
         User::whereId($user->id)->update([
             'token_access' => $token
         ]);
-
-
-        // $userRember = User::find($user->id);
-
-        // $userRember->token_access = $token;
-
-        // $userRember->update($userRember);
-
-        // $userRember->save();
-
-        // $user->token_access = "$token";
-        // // $user->date_time = "2022-06-01 18:47:00";
-
-
-        // $user->save();
-        // $token = Hash::make($user->createToken('auth_token')->plainTextToken);
-
 
         return response()->json([
             'status'        => 'success',
@@ -85,7 +66,6 @@ class UserController extends Controller
             'user'          => $user
         ]);
 
-        // return redirect('/');
     }
 
     public function logout(Request $request){
