@@ -14,7 +14,7 @@ class AddCamposToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-
+            $table->unsignedBigInteger('admin_id')->nullable()->unique()->after('id');
             $table->datetime('deleted_at')->nullable()->after('remember_token');
             $table->text('token_access')->nullable()->after('remember_token');
         });
@@ -28,6 +28,7 @@ class AddCamposToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('admin_id');
             $table->dropColumn('deleted_at');
             $table->dropColumn('token_access');
         });

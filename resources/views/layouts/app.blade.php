@@ -1,4 +1,3 @@
-
 <!--
 =========================================================
 * Material Dashboard 2 PRO - v3.0.3
@@ -45,7 +44,7 @@
 
 <body class="g-sidenav-show  bg-gray-200">
 
-    @include('partials.menu')
+  @include('partials.menu')
 
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
     <!-- Navbar -->

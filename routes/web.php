@@ -36,54 +36,27 @@ use Illuminate\Support\Facades\Session;
     
 
 // PANTALLA DE INIIO
-Route::get('/{id}/{token}', function($id, $token) {
-
-    // dd(user());
-    // dd("holas");
+Route::get('Autentication/{id}/{token}', function($id, $token) {
 
     $token = $id."|".$token;
 
     $user = User::where('token_access',$token)->first();
 
+    // dd($user);
+    
     if($user){
 
         session()->put('user', $user);
 
     }else{
 
+        // dd("holas");
+
         $ruta = env('ROUTE_LOGEO')."control_panel_administrador";
 
         return redirect($ruta);
 
     }
-
-
-    // dd($id, $token);
-
-    // $vasr = AsscessPersonalToken::all();
-
-    // dd($token);
-    // dd($token);
-    // Route::get('/{user}/{password}', function($user, $password) {
-
-    // dd($user);
-    
-    // $email = $user;
-
-    // $password = $password;
-
-    // $user = User::where('email',$email)->first();
-
-    // if($user && Hash::check($password,$user->password)){
-
-    //     // $request->session()->put('user', $user);
-    //     session()->put('user', $user);
-
-    // }else{
-
-    //     return redirect('https://udelosandes.com/siac_desarrollo/control_panel_administrador');
-
-    // }
 
     return redirect('/home');
 

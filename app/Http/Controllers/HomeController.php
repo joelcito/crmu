@@ -2,34 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use Session;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 // use Illuminate\Support\Facades\Session;
-use Session;
+// use App\librerias\Autentication;
+use App\librerias\Autentication;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
 
     public function __construct(){
-
-        // $this->verification();
-        // $this->middleware('auth:sanctum');
         
     }
 
-    //
-
-    // public function home(Request $request, $token){
     public function home(Request $request){
 
-        if($this->verification()){
+        if(Autentication::logeo(session('user'))){
 
             return view('home');
 
         }else{
             
-            $ruta = env('ROUTE_LOGEO')."control_panel_administrador";
+            // $ruta = env('ROUTE_LOGEO')."control_panel_administrador";
+            $ruta = env('ROUTE_LOGEO').env('ROUTE_LOGEO_CONT');
 
             return redirect($ruta);
 
@@ -37,20 +34,12 @@ class HomeController extends Controller
 
     }
 
-    protected function verification(){
+    // private function llamadaLogeo(){
 
-        $this->session = session('user');
+    //     $utilidades = new Autentication();
+    //     $logueo = $utilidades->logeo();
 
-        if(session('user')){
+    //     return $logueo;
 
-            return true;
-
-        }
-        else{
-
-            return false;
-
-        }
-
-    }
+    // }
 }

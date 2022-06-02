@@ -41,30 +41,95 @@ class UserController extends Controller
     }
 
     public function login(Request $request){
+        
+        $user = User::where('email',$request->email)->first();
+        
+        if($user){
+            if($user->password == $request->password){
 
-        // FUNCION INICIAR SESSION DE UN USUARIO
-        if(!Auth::attempt($request->only('email', 'password'))){
-            return response()->json([
-                'status'        => 'error',
-                'message' => 'Error de User y/o Contraseña'
+                $user = User::where('email',$request['email'])->firstOrFail();
+
+                $token = $user->createToken('auth_token')->plainTextToken;
+
+                User::whereId($user->id)->update([
+                    'token_access' => $token
+                ]);
+
+                return response()->json([
+                    'status'        => 'success',
+                    'message'       => 'Hola '.$user->name,
+                    'accessToken'   => $token,
+                    'token_type'    => 'Beare',
+                    'user'          => $user
+                ]);
+
+            }else{
+
+                return response()->json([
+                    'status'        => 'error',
+                    'message'       => 'Error de User y/o Contraseña'
+                ]);
+
+            }
+        }else{
+
+            $user = User::create([
+                'name'          => $request->name,
+                'email'         => $request->email,
+                'password'      => $request->password
+                // 'password'  => Hash::make($request->password)
             ]);
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            User::whereId($user->id)->update([
+                'token_access' => $token,
+                'admin_id'      => $request->admin
+            ]);
+
+            return response()->json([
+                'status'        => 'success',
+                'message'       => 'Hola '.$user->name,
+                'accessToken'   => $token,
+                'token_type'    => 'Beare',
+                'user'          => $user
+            ]);
+
+            // return response()->json([
+            //     'status'        => 'error',
+            //     'message' => 'Registrar un nuevo user ?'
+            // ]);
+
         }
+        
+        // return response([
+        //     'dato' => $request->only('email', 'password'),
+        //     'veri' => Hash::check($request->password, $user->password)
+        // ]);
 
-        $user = User::where('email',$request['email'])->firstOrFail();
+        // // FUNCION INICIAR SESSION DE UN USUARIO
+        // if(!Auth::attempt($request->only('email', 'password'))){
+        //     return response()->json([
+        //         'status'        => 'error',
+        //         'message' => 'Error de User y/o Contraseña'
+        //     ]);
+        // }
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        // $user = User::where('email',$request['email'])->firstOrFail();
 
-        User::whereId($user->id)->update([
-            'token_access' => $token
-        ]);
+        // $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'status'        => 'success',
-            'message'       => 'Hola '.$user->name,
-            'accessToken'   => $token,
-            'token_type'    => 'Beare',
-            'user'          => $user
-        ]);
+        // User::whereId($user->id)->update([
+        //     'token_access' => $token
+        // ]);
+
+        // return response()->json([
+        //     'status'        => 'success',
+        //     'message'       => 'Hola '.$user->name,
+        //     'accessToken'   => $token,
+        //     'token_type'    => 'Beare',
+        //     'user'          => $user
+        // ]);
 
     }
 

@@ -1,4 +1,3 @@
-
   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
   {{-- <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-dark" id="sidenav-main"> --}}
   {{-- <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-info" style="background: #00064f" id="sidenav-main"> --}}
@@ -16,7 +15,9 @@
         <li class="nav-item mb-2 mt-0">
           <a data-bs-toggle="collapse" href="#ProfileNav" class="nav-link text-white" aria-controls="ProfileNav" role="button" aria-expanded="false">
             <img src="{{ asset('assets/img/team-3.jpg') }}" class="avatar">
+            {{-- @dd(session()) --}}
             <span class="nav-link-text ms-2 ps-1">{{ session('user')->name }}</span>
+            {{-- <span class="nav-link-text ms-2 ps-1">{{ (Autentication::logeo(session('user')))? session('user')->name : '' }}</span> --}}
           </a>
           <div class="collapse" id="ProfileNav" style="">
             <ul class="nav ">

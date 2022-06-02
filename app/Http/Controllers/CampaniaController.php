@@ -17,8 +17,9 @@ use App\Models\Seguimiento;
 use Illuminate\Http\Request;
 use App\librerias\Utilidades;
 use GuzzleHttp\Handler\Proxy;
-use App\Models\FormularioCampania;
+use App\librerias\Autentication;
 
+use App\Models\FormularioCampania;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
@@ -32,10 +33,17 @@ class CampaniaController extends Controller
 
     public function listado(Request $request){
 
-        dd($request->session()->pull('user'));
-        // dd(Auth::user());
+        if(Autentication::logeo(session('user'))){
 
-        return view('campania.listado');
+            return view('campania.listado');
+
+        }else{
+            
+            $ruta = env('ROUTE_LOGEO').env('ROUTE_LOGEO_CONT');
+
+            return redirect($ruta);
+        }
+
 
     }
 
